@@ -1,0 +1,36 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+  info:
+    env:
+      enabled: true
+
+# Everything above these dashes will be applied to all profiles
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+---
+spring:
+  config:
+    activate:
+      on-profile: default
+
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: classpath:otterandcow.com.p12
+    key-store-password: changeit
+    key-store-type: PKCS12
+    key-alias: otterandcow.com
