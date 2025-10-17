@@ -1,4 +1,4 @@
-package com.ebsolutions.shells.springboot;
+package com.ebsolutions.whoami;
 
 import static io.cucumber.junit.platform.engine.Constants.GLUE_PROPERTY_NAME;
 import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
@@ -18,7 +18,7 @@ import org.junit.platform.suite.api.Suite;
     @ConfigurationParameter(key = Constants.FILTER_TAGS_PROPERTY_NAME, value = "not @Disabled"),
     @ConfigurationParameter(
         key = GLUE_PROPERTY_NAME,
-        value = "com.ebsolutions.shells.springboot")
+        value = "com.ebsolutions.whoami")
 
 })
 public class RunCucumberTests {

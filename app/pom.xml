@@ -3,18 +3,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.ebsolutions.shells</groupId>
-        <artifactId>springboot-parent</artifactId>
+        <groupId>com.ebsolutions.whoami</groupId>
+        <artifactId>who-am-i-parent</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>springboot-service</artifactId>
+    <artifactId>who-am-i-service</artifactId>
     <version>${revision}</version>
-    <name>Shell Spring Boot Service</name>
+    <name>Who Am I Service</name>
     <packaging>jar</packaging>
 
     <properties>
-        <start-class>com.ebsolutions.shells.springboot.Application</start-class>
+        <start-class>com.ebsolutions.whoami.Application</start-class>
 
         <!-- Versions: Dependencies -->
     </properties>

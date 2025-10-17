@@ -34,17 +34,17 @@ jobs:
         run: mvn clean package --no-transfer-progress --batch-mode
 
       - name: Build Docker image
-        run: docker build . --tag springboot-service --file app/Dockerfile
+        run: docker build . --tag who-am-i-service --file app/Dockerfile
 
-      #      - name: SonarQubeScan
-      #        uses: SonarSource/sonarqube-scan-action@v4
-      #        env:
-      #          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
+      - name: SonarQubeScan
+        uses: SonarSource/sonarqube-scan-action@v4
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#
 #      - name: Get Docker Image Name
 #        id: set-docker-image-tag
 #        env:
-#          IMAGE_NAME: springboot-service
+#          IMAGE_NAME: who-am-i-service
 #        run: |
 #          echo "IMAGE_TAG=$(docker images -q $IMAGE_NAME)" >> $GITHUB_ENV
 #          echo $IMAGE_TAG
@@ -53,7 +53,7 @@ jobs:
 #        id: tag-and-publish-image
 #        env:
 #          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-#          ECR_REPOSITORY: shells.springboot-service
+#          ECR_REPOSITORY: whoami-service
 #        run: |
 #          echo "Image Tag!"
 #          echo $IMAGE_TAG

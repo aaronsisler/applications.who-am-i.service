@@ -1,4 +1,4 @@
-package com.ebsolutions.shells.springboot.config;
+package com.ebsolutions.whoami.config;
 
 public class UriConstants {
   // URIs

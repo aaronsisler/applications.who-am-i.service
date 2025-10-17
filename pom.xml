@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.ebsolutions.shells</groupId>
-    <artifactId>springboot-parent</artifactId>
+    <groupId>com.ebsolutions.whoami</groupId>
+    <artifactId>who-am-i-parent</artifactId>
     <version>${revision}</version>
-    <name>Shell Spring Boot Service Parent</name>
+    <name>Who Am I Service Parent</name>
     <packaging>pom</packaging>
 
     <modules>
@@ -22,9 +22,11 @@
 
     <properties>
         <!-- This is the property that is propagated to all children modules -->
-        <revision>0.4.0</revision>
+        <revision>0.1.0</revision>
 
         <java.version>21</java.version>
+
+        <sonar.organization>aaronsisler</sonar.organization>
 
         <!-- Versions: Plugins -->
         <checkstyle-maven-plugin.version>3.5.0</checkstyle-maven-plugin.version>
@@ -180,7 +182,7 @@
                     <artifactId>openapi-generator-maven-plugin</artifactId>
                     <version>${openapi-generator-maven-plugin.version}</version>
                     <configuration>
-                        <modelPackage>com.ebsolutions.shells.springboot.model</modelPackage>
+                        <modelPackage>com.ebsolutions.whoami.model</modelPackage>
                         <generatorName>spring</generatorName>
                         <generateApis>false</generateApis>
                         <generateSupportingFiles>false</generateSupportingFiles>

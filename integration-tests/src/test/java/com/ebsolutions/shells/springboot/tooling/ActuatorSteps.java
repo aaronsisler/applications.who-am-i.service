@@ -1,7 +1,7 @@
-package com.ebsolutions.shells.springboot.tooling;
+package com.ebsolutions.whoami.tooling;
 
-import com.ebsolutions.shells.springboot.config.TestConstants;
-import com.ebsolutions.shells.springboot.model.HealthCheck;
+import com.ebsolutions.whoami.config.TestConstants;
+import com.ebsolutions.whoami.model.HealthCheck;
 import io.cucumber.java.en.Given;
 import java.time.Instant;
 import org.junit.jupiter.api.Assertions;

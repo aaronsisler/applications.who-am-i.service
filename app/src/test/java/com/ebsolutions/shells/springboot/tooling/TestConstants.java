@@ -1,4 +1,4 @@
-package com.ebsolutions.shells.springboot.tooling;
+package com.ebsolutions.whoami.tooling;
 
 public class TestConstants {
   public static final String EMPTY_STRING_ENUM = "EMPTY_STRING";

@@ -1,4 +1,4 @@
-package com.ebsolutions.shells.springboot.tooling;
+package com.ebsolutions.whoami.tooling;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.client.RestTemplate;

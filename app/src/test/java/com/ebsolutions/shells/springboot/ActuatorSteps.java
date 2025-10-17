@@ -1,12 +1,12 @@
-package com.ebsolutions.shells.springboot;
+package com.ebsolutions.whoami;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.ebsolutions.shells.springboot.config.UriConstants;
-import com.ebsolutions.shells.springboot.tooling.BaseTest;
+import com.ebsolutions.whoami.config.UriConstants;
+import com.ebsolutions.whoami.tooling.BaseTest;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import io.cucumber.java.en.Given;
@@ -42,9 +42,9 @@ public class ActuatorSteps extends BaseTest {
     String content = mockHttpServletResponse.getContentAsString();
     DocumentContext jsonBody = JsonPath.parse(content);
 
-    Assertions.assertEquals("com.ebsolutions.shells", jsonBody.read("$.build.group"));
-    Assertions.assertEquals("springboot-service", jsonBody.read("$.build.artifact"));
-    Assertions.assertEquals("Shell Spring Boot Service", jsonBody.read("$.build.name"));
+    Assertions.assertEquals("com.ebsolutions.whoami", jsonBody.read("$.build.group"));
+    Assertions.assertEquals("who-am-i-service", jsonBody.read("$.build.artifact"));
+    Assertions.assertEquals("Who Am I Service", jsonBody.read("$.build.name"));
     Assertions.assertNotNull(jsonBody.read("$.build.version"));
     Assertions.assertNotNull(jsonBody.read("$.build.time"));
   }

@@ -3,13 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.ebsolutions.shells</groupId>
-        <artifactId>springboot-parent</artifactId>
+        <groupId>com.ebsolutions.whoami</groupId>
+        <artifactId>who-am-i-parent</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>springboot-service-integration-tests</artifactId>
-    <name>Shell Spring Boot Service Integration Tests</name>
+    <artifactId>who-am-i-service-integration-tests</artifactId>
+    <name>Who Am I Service Integration Tests</name>
 
     <dependencies>
         <!-- Contains Spring Boot Starter and Tomcat web server -->
