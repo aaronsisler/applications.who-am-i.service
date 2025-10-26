@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.ebsolutions.whoami</groupId>
+        <groupId>com.ebsolutions.applications.whoami</groupId>
         <artifactId>who-am-i-parent</artifactId>
         <version>${revision}</version>
     </parent>
@@ -14,7 +14,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <start-class>com.ebsolutions.whoami.Application</start-class>
+        <start-class>com.ebsolutions.applications.whoami.Application</start-class>
 
         <!-- Versions: Dependencies -->
     </properties>
@@ -49,14 +49,14 @@
         </dependency>
 
         <!-- Used for Swagger UI and Open API annotations -->
-        <!-- Version: Parent POM -->
+        <!-- Version: Parent POM - Dep Management -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
 
         <!-- Used for the validation annotations -->
-        <!-- Version: Parent POM -->
+        <!-- Version: Parent POM - Dep Management -->
         <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
@@ -85,7 +85,7 @@
         </dependency>
 
         <!-- Needed for running tests in Junit -->
-        <!-- Version: JUnit BOM -->
+        <!-- Version: Parent POM - Dep Management -->
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-suite</artifactId>
@@ -93,7 +93,7 @@
         </dependency>
 
         <!-- Testing linkage between Cucumber and Spring context -->
-        <!-- Version: Cucumber BOM -->
+        <!-- Version: Parent POM - Dep Management -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-spring</artifactId>
@@ -101,7 +101,7 @@
         </dependency>
 
         <!-- Testing linkage between Cucumber and Java -->
-        <!-- Version: Cucumber BOM -->
+        <!-- Version: Parent POM - Dep Management -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
@@ -109,7 +109,7 @@
         </dependency>
 
         <!-- Testing linkage between Cucumber and JUnit -->
-        <!-- Version: Cucumber BOM -->
+        <!-- Version: Parent POM - Dep Management -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit-platform-engine</artifactId>
@@ -120,25 +120,25 @@
     <build>
         <plugins>
             <!-- Used to compile the sources of your project -->
-            <!-- Version: Parent POM PIM -->
+            <!-- Version: Parent POM - Plugin Management -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
             <!-- Gives the actuator/info API build information -->
-            <!-- Version: Parent POM PIM -->
+            <!-- Version: Parent POM - Plugin Management -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <!-- Maintains strict Code Styles -->
-            <!-- Version: Parent POM PIM -->
+            <!-- Version: Parent POM - Plugin Management -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
             </plugin>
             <!-- Generates Java classes from OpenAPI contracts -->
-            <!-- Version: Parent POM PIM -->
+            <!-- Version: Parent POM - Plugin Management -->
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
@@ -156,7 +156,7 @@
             </plugin>
             <!-- By default, surefire is running so setting skipTests to true -->
             <!-- We want to run tests during integration-test phase using failsafe plugin -->
-            <!-- Version: Parent POM PIM -->
+            <!-- Version: Parent POM - Plugin Management -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -165,7 +165,7 @@
                 </configuration>
             </plugin>
             <!-- Used to run agent that collects code coverage -->
-            <!-- Version: Parent POM PIM -->
+            <!-- Version: Parent POM - Plugin Management -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -206,7 +206,7 @@
                 </executions>
             </plugin>
             <!-- Used for running the Cucumber feature tests -->
-            <!-- Version: Parent POM PIM -->
+            <!-- Version: Parent POM - Plugin Management -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>

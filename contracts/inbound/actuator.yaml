@@ -41,7 +41,7 @@ components:
       properties:
         group:
           type: string
-          example: "com.ebsolutions.whoami"
+          example: "com.ebsolutions.applications.whoami"
         artifact:
           type: string
           example: "who-am-i-service"

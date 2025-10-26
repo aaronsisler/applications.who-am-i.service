@@ -1,7 +1,7 @@
-package com.ebsolutions.whoami.tooling;
+package com.ebsolutions.applications.whoami.tooling;
 
-import com.ebsolutions.whoami.config.TestConstants;
-import com.ebsolutions.whoami.model.HealthCheck;
+import com.ebsolutions.applications.whoami.config.TestConstants;
+import com.ebsolutions.applications.whoami.model.HealthCheck;
 import io.cucumber.java.en.Given;
 import java.time.Instant;
 import org.junit.jupiter.api.Assertions;

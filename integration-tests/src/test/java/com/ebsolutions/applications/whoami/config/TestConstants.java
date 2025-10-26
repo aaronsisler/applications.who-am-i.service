@@ -1,4 +1,4 @@
-package com.ebsolutions.whoami.config;
+package com.ebsolutions.applications.whoami.config;
 
 public class TestConstants {
   public static final int APPLICATION_START_TIME_WAIT_PERIOD_IN_MILLISECONDS = 30000;

@@ -1,4 +1,4 @@
-package com.ebsolutions.whoami.tooling;
+package com.ebsolutions.applications.whoami.tooling;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

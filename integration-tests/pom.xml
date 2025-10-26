@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.ebsolutions.whoami</groupId>
+        <groupId>com.ebsolutions.applications.whoami</groupId>
         <artifactId>who-am-i-parent</artifactId>
         <version>${revision}</version>
     </parent>
@@ -28,6 +28,7 @@
 
         <!-- Used for Swagger UI and Open API annotations -->
         <!-- Version: Parent POM -->
+        <!-- TODO Does this need to be imported? i.e. no Swagger UI -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>

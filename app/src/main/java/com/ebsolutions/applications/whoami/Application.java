@@ -1,4 +1,4 @@
-package com.ebsolutions.whoami;
+package com.ebsolutions.applications.whoami;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
