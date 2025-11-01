@@ -3,6 +3,7 @@ package com.ebsolutions.applications.whoami.config;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -12,7 +13,6 @@ public class CorsConfig implements CorsConfigurationSource {
   private static final List<String> ALLOWED_ORIGINS =
       List.of(
           "http://localhost:3000",
-          "https://paper-trail.otterandcow.com",
           // House
           "64.98.122.48",
           // Gym
@@ -22,7 +22,7 @@ public class CorsConfig implements CorsConfigurationSource {
       );
 
   @Override
-  public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+  public CorsConfiguration getCorsConfiguration(@NonNull HttpServletRequest request) {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));

@@ -16,7 +16,7 @@
     <properties>
         <start-class>com.ebsolutions.applications.whoami.Application</start-class>
 
-        <!-- Versions: Dependencies -->
+        <!-- Versions: Dependencies: Service -->
     </properties>
 
     <dependencies>
@@ -119,6 +119,12 @@
 
     <build>
         <plugins>
+            <!-- Maintains strict Code Styles -->
+            <!-- Version: Parent POM - Plugin Management -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
             <!-- Used to compile the sources of your project -->
             <!-- Version: Parent POM - Plugin Management -->
             <plugin>
@@ -130,12 +136,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <!-- Maintains strict Code Styles -->
-            <!-- Version: Parent POM - Plugin Management -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
             </plugin>
             <!-- Generates Java classes from OpenAPI contracts -->
             <!-- Version: Parent POM - Plugin Management -->

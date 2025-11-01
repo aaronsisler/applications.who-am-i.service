@@ -38,11 +38,11 @@
         <openapi-generator-maven-plugin.version>7.11.0</openapi-generator-maven-plugin.version>
         <spring-boot-maven-plugin.version>3.4.2</spring-boot-maven-plugin.version>
 
-        <!-- Versions: Dependencies -->
+        <!-- Versions: Dependencies: Service -->
         <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.8.13</springdoc-openapi-starter-webmvc-ui.version>
 
-        <!-- Versions: Testing Dependencies -->
+        <!-- Versions: Dependencies: Testing -->
         <cucumber-bom.version>7.20.1</cucumber-bom.version>
         <junit-bom.version>5.11.4</junit-bom.version>
 

@@ -14,25 +14,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.4.0] Adding in HTTPS
-
-### Added
-
-- HTTPS changes
-
-## [0.3.0] Base of integration testing
-
-### Added
-
-- Adding in the pom, deps, and root application is up test
-
-## [0.2.0] Cucumber Base
-
-### Added
-
-- Cucumber and Swagger dependencies
-- Info BUT
-
 ## [0.1.0] Base Repo
 
 ### Added
@@ -40,3 +21,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Health Actuator
 - Info Actuator
 - Check Style
+- Integration test for health and info

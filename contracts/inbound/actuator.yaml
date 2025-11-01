@@ -3,7 +3,7 @@ info:
   title: Actuator API
   version: "1.0"
 servers:
-  - url: http://localhost/
+  - url: http://localhost:8080
 paths:
   /actuator/health:
     get:
@@ -54,4 +54,4 @@ components:
           example: "2025-02-16T00:57:04.590Z"
         version:
           type: string
-          example: "0.4.0"
+          example: "0.1.0"

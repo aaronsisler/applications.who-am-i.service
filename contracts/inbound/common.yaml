@@ -3,7 +3,7 @@ info:
   title: Common API
   version: "1.0"
 servers:
-  - url: http://localhost/
+  - url: http://localhost:8080
 paths: { }
 components:
   schemas:
@@ -15,4 +15,3 @@ components:
           items:
             type: string
             example: "Something went wrong"
-
