@@ -1,12 +1,21 @@
 package com.ebsolutions.applications.whoami.tooling;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.ebsolutions.applications.whoami.config.TestConstants;
-import com.ebsolutions.applications.whoami.model.HealthCheck;
+import com.ebsolutions.applications.whoami.model.ApplicationHealth;
+import com.ebsolutions.applications.whoami.model.ApplicationStatus;
+import com.ebsolutions.applications.whoami.model.BuildMetadata;
+import com.ebsolutions.applications.whoami.util.ApiCallTestUtil;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import java.time.Instant;
 import org.junit.jupiter.api.Assertions;
 
+
 public class ActuatorSteps extends BaseStep {
+  private BuildMetadata buildMetadata;
 
   @Given("application is up")
   public void applicationIsUp() {
@@ -30,17 +39,34 @@ public class ActuatorSteps extends BaseStep {
     Assertions.fail("Application did not come up in time");
   }
 
+  @When("the info endpoint is invoked")
+  public void theInfoEndpointIsInvoked() {
+    buildMetadata =
+        ApiCallTestUtil.get(restClient, TestConstants.INFO_CHECK_URI, BuildMetadata.class);
+  }
+
+  @Then("the correct info response is returned")
+  public void theCorrectInfoResponseIsReturned() {
+    assertThat(buildMetadata.getGroup()).isEqualTo("com.ebsolutions.applications.whoami");
+    assertThat(buildMetadata.getArtifact()).isEqualTo("who-am-i-service");
+    assertThat(buildMetadata.getName()).isEqualTo("Who Am I Service");
+
+    // Strict numeric version assertion
+    assertThat(buildMetadata.getVersion())
+        .as("Version should follow strict numeric X.Y.Z format")
+        .matches("^\\d+\\.\\d+\\.\\d+$");
+  }
+
   private boolean checkIfApplicationIsUp() {
     try {
-      HealthCheck healthCheck =
-          restTemplate.getForObject(TestConstants.BASE_URL + "/" + TestConstants.HEALTH_CHECK_URI,
-              HealthCheck.class);
+      ApplicationHealth applicationHealth =
+          ApiCallTestUtil.get(restClient, TestConstants.HEALTH_CHECK_URI, ApplicationHealth.class);
 
-      if (healthCheck == null) {
+      if (applicationHealth == null) {
         return false;
       }
 
-      return "UP".equals(healthCheck.getStatus());
+      return ApplicationStatus.UP.equals(applicationHealth.getStatus());
     } catch (Exception exception) {
       return false;
     }

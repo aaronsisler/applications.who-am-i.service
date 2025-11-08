@@ -10,33 +10,37 @@ paths:
       operationId: actuatorHealthGET
       responses:
         "200":
-          description: Health check from Spring Actuator
+          description: Application status from Spring Health Actuator
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthCheck"
+                $ref: "#/components/schemas/ApplicationHealth"
   /actuator/info:
     get:
       operationId: actuatorInfoGET
       responses:
         "200":
-          description: Info check from Spring Actuator
+          description: Build metadata from Spring Info Actuator
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   build:
-                    $ref: "#/components/schemas/BuildInfo"
+                    $ref: "#/components/schemas/BuildMetadata"
 components:
   schemas:
-    HealthCheck:
+    ApplicationStatus:
+      type: string
+      enum:
+        - UP
+      example: UP
+    ApplicationHealth:
       type: object
       properties:
         status:
-          type: string
-          example: UP
-    BuildInfo:
+          $ref: "#/components/schemas/ApplicationStatus"
+    BuildMetadata:
       type: object
       properties:
         group:
