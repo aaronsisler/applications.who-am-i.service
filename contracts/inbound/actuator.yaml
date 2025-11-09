@@ -25,9 +25,7 @@ paths:
             application/json:
               schema:
                 type: object
-                properties:
-                  build:
-                    $ref: "#/components/schemas/BuildMetadata"
+                $ref: "#/components/schemas/ApplicationInfo"
 components:
   schemas:
     ApplicationStatus:
@@ -35,6 +33,11 @@ components:
       enum:
         - UP
       example: UP
+    ApplicationInfo:
+      type: object
+      properties:
+        build:
+          $ref: "#/components/schemas/BuildMetadata"
     ApplicationHealth:
       type: object
       properties:

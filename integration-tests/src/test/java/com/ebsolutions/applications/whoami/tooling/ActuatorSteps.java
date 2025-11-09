@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ebsolutions.applications.whoami.config.TestConstants;
 import com.ebsolutions.applications.whoami.model.ApplicationHealth;
+import com.ebsolutions.applications.whoami.model.ApplicationInfo;
 import com.ebsolutions.applications.whoami.model.ApplicationStatus;
 import com.ebsolutions.applications.whoami.model.BuildMetadata;
 import com.ebsolutions.applications.whoami.util.ApiCallTestUtil;
@@ -15,7 +16,7 @@ import org.junit.jupiter.api.Assertions;
 
 
 public class ActuatorSteps extends BaseStep {
-  private BuildMetadata buildMetadata;
+  private ApplicationInfo applicationInfo;
 
   @Given("application is up")
   public void applicationIsUp() {
@@ -41,12 +42,17 @@ public class ActuatorSteps extends BaseStep {
 
   @When("the info endpoint is invoked")
   public void theInfoEndpointIsInvoked() {
-    buildMetadata =
-        ApiCallTestUtil.get(restClient, TestConstants.INFO_CHECK_URI, BuildMetadata.class);
+    applicationInfo =
+        ApiCallTestUtil.get(restClient, TestConstants.INFO_CHECK_URI, ApplicationInfo.class);
   }
 
   @Then("the correct info response is returned")
   public void theCorrectInfoResponseIsReturned() {
+    assertThat(applicationInfo).isNotNull();
+    assertThat(applicationInfo.getBuild()).isNotNull();
+
+    BuildMetadata buildMetadata = applicationInfo.getBuild();
+
     assertThat(buildMetadata.getGroup()).isEqualTo("com.ebsolutions.applications.whoami");
     assertThat(buildMetadata.getArtifact()).isEqualTo("who-am-i-service");
     assertThat(buildMetadata.getName()).isEqualTo("Who Am I Service");
