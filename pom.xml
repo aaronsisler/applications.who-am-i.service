@@ -5,8 +5,9 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.6</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>3.5.7</version>
+        <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <groupId>com.ebsolutions.applications.whoami</groupId>
@@ -28,23 +29,23 @@
         <sonar.organization>aaronsisler</sonar.organization>
 
         <!-- Versions: Plugins -->
-        <checkstyle-maven-plugin.version>3.5.0</checkstyle-maven-plugin.version>
-        <exec-maven-plugin.version>3.5.0</exec-maven-plugin.version>
-        <flatten-maven-plugin.version>1.7.0</flatten-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
+        <checkstyle-maven-plugin.version>3.6.0</checkstyle-maven-plugin.version>
+        <exec-maven-plugin.version>3.6.2</exec-maven-plugin.version>
+        <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <maven-failsafe-plugin.version>3.5.4</maven-failsafe-plugin.version>
         <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
-        <openapi-generator-maven-plugin.version>7.11.0</openapi-generator-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>7.17.0</openapi-generator-maven-plugin.version>
         <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
-        <spring-boot-maven-plugin.version>3.4.2</spring-boot-maven-plugin.version>
+        <spring-boot-maven-plugin.version>3.5.7</spring-boot-maven-plugin.version>
 
         <!-- Versions: Dependencies: Service -->
-        <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
-        <springdoc-openapi-starter-webmvc-ui.version>2.8.13</springdoc-openapi-starter-webmvc-ui.version>
+        <jackson-databind-nullable.version>0.2.8</jackson-databind-nullable.version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.8.14</springdoc-openapi-starter-webmvc-ui.version>
 
         <!-- Versions: Dependencies: Testing -->
-        <cucumber-bom.version>7.20.1</cucumber-bom.version>
-        <junit-bom.version>5.11.4</junit-bom.version>
+        <cucumber-bom.version>7.31.0</cucumber-bom.version>
+        <junit-bom.version>6.0.1</junit-bom.version>
 
     </properties>
 
