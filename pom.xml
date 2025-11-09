@@ -26,8 +26,6 @@
 
         <java.version>21</java.version>
 
-        <sonar.organization>aaronsisler</sonar.organization>
-
         <!-- Versions: Plugins -->
         <checkstyle-maven-plugin.version>3.5.0</checkstyle-maven-plugin.version>
         <exec-maven-plugin.version>3.5.0</exec-maven-plugin.version>
@@ -36,6 +34,7 @@
         <maven-failsafe-plugin.version>3.5.4</maven-failsafe-plugin.version>
         <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
         <openapi-generator-maven-plugin.version>7.11.0</openapi-generator-maven-plugin.version>
+        <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
         <spring-boot-maven-plugin.version>3.4.2</spring-boot-maven-plugin.version>
 
         <!-- Versions: Dependencies: Service -->
@@ -193,7 +192,6 @@
                             <additionalModelTypeAnnotations>
                                 @lombok.Builder
                             </additionalModelTypeAnnotations>
-
                         </configOptions>
                     </configuration>
                 </plugin>
@@ -228,6 +226,13 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
                     <version>${exec-maven-plugin.version}</version>
+                </plugin>
+                <!-- Used to integrate SonarQube analysis into the Maven build -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${sonar-maven-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

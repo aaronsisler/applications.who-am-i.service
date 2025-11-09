@@ -25,7 +25,9 @@ jobs:
       - name: Build Docker image
         run: docker build . --tag who-am-i-service --file app/Dockerfile
 
-      - name: SonarQubeScan
-        uses: SonarSource/sonarqube-scan-action@v6
+      - name: SonarQube Scan
+        run: mvn verify sonar:sonar --no-transfer-progress --batch-mode \
+          -Dsonar.projectKey=aaronsisler_applications.who-am-i.service \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
