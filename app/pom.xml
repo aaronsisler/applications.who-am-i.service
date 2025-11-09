@@ -152,6 +152,15 @@
                             <inputSpec>${project.parent.basedir}/contracts/inbound/common.yaml</inputSpec>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>models-actuator</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.parent.basedir}/contracts/inbound/actuator.yaml</inputSpec>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <!-- By default, surefire is running so setting skipTests to true -->
@@ -215,10 +224,12 @@
                         <id>mocked-integration-tests</id>
                         <goals>
                             <goal>integration-test</goal>
+                            <goal>verify</goal>
                         </goals>
                         <configuration>
                             <!-- This comes from the JaCoCo plugin -->
                             <argLine>${failsafeJacocoAgent}</argLine>
+                            <testFailureIgnore>false</testFailureIgnore>
                             <systemPropertyVariables>
                                 <!-- This triggers the correct config and keeps the H2 DB from spinning up -->
                                 <spring.profiles.active>mocked</spring.profiles.active>

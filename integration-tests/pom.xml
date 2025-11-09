@@ -85,6 +85,19 @@
             <artifactId>cucumber-junit-platform-engine</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- JUnit 6 -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -177,7 +190,7 @@
                                 <configuration>
                                     <testFailureIgnore>false</testFailureIgnore>
                                     <includes>
-                                        <include>**/RunCucumberTests.java</include>
+                                        <include>**/RunCucumberIntegrationTests.java</include>
                                     </includes>
                                 </configuration>
                             </execution>

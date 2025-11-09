@@ -56,6 +56,7 @@ public class ActuatorSteps extends BaseStep {
     assertThat(buildMetadata.getGroup()).isEqualTo("com.ebsolutions.applications.whoami");
     assertThat(buildMetadata.getArtifact()).isEqualTo("who-am-i-service");
     assertThat(buildMetadata.getName()).isEqualTo("Who Am I Service");
+    assertThat(buildMetadata.getTime()).isNotNull();
 
     // Strict numeric version assertion
     assertThat(buildMetadata.getVersion())

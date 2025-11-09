@@ -179,12 +179,15 @@
                         <generateSupportingFiles>false</generateSupportingFiles>
                         <!-- typeMappings links the contract (left side) to the right side -->
                         <typeMappings>
+                            <!-- This Pascal format is the standard for baked in OpenAPI supported types -->
+                            <typeMapping>DateTime=LocalDateTime</typeMapping>
                             <!-- Kebab format is the format for custom mappings  -->
                             <typeMapping>local-date=LocalDate</typeMapping>
                         </typeMappings>
                         <!-- importMappings then links the typeMapping (left side) to a Java import (right side) -->
                         <importMappings>
                             <!-- Left side in importMappings maps to the right side in typeMappings -->
+                            <importMapping>LocalDateTime=java.time.LocalDateTime</importMapping>
                             <importMapping>LocalDate=java.time.LocalDate</importMapping>
                         </importMappings>
                         <configOptions>
@@ -193,6 +196,9 @@
                             <useSpringBoot3>true</useSpringBoot3>
                             <additionalModelTypeAnnotations>
                                 @lombok.Builder
+                                @lombok.AllArgsConstructor
+                                @lombok.NoArgsConstructor
+                                @lombok.Data
                             </additionalModelTypeAnnotations>
                         </configOptions>
                     </configuration>
