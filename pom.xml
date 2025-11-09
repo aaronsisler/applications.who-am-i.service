@@ -25,6 +25,7 @@
         <revision>0.1.0</revision>
 
         <java.version>21</java.version>
+        <sonar.organization>aaronsisler</sonar.organization>
 
         <!-- Versions: Plugins -->
         <checkstyle-maven-plugin.version>3.5.0</checkstyle-maven-plugin.version>
