@@ -27,7 +27,6 @@
 
         <java.version>21</java.version>
         <sonar.organization>aaronsisler</sonar.organization>
-        <sonar.skip>true</sonar.skip>
 
         <!-- Versions: Plugins -->
         <checkstyle-maven-plugin.version>3.6.0</checkstyle-maven-plugin.version>
