@@ -1,0 +1,63 @@
+openapi: "3.0.2"
+info:
+  title: Actuator API
+  version: "1.0"
+servers:
+  - url: http://localhost:8080
+paths:
+  /actuator/health:
+    get:
+      operationId: actuatorHealthGET
+      responses:
+        "200":
+          description: Application status from Spring Health Actuator
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApplicationHealth"
+  /actuator/info:
+    get:
+      operationId: actuatorInfoGET
+      responses:
+        "200":
+          description: Build metadata from Spring Info Actuator
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApplicationInfo"
+components:
+  schemas:
+    ApplicationStatus:
+      type: string
+      enum:
+        - UP
+      example: UP
+    ApplicationInfo:
+      type: object
+      properties:
+        build:
+          $ref: "#/components/schemas/BuildMetadata"
+    ApplicationHealth:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/ApplicationStatus"
+    BuildMetadata:
+      type: object
+      properties:
+        group:
+          type: string
+          example: "com.ebsolutions.applications.whoami"
+        artifact:
+          type: string
+          example: "who-am-i-service"
+        name:
+          type: string
+          example: "Who Am I Service"
+        time:
+          type: string
+          format: date-time
+          example: "2025-02-16T00:57:04.590Z"
+        version:
+          type: string
+          example: "0.1.0"

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.7</version>
+        <!-- lookup parent from repository -->
+        <relativePath/>
+    </parent>
+
+    <groupId>com.ebsolutions.applications.whoami</groupId>
+    <artifactId>who-am-i-parent</artifactId>
+    <version>${revision}</version>
+    <name>Who Am I Service Parent</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>app</module>
+        <module>integration-tests</module>
+    </modules>
+
+    <properties>
+        <!-- This is the property that is propagated to all children modules -->
+        <revision>0.1.0</revision>
+
+        <java.version>21</java.version>
+        <sonar.organization>aaronsisler</sonar.organization>
+
+        <!-- Versions: Plugins -->
+        <checkstyle-maven-plugin.version>3.6.0</checkstyle-maven-plugin.version>
+        <exec-maven-plugin.version>3.6.2</exec-maven-plugin.version>
+        <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
+        <maven-failsafe-plugin.version>3.5.4</maven-failsafe-plugin.version>
+        <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
+        <openapi-generator-maven-plugin.version>7.17.0</openapi-generator-maven-plugin.version>
+        <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
+        <spring-boot-maven-plugin.version>3.5.7</spring-boot-maven-plugin.version>
+
+        <!-- Versions: Dependencies: Service -->
+        <jackson-databind-nullable.version>0.2.8</jackson-databind-nullable.version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.8.14</springdoc-openapi-starter-webmvc-ui.version>
+
+        <!-- Versions: Dependencies: Testing -->
+        <cucumber-bom.version>7.31.0</cucumber-bom.version>
+        <junit-bom.version>6.0.1</junit-bom.version>
+
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Used for Swagger UI and Open API annotations -->
+            <!-- Version: Explicit -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
+            </dependency>
+            <!-- Used for the validation annotations -->
+            <!-- Version: Explicit -->
+            <dependency>
+                <groupId>org.openapitools</groupId>
+                <artifactId>jackson-databind-nullable</artifactId>
+                <version>${jackson-databind-nullable.version}</version>
+            </dependency>
+            <!-- Used for JUnit and Mockito testing libs-->
+            <!-- Version: Explicit -->
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- Used for Cucumber BDD testing libs-->
+            <!-- Version: Explicit -->
+            <dependency>
+                <groupId>io.cucumber</groupId>
+                <artifactId>cucumber-bom</artifactId>
+                <version>${cucumber-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <!-- Allows for a single version to be declared in parent pom -->
+                <!-- Version: Plugin Management -->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <!-- Allows for a single version to be declared in parent pom -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>flatten-maven-plugin</artifactId>
+                    <version>${flatten-maven-plugin.version}</version>
+                </plugin>
+                <!-- Used to compile the sources of your project -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.14.0</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <!-- Using to suppress MockBean warnings -->
+                        <showWarnings>false</showWarnings>
+                    </configuration>
+                </plugin>
+                <!-- Gives the actuator/info API build information -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot-maven-plugin.version}</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                            </exclude>
+                        </excludes>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <!-- This is providing the build info for the actuator/info endpoint -->
+                                <goal>build-info</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- Maintains strict Code Styles -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${checkstyle-maven-plugin.version}</version>
+                    <configuration>
+                        <excludeGeneratedSources>true</excludeGeneratedSources>
+                        <consoleOutput>true</consoleOutput>
+                        <violationSeverity>warning</violationSeverity>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        <includeTestResources>true</includeTestResources>
+                        <failOnViolation>true</failOnViolation>
+                        <failsOnError>true</failsOnError>
+                        <configLocation>google_checks.xml</configLocation>
+                        <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- Generates Java classes from OpenAPI contracts -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.openapitools</groupId>
+                    <artifactId>openapi-generator-maven-plugin</artifactId>
+                    <version>${openapi-generator-maven-plugin.version}</version>
+                    <configuration>
+                        <modelPackage>com.ebsolutions.applications.whoami.model</modelPackage>
+                        <generatorName>spring</generatorName>
+                        <generateApis>false</generateApis>
+                        <generateSupportingFiles>false</generateSupportingFiles>
+                        <!-- typeMappings links the contract (left side) to the right side -->
+                        <typeMappings>
+                            <!-- This Pascal format is the standard for baked in OpenAPI supported types -->
+                            <typeMapping>DateTime=LocalDateTime</typeMapping>
+                            <!-- Kebab format is the format for custom mappings  -->
+                            <typeMapping>local-date=LocalDate</typeMapping>
+                        </typeMappings>
+                        <!-- importMappings then links the typeMapping (left side) to a Java import (right side) -->
+                        <importMappings>
+                            <!-- Left side in importMappings maps to the right side in typeMappings -->
+                            <importMapping>LocalDateTime=java.time.LocalDateTime</importMapping>
+                            <importMapping>LocalDate=java.time.LocalDate</importMapping>
+                        </importMappings>
+                        <configOptions>
+                            <serializableModel>true</serializableModel>
+                            <!-- This also enabled useJakartaEe-->
+                            <useSpringBoot3>true</useSpringBoot3>
+                            <additionalModelTypeAnnotations>
+                                @lombok.Builder
+                                @lombok.AllArgsConstructor
+                                @lombok.NoArgsConstructor
+                                @lombok.Data
+                            </additionalModelTypeAnnotations>
+                        </configOptions>
+                    </configuration>
+                </plugin>
+                <!-- Used for running JUnit tests that link to Cucumber feature files -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                </plugin>
+                <!-- Provides the JaCoCo runtime agent to your tests and allows basic report creation -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco-maven-plugin.version}</version>
+                </plugin>
+                <!-- Used for running the Cucumber tests and finding feature files -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven-failsafe-plugin.version}</version>
+                    <configuration>
+                        <testFailureIgnore>true</testFailureIgnore>
+                    </configuration>
+                </plugin>
+                <!-- Used to execute commands on the command line -->
+                <!-- For this case, it spins up a clean docker environment for running tests-->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>${exec-maven-plugin.version}</version>
+                </plugin>
+                <!-- Used to integrate SonarQube analysis into the Maven build -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${sonar-maven-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <scm>
+        <connection/>
+        <developerConnection/>
+        <tag/>
+        <url/>
+    </scm>
+    <url/>
+    <licenses>
+        <license/>
+    </licenses>
+    <developers>
+        <developer/>
+    </developers>
+</project>
