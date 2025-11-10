@@ -19,25 +19,17 @@ jobs:
           distribution: "corretto"
           cache: "maven"
 
-      #      - name: Configure AWS credentials
-      #        uses: aws-actions/configure-aws-credentials@v4
-      #        with:
-      #          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #          aws-region: ${{ secrets.AWS_REGION }}
-
-      #      - name: Login to Amazon ECR
-      #        id: login-ecr
-      #        uses: aws-actions/amazon-ecr-login@v2
-
       - name: Build Application
         run: mvn clean package --no-transfer-progress --batch-mode
 
       - name: Build Docker image
         run: docker build . --tag who-am-i-service --file app/Dockerfile
 
-      - name: SonarQubeScan
-        uses: SonarSource/sonarqube-scan-action@v6
+      - name: SonarQube Scan
+        run: |
+          mvn --batch-mode sonar:sonar --projects app --also-make --no-transfer-progress \
+          -Dsonar.projectKey=aaronsisler_applications.who-am-i.service \
+          -Dsonar.token=${{ env.SONAR_TOKEN }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 #
@@ -48,6 +40,17 @@ jobs:
 #        run: |
 #          echo "IMAGE_TAG=$(docker images -q $IMAGE_NAME)" >> $GITHUB_ENV
 #          echo $IMAGE_TAG
+
+#      - name: Configure AWS credentials
+#        uses: aws-actions/configure-aws-credentials@v4
+#        with:
+#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          aws-region: ${{ secrets.AWS_REGION }}
+
+#      - name: Login to Amazon ECR
+#        id: login-ecr
+#        uses: aws-actions/amazon-ecr-login@v2
 
 #      - name: Tag and Publish image to Amazon ECR
 #        id: tag-and-publish-image
