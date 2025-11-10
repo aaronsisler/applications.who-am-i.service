@@ -135,6 +135,7 @@
                     <executions>
                         <execution>
                             <goals>
+                                <!-- This is providing the build info for the actuator/info endpoint -->
                                 <goal>build-info</goal>
                             </goals>
                         </execution>
