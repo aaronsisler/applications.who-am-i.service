@@ -198,7 +198,7 @@
                             <goal>prepare-agent-integration</goal>
                         </goals>
                         <configuration>
-                            <destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>
+                            <destFile>${project.build.directory}/coverage-reports/jacoco-mocked.exec</destFile>
                             <propertyName>failsafeJacocoAgent</propertyName>
                         </configuration>
                     </execution>
@@ -208,8 +208,8 @@
                             <goal>report-integration</goal>
                         </goals>
                         <configuration>
-                            <dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>
-                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
+                            <dataFile>${project.build.directory}/coverage-reports/jacoco-mocked.exec</dataFile>
+                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-mocked</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
