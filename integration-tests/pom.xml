@@ -10,6 +10,7 @@
 
     <artifactId>who-am-i-service-integration-tests</artifactId>
     <name>Who Am I Service Integration Tests</name>
+    <packaging>pom</packaging>
 
     <dependencies>
         <!-- Contains Spring Boot Starter and Tomcat web server -->

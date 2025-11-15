@@ -184,33 +184,16 @@
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>pre-integration-test</id>
-                        <goals>
-                            <goal>prepare-agent-integration</goal>
-                        </goals>
                         <configuration>
-                            <destFile>${project.build.directory}/coverage-reports/jacoco-mocked.exec</destFile>
                             <propertyName>failsafeJacocoAgent</propertyName>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>post-integration-test</id>
+                        <id>jacoco-report</id>
+                        <phase>verify</phase>
                         <goals>
-                            <goal>report-integration</goal>
+                            <goal>report</goal>
                         </goals>
-                        <configuration>
-                            <dataFile>${project.build.directory}/coverage-reports/jacoco-mocked.exec</dataFile>
-                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-mocked</outputDirectory>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
