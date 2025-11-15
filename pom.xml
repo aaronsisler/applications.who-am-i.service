@@ -23,7 +23,7 @@
 
     <properties>
         <!-- This is the property that is propagated to all children modules -->
-        <revision>0.1.0</revision>
+        <revision>0.2.0</revision>
 
         <java.version>21</java.version>
         <sonar.organization>aaronsisler</sonar.organization>
