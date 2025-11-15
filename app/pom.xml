@@ -16,6 +16,17 @@
     <properties>
         <start-class>com.ebsolutions.applications.whoami.Application</start-class>
 
+        <!-- Sonar Cloud or SonarQube settings -->
+        <!-- Sources and binaries -->
+        <sonar.sources>src/main/java</sonar.sources>
+        <sonar.java.binaries>target/classes</sonar.java.binaries>
+        <!-- Exclusions -->
+        <sonar.exclusions>
+            **/Application.java,
+            **/config/*,
+            **/model/*
+        </sonar.exclusions>
+
         <!-- Versions: Dependencies: Service -->
     </properties>
 
@@ -223,6 +234,12 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- Used to integrate SonarQube analysis into the Maven build -->
+            <!-- Version: Parent POM - Plugin Management -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
