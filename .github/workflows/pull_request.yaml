@@ -27,8 +27,7 @@ jobs:
 
       - name: SonarQube Scan
         run: |
-          mvn --batch-mode sonar:sonar --projects app --also-make --no-transfer-progress \
-          -Dsonar.projectKey=aaronsisler_applications.who-am-i.service \
+          mvn --batch-mode sonar:sonar --no-transfer-progress \
           -Dsonar.token=${{ env.SONAR_TOKEN }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
