@@ -156,21 +156,9 @@
                 <executions>
                     <execution>
                         <id>models-common</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${project.parent.basedir}/contracts/inbound/common.yaml</inputSpec>
-                        </configuration>
                     </execution>
                     <execution>
                         <id>models-actuator</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${project.parent.basedir}/contracts/inbound/actuator.yaml</inputSpec>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

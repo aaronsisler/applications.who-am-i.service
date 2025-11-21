@@ -29,6 +29,8 @@
         <sonar.organization>aaronsisler</sonar.organization>
         <sonar.projectKey>aaronsisler_applications.who-am-i.service</sonar.projectKey>
         <sonar.projectName>Who Am I Service</sonar.projectName>
+        <sonar.projectDescription>A service that provides AuthN and AuthZ information about the caller.
+        </sonar.projectDescription>
 
         <!-- Exclusions -->
         <sonar.exclusions>
@@ -210,6 +212,30 @@
                             </additionalModelTypeAnnotations>
                         </configOptions>
                     </configuration>
+                    <executions>
+                        <execution>
+                            <id>models-common</id>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                            <configuration>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <!-- This is the path relative to the child modules -->
+                                <inputSpec>${project.parent.basedir}/contracts/inbound/common.yaml</inputSpec>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>models-actuator</id>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                            <configuration>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <!-- This is the path relative to the child modules -->
+                                <inputSpec>${project.parent.basedir}/contracts/inbound/actuator.yaml</inputSpec>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
                 <!-- Used for running JUnit tests that link to Cucumber feature files -->
                 <!-- Version: Explicit -->
