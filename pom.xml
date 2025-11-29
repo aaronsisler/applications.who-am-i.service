@@ -187,8 +187,6 @@
                         <generatorName>spring</generatorName>
                         <generateApis>false</generateApis>
                         <generateSupportingFiles>false</generateSupportingFiles>
-                        <modelNamePrefix/>
-                        <modelNameSuffix/>
 
                         <!-- typeMappings links the contract (left side) to the right side -->
                         <typeMappings>
@@ -205,10 +203,6 @@
                         </importMappings>
                         <configOptions>
                             <serializableModel>true</serializableModel>
-                            <useSchemaName>true</useSchemaName>
-                            <generateResponseWrappers>false</generateResponseWrappers>
-                            <skipDefaultResponseResolution>true</skipDefaultResponseResolution>
-                            <skipDefaultInterface>true</skipDefaultInterface>
                             <!-- This also enabled useJakartaEe-->
                             <useSpringBoot3>true</useSpringBoot3>
                             <additionalModelTypeAnnotations>
