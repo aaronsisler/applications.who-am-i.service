@@ -187,6 +187,9 @@
                         <generatorName>spring</generatorName>
                         <generateApis>false</generateApis>
                         <generateSupportingFiles>false</generateSupportingFiles>
+                        <modelNamePrefix/>
+                        <modelNameSuffix/>
+
                         <!-- typeMappings links the contract (left side) to the right side -->
                         <typeMappings>
                             <!-- This Pascal format is the standard for baked in OpenAPI supported types -->
@@ -202,6 +205,10 @@
                         </importMappings>
                         <configOptions>
                             <serializableModel>true</serializableModel>
+                            <useSchemaName>true</useSchemaName>
+                            <generateResponseWrappers>false</generateResponseWrappers>
+                            <skipDefaultResponseResolution>true</skipDefaultResponseResolution>
+                            <skipDefaultInterface>true</skipDefaultInterface>
                             <!-- This also enabled useJakartaEe-->
                             <useSpringBoot3>true</useSpringBoot3>
                             <additionalModelTypeAnnotations>
@@ -235,8 +242,22 @@
                                 <inputSpec>${project.parent.basedir}/contracts/inbound/actuator.yaml</inputSpec>
                             </configuration>
                         </execution>
+                        <execution>
+                            <id>models-app-user</id>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                            <configuration>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <!-- This is the path relative to the child modules -->
+                                <inputSpec>
+                                    ${project.parent.basedir}/contracts/inbound/app-users/app-user.yaml
+                                </inputSpec>
+                            </configuration>
+                        </execution>
                     </executions>
                 </plugin>
+
                 <!-- Used for running JUnit tests that link to Cucumber feature files -->
                 <!-- Version: Explicit -->
                 <plugin>

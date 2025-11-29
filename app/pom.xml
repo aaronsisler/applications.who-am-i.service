@@ -28,7 +28,20 @@
         </sonar.exclusions>
 
         <!-- Versions: Dependencies: Service -->
+        <mapstruct.version>1.6.3</mapstruct.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- MapStruct annotation processor for compile time annotations -->
+            <!-- Version: Explicit -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- Contains Spring Boot Starter and Tomcat web server -->
@@ -66,6 +79,29 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
 
+        <!-- Used for database framework -->
+        <!-- Version: Spring Parent -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jdbc</artifactId>
+        </dependency>
+
+        <!-- Used for mapping between OpenAPI DTO and database entity -->
+        <!-- Version: Explicit -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+
+        <!-- MapStruct annotation processor for compile time annotations -->
+        <!-- Version: Dep Management -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Used for the validation annotations -->
         <!-- Version: Parent POM - Dep Management -->
         <dependency>
@@ -85,6 +121,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Testing framework for starting Spring context and MockMVC -->
@@ -141,6 +178,20 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <!-- Version: Dep Management -->
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                        </path>
+                        <!-- Version: Spring Parent -->
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
             </plugin>
             <!-- Gives the actuator/info API build information -->
             <!-- Version: Parent POM - Plugin Management -->
@@ -159,6 +210,9 @@
                     </execution>
                     <execution>
                         <id>models-actuator</id>
+                    </execution>
+                    <execution>
+                        <id>models-user</id>
                     </execution>
                 </executions>
             </plugin>
@@ -210,6 +264,7 @@
                         </goals>
                         <configuration>
                             <!-- This comes from the JaCoCo plugin -->
+                            <!--suppress UnresolvedMavenProperty-->
                             <argLine>${failsafeJacocoAgent}</argLine>
                             <testFailureIgnore>false</testFailureIgnore>
                             <systemPropertyVariables>

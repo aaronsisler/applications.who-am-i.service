@@ -131,6 +131,9 @@
                     <execution>
                         <id>models-actuator</id>
                     </execution>
+                    <execution>
+                        <id>models-user</id>
+                    </execution>
                 </executions>
             </plugin>
             <!-- By default, surefire is running so setting skipTests to true -->
