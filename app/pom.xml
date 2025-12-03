@@ -82,8 +82,15 @@
         <!-- Used for database framework -->
         <!-- Version: Spring Parent -->
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jdbc</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jdbc</artifactId>
+        </dependency>
+
+        <!-- Required for driver class: org.postgresql.Driver -->
+        <!-- Version: I am not sure yet. I think from my system having it installed -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
         </dependency>
 
         <!-- Used for mapping between OpenAPI DTO and database entity -->
@@ -180,15 +187,17 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <annotationProcessorPaths>
-                        <!-- Version: Dep Management -->
-                        <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                        </path>
+                        <!-- Lombok must be prior to MapStruct -->
                         <!-- Version: Spring Parent -->
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
+                        </path>
+                        <!-- MapStruct must be after Lombok -->
+                        <!-- Version: Dep Management -->
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

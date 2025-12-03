@@ -10,18 +10,17 @@ components:
       type: object
       description: Payload for creating an app user
       properties:
-        email:
+        emailAddress:
           type: string
           format: email
-        password:
-          type: string
-          format: password
+          example: "johnny.appleseed@gmail.com"
         firstName:
           type: string
+          example: Johnny
         lastName:
           type: string
+          example: Appleseed
       required:
-        - email
-        - password
+        - emailAddress
         - firstName
         - lastName
