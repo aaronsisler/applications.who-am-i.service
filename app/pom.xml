@@ -29,6 +29,10 @@
 
         <!-- Versions: Dependencies: Service -->
         <mapstruct.version>1.6.3</mapstruct.version>
+
+        <!-- Versions: Dependencies: Testing -->
+        <mockito.version>5.17.0</mockito.version>
+
     </properties>
 
     <dependencyManagement>
@@ -137,6 +141,20 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <!-- Exclude mockito-inline to avoid self-attaching agent warning -->
+                <exclusion>
+                    <groupId>org.mockito</groupId>
+                    <artifactId>mockito-inline</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Explicitly add Mockito core (no inline agent needed) -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <!-- Needed for running tests in Junit -->
@@ -168,6 +186,12 @@
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit-platform-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -233,6 +257,12 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <skipTests>true</skipTests>
+                    <argLine>
+                        <!-- Used to suppress warnings during test running -->
+                        -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
+                        <!-- Used to suppress warnings during test running -->
+                        -Xshare:off
+                    </argLine>
                 </configuration>
             </plugin>
             <!-- Used to run agent that collects code coverage -->
@@ -272,9 +302,15 @@
                             <goal>verify</goal>
                         </goals>
                         <configuration>
-                            <!-- This comes from the JaCoCo plugin -->
                             <!--suppress UnresolvedMavenProperty-->
-                            <argLine>${failsafeJacocoAgent}</argLine>
+                            <argLine>
+                                <!-- Used to suppress warnings during test running -->
+                                -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
+                                <!-- Used to suppress warnings during test running -->
+                                -Xshare:off
+                                <!-- This comes from the JaCoCo plugin -->
+                                ${failsafeJacocoAgent}
+                            </argLine>
                             <testFailureIgnore>false</testFailureIgnore>
                             <systemPropertyVariables>
                                 <!-- This triggers the correct config and keeps the H2 DB from spinning up -->
