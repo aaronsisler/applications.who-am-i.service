@@ -14,6 +14,15 @@ logging:
     root: OFF
     org:
       springframework: OFF
+#      hibernate:
+#        SQL: debug
+#        tool:
+#          schema: trace
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.jdbc.JdbcRepositoriesAutoConfiguration
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 
 # Everything above these dashes will be applied to all profiles
 ---

@@ -15,11 +15,8 @@ public class CreateAppUserService {
   private final AppUserMapper mapper;
 
   public AppUserResponse createAppUser(AppUserCreateRequest request) {
-    System.out.println(request);
     AppUser entity = mapper.toEntity(request);
-    System.out.println(entity);
     AppUser saved = repository.save(entity);
-
     return mapper.toDto(saved);
   }
 }

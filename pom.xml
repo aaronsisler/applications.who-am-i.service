@@ -295,6 +295,13 @@
         </pluginManagement>
     </build>
 
+    <repositories>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/aaronsisler/applications.who-am-i.database</url>
+        </repository>
+    </repositories>
+
     <scm>
         <connection/>
         <developerConnection/>
