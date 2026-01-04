@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MvcResult;
 
-public class InfoActuatorSteps extends BaseTest {
+public class InfoActuatorSteps extends BaseSteps {
   protected MvcResult result;
 
   @When("the info endpoint is invoked")

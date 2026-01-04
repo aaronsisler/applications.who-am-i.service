@@ -7,12 +7,12 @@ Feature: Create App User
     Given the application is running
 
   # Happy path: all required fields supplied
-  @Ignore
   Scenario: Creating an app user with all required fields
     Given a valid create-user request contains the following fields:
       | emailAddress | johnny.appleseed@gmail.com |
       | firstName    | Johnny                     |
       | lastName     | Appleseed                  |
+    And the data store returns the created user
     When I submit the create-user request
     Then the response status should be 201
     And the response body should contain:

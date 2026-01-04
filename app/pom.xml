@@ -189,21 +189,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- In-memory database for testing -->
-        <!-- Version: Spring Parent -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Used for database instantiation for testing -->
-        <!-- Version: Unknown -->
-        <!--        <dependency>-->
-        <!--            <groupId>org.flywaydb</groupId>-->
-        <!--            <artifactId>flyway-core</artifactId>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
     </dependencies>
 
     <build>
@@ -323,8 +308,7 @@
                             </argLine>
                             <testFailureIgnore>false</testFailureIgnore>
                             <systemPropertyVariables>
-                                <!-- This triggers the correct config and keeps the H2 DB from spinning up -->
-                                <!--                                <spring.profiles.active>mocked</spring.profiles.active>-->
+                                <!-- This triggers the correct application-test.yaml -->
                                 <spring.profiles.active>test</spring.profiles.active>
                             </systemPropertyVariables>
                             <includes>

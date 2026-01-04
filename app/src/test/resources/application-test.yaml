@@ -14,14 +14,12 @@ logging:
     root: OFF
     org:
       springframework: OFF
-#      hibernate:
-#        SQL: debug
-#        tool:
-#          schema: trace
 spring:
   autoconfigure:
     exclude:
+      # This is excluded to prevent autoconfiguration of JDBC repositories during tests
       - org.springframework.boot.autoconfigure.data.jdbc.JdbcRepositoriesAutoConfiguration
+      # This is excluded to prevent autoconfiguration of DataSource during tests
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 
 # Everything above these dashes will be applied to all profiles

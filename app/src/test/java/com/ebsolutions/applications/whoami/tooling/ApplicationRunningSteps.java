@@ -7,10 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.ebsolutions.applications.whoami.config.UriConstants;
 import io.cucumber.java.en.Given;
-import org.springframework.test.web.servlet.MvcResult;
 
-public class ApplicationRunningSteps extends BaseTest {
-  protected MvcResult result;
+public class ApplicationRunningSteps extends BaseSteps {
 
   @Given("the application is running")
   public void theApplicationIsRunning() throws Exception {
@@ -18,4 +16,5 @@ public class ApplicationRunningSteps extends BaseTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.status", is("UP")));
   }
+
 }
