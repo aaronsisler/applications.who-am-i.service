@@ -9,6 +9,10 @@ components:
     AppUserCreateRequest:
       type: object
       description: Payload for creating an app user
+      required:
+        - emailAddress
+        - firstName
+        - lastName
       properties:
         emailAddress:
           type: string
@@ -20,7 +24,3 @@ components:
         lastName:
           type: string
           example: Appleseed
-      required:
-        - emailAddress
-        - firstName
-        - lastName

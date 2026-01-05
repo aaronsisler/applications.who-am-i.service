@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.ebsolutions.applications.whoami.tooling.BaseSteps;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.cucumber.datatable.DataTable;
-import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import java.io.UnsupportedEncodingException;
@@ -13,11 +12,6 @@ import java.util.Map;
 
 
 public class CreateAppUserThenSteps extends BaseSteps {
-  @Then("the response status should be {int}")
-  public void theResponseStatusShouldBe(int statusCode) {
-    assert scenarioContext.latestResponse.getResponse().getStatus() == statusCode;
-  }
-
   @And("the response body should contain:")
   public void theResponseBodyShouldContain(DataTable dataTable)
       throws UnsupportedEncodingException {
@@ -27,7 +21,7 @@ public class CreateAppUserThenSteps extends BaseSteps {
     // actual response body as a Map
     Map<String, Object> actual =
         objectMapper.convertValue(
-            scenarioContext.latestResponse.getResponse().getContentAsString(),
+            scenarioContext.latestResponse.getContentAsString(),
             new TypeReference<>() {
             }
         );
@@ -44,9 +38,14 @@ public class CreateAppUserThenSteps extends BaseSteps {
     });
   }
 
-  @And("the error message should contain {string}")
-  public void theErrorMessageShouldContain(String arg0) {
-    // Write code here that turns the phrase above into concrete actions
-    throw new PendingException();
+  @Then("the create-user response status should be {int}")
+  public void theCreateUserResponseStatusShouldBe(int statusCode) {
+    assertThat(scenarioContext.latestResponse.getStatus()).isEqualTo(statusCode);
+  }
+
+  @And("the create-user response error message should contain {string}")
+  public void theCreateUserResponseErrorMessageShouldContain(String errorMessage)
+      throws UnsupportedEncodingException {
+    assertThat(scenarioContext.latestResponse.getContentAsString()).contains(errorMessage);
   }
 }

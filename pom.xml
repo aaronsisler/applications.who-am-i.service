@@ -187,6 +187,15 @@
                         <generatorName>spring</generatorName>
                         <generateApis>false</generateApis>
                         <generateSupportingFiles>false</generateSupportingFiles>
+                        <configOptions>
+                            <serializableModel>true</serializableModel>
+                            <!-- This also enabled useJakartaEe-->
+                            <useSpringBoot3>true</useSpringBoot3>
+                            <useBeanValidation>true</useBeanValidation>
+                            <additionalModelTypeAnnotations>
+                                @lombok.Builder
+                            </additionalModelTypeAnnotations>
+                        </configOptions>
 
                         <!-- typeMappings links the contract (left side) to the right side -->
                         <typeMappings>
@@ -201,17 +210,6 @@
                             <importMapping>LocalDateTime=java.time.LocalDateTime</importMapping>
                             <importMapping>LocalDate=java.time.LocalDate</importMapping>
                         </importMappings>
-                        <configOptions>
-                            <serializableModel>true</serializableModel>
-                            <!-- This also enabled useJakartaEe-->
-                            <useSpringBoot3>true</useSpringBoot3>
-                            <additionalModelTypeAnnotations>
-                                @lombok.Builder
-                                @lombok.AllArgsConstructor
-                                @lombok.NoArgsConstructor
-                                @lombok.Data
-                            </additionalModelTypeAnnotations>
-                        </configOptions>
                     </configuration>
                     <executions>
                         <execution>

@@ -9,6 +9,13 @@ components:
     AppUserResponse:
       type: object
       description: App user returned to clients
+      required:
+        - userId
+        - emailAddress
+        - firstName
+        - lastName
+        - createdAt
+        - updatedAt
       properties:
         userId:
           type: string
@@ -32,10 +39,3 @@ components:
           type: string
           format: date-time
           example: '2023-01-02T12:00:00Z'
-      required:
-        - userId
-        - email
-        - firstName
-        - lastName
-        - createdAt
-        - updatedAt
