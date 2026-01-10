@@ -7,9 +7,11 @@ import io.cucumber.java.en.When;
 import org.springframework.http.MediaType;
 
 public class CreateAppUserWhenSteps extends BaseSteps {
-  @When("I submit the create-user request")
-  public void iSubmitTheCreateUserRequest() throws Exception {
+  @When("the client submits the create-user request")
+  public void theClientSubmitsTheCreateUserRequest() throws Exception {
     String json = objectMapper.writeValueAsString(scenarioContext.requestPayload);
+
+    System.out.println(json);
 
     scenarioContext.latestResponse = mockMvc.perform(post("/app-users")
             .contentType(MediaType.APPLICATION_JSON)

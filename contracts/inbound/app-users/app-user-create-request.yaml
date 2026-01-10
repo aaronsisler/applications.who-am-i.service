@@ -17,10 +17,16 @@ components:
         emailAddress:
           type: string
           format: email
+          minLength: 1
+          maxLength: 100
           example: "johnny.appleseed@gmail.com"
         firstName:
           type: string
+          minLength: 1
+          maxLength: 45
           example: Johnny
         lastName:
           type: string
+          minLength: 1
+          maxLength: 45
           example: Appleseed

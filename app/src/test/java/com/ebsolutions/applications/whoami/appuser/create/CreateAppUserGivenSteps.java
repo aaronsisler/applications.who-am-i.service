@@ -9,26 +9,39 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class CreateAppUserGivenSteps extends BaseSteps {
-  @Given("a valid create-user request contains the following fields:")
-  public void aValidCreateUserRequestContainsTheFollowingFields(DataTable dataTable) {
-    // Convert table to map
-    scenarioContext.requestPayload.putAll(dataTable.asMap());
+  @Given("the client provides a create-user request with the following fields:")
+  public void theClientProvidesACreateUserRequestWithTheFollowingFields(DataTable dataTable) {
+    scenarioContext.requestPayload.putAll(
+        dataTable
+            .asMap()
+            .entrySet().stream()
+            .collect(Collectors
+                .toMap(
+                    Map.Entry::getKey,
+                    e -> normalize(e.getValue())
+                )));
   }
 
-  @And("the create-user request is missing the {string} field")
-  public void theCreateUserRequestIsMissingTheField(String missingField) {
+  @And("the client provides the create-user request without the {string} field")
+  public void theClientProvidesTheCreateUserRequestWithoutTheField(String missingField) {
     // Remove the missing field
     scenarioContext.requestPayload.remove(missingField);
   }
 
+  // Not used
   @And("the data store returns the created user")
   public void theDataStoreReturnsTheCreatedUser() {
-    when(appUserRepository.save(any())).thenAnswer(invocation -> createAppUserFromPayload());
+    when(appUserRepository.save(any()))
+        .thenAnswer(invocation -> createAppUserFromPayload());
   }
 
+
+  // Not used
   private AppUser createAppUserFromPayload() {
     return AppUser
         .builder()

@@ -6,29 +6,13 @@ Feature: Create App User
   Background:
     Given the application is running
 
-  # Happy path: all required fields supplied
-  @Ignore
-  Scenario: Creating an app user with all required fields
-    Given a valid create-user request contains the following fields:
-      | emailAddress | johnny.appleseed@gmail.com |
-      | firstName    | Johnny                     |
-      | lastName     | Appleseed                  |
-    And the data store returns the created user
-    When I submit the create-user request
-    Then the create-user response status should be 201
-    And the response body should contain:
-      | emailAddress | johnny.appleseed@gmail.com |
-      | firstName    | Johnny                     |
-      | lastName     | Appleseed                  |
-
-  # Negative path: missing required fields
   Scenario Outline: Creating an app user with missing required fields should fail
-    Given a valid create-user request contains the following fields:
+    Given the client provides a create-user request with the following fields:
       | emailAddress | johnny.appleseed@gmail.com |
       | firstName    | Johnny                     |
       | lastName     | Appleseed                  |
-    And the create-user request is missing the "<missingField>" field
-    When I submit the create-user request
+    And the client provides the create-user request without the "<missingField>" field
+    When the client submits the create-user request
     Then the create-user response status should be 400
     And the create-user response error message should contain "<missingField> must not be null"
 
@@ -37,3 +21,18 @@ Feature: Create App User
       | emailAddress |
       | firstName    |
       | lastName     |
+
+  Scenario Outline: Creating an app user with blank values should fail
+    Given the client provides a create-user request with the following fields:
+      | firstName    | <firstName>    |
+      | lastName     | <lastName>     |
+      | emailAddress | <emailAddress> |
+    When the client submits the create-user request
+    Then the create-user response status should be 400
+    And the create-user response error message should contain "<field> length must be between <minLength> and <maxLength>"
+
+    Examples:
+      | field        | minLength | maxLength | firstName | lastName  | emailAddress               |
+      | firstName    | 1         | 45        | <blank>   | Appleseed | johnny.appleseed@gmail.com |
+      | lastName     | 1         | 45        | Johnny    | <blank>   | johnny.appleseed@gmail.com |
+      | emailAddress | 1         | 100       | Johnny    | Appleseed | <blank>                    |
