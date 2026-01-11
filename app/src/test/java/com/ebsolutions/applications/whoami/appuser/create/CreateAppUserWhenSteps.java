@@ -11,8 +11,6 @@ public class CreateAppUserWhenSteps extends BaseSteps {
   public void theClientSubmitsTheCreateUserRequest() throws Exception {
     String json = objectMapper.writeValueAsString(scenarioContext.requestPayload);
 
-    System.out.println(json);
-
     scenarioContext.latestResponse = mockMvc.perform(post("/app-users")
             .contentType(MediaType.APPLICATION_JSON)
             .content(json))

@@ -19,7 +19,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
@@ -229,7 +228,7 @@ public class GlobalControllerExceptionHandler {
   /**
    * This will be called when the data store cannot be reached
    *
-   * @param resourceAccessException caught in controller
+   * @param dataStoreException caught in controller
    * @return custom response with descriptive error messages
    */
   @ApiResponses({
@@ -237,14 +236,14 @@ public class GlobalControllerExceptionHandler {
           content = @Content(mediaType = "application/json",
               schema = @Schema(implementation = ErrorResponse.class)))
   })
-  @ExceptionHandler(ResourceAccessException.class)
+  @ExceptionHandler(DataStoreException.class)
   public ResponseEntity<ErrorResponse> handleDataStoreUnavailable(
-      ResourceAccessException resourceAccessException) {
+      DataStoreException dataStoreException) {
 
     return ResponseEntity
         .status(HttpStatus.SERVICE_UNAVAILABLE)
         .body(ErrorResponse.builder()
-            .messages(Collections.singletonList("Data store unavailable"))
+            .messages(Collections.singletonList(dataStoreException.getMessage()))
             .build());
   }
 
@@ -263,7 +262,7 @@ public class GlobalControllerExceptionHandler {
   })
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleGeneric(Exception exception) {
-    log.error("Server Error: {0}", exception);
+    log.error("Server Error:", exception);
 
     return ResponseEntity
         .status(HttpStatus.INTERNAL_SERVER_ERROR)

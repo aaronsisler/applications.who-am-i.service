@@ -21,46 +21,6 @@
 #      | firstName    | Johnny                     |
 #      | lastName     | Appleseed                  |
 #
-#  # Negative path: missing required fields
-#  Scenario Outline: Creating an app user with missing required fields should fail
-#    Given the client provides a create-user request with the following fields:
-#      | emailAddress | johnny.appleseed@gmail.com |
-#      | firstName    | Johnny                     |
-#      | lastName     | Appleseed                  |
-#    And the client provides the create-user request without the "<missingField>" field
-#    When the client submits the create-user request
-#    Then the response status should be 400
-#    And the response error message should contain "<missingField> must not be null"
-#
-#    Examples:
-#      | missingField |
-#      | emailAddress |
-#      | firstName    |
-#      | lastName     |
-#
-#  Scenario Outline: Creating an app user with blank values should fail
-#    Given the client provides a create-user request with the following fields:
-#      | emailAddress | johnny.appleseed@gmail.com |
-#      | firstName    | <firstName>                |
-#      | lastName     | <lastName>                 |
-#    When I submit the create-user request
-#    Then the create-user response status should be 400
-#    And the error message should contain "<field> must not be blank"
-#
-#    Examples:
-#      | field     | firstName | lastName  |
-#      | firstName |           | Appleseed |
-#      | lastName  | Johnny    |           |
-#
-#  Scenario: Creating an app user with fields exceeding maximum length should fail
-#    Given the client provides a create-user request with the following fields:
-#      | emailAddress | a-very-long-email-address-that-exceeds-the-defined-limit@gmail.com |
-#      | firstName    | ThisNameIsWayTooLongForTheSystemAccordingToTheSpec                 |
-#      | lastName     | Appleseed                                                          |
-#    When I submit the create-user request
-#    Then the create-user response status should be 400
-#    And the error message should contain "firstName exceeds maximum length"
-#
 #  Scenario: Data store failure while creating an app user should return server error
 #    Given the client provides a valid create-user request
 #    And the data store is unavailable
