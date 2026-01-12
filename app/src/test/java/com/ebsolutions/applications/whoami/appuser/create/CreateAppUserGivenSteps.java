@@ -5,13 +5,22 @@ import static org.mockito.Mockito.when;
 
 import com.ebsolutions.applications.whoami.tooling.BaseSteps;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.springframework.dao.DataAccessResourceFailureException;
+import org.mockito.Mockito;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.relational.core.conversion.DbActionExecutionException;
+import org.springframework.http.MediaType;
 
 public class CreateAppUserGivenSteps extends BaseSteps {
+  @Before
+  public void beforeScenario() {
+    Mockito.reset(appUserRepository);
+  }
+
   @Given("the client provides a create-user request with the following fields:")
   public void theClientProvidesACreateUserRequestWithTheFollowingFields(DataTable dataTable) {
     scenarioContext.requestPayload.putAll(
@@ -33,9 +42,29 @@ public class CreateAppUserGivenSteps extends BaseSteps {
 
   @And("the data store is unavailable")
   public void theDataStoreIsUnavailable() {
-    var exception = new DataAccessResourceFailureException("Something blew up");
+    var exception = new DbActionExecutionException(null, new Exception("Something blew up"));
 
     when(appUserRepository.save(any()))
         .thenThrow(exception);
+  }
+
+  @And("the data store contains an app user with the same email address")
+  public void theDataStoreContainsAnAppUserWithTheSameEmailAddress() {
+    DbActionExecutionException exception =
+        new DbActionExecutionException(null,
+            new DuplicateKeyException("duplicate email")
+        );
+
+    when(appUserRepository.save(any()))
+        .thenThrow(exception);
+  }
+
+  @And("the request has a content type of {string}")
+  public void theRequestHasAContentTypeOf(String mediaType) {
+    scenarioContext.mediaType = switch (mediaType) {
+      case MediaType.APPLICATION_JSON_VALUE -> MediaType.APPLICATION_JSON;
+      case MediaType.TEXT_PLAIN_VALUE -> MediaType.TEXT_PLAIN;
+      default -> throw new IllegalArgumentException("Unsupported content type: " + mediaType);
+    };
   }
 }

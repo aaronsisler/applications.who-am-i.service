@@ -4,14 +4,19 @@ import com.ebsolutions.applications.whoami.appuser.core.AppUser;
 import com.ebsolutions.applications.whoami.appuser.core.AppUserMapper;
 import com.ebsolutions.applications.whoami.appuser.core.AppUserRepository;
 import com.ebsolutions.applications.whoami.core.DataStoreException;
+import com.ebsolutions.applications.whoami.core.DuplicateDataException;
+import com.ebsolutions.applications.whoami.core.ErrorMessages;
 import com.ebsolutions.applications.whoami.model.AppUserCreateRequest;
 import com.ebsolutions.applications.whoami.model.AppUserResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.relational.core.conversion.DbActionExecutionException;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CreateAppUserService {
   private final AppUserRepository repository;
   private final AppUserMapper mapper;
@@ -22,10 +27,18 @@ public class CreateAppUserService {
       AppUser saved = repository.save(entity);
 
       return mapper.toDto(saved);
-    } catch (DataIntegrityViolationException dataIntegrityViolationException) {
-      throw dataIntegrityViolationException;
-    } catch (Exception exception) {
-      throw new DataStoreException("App user cannot be saved");
+    } catch (DbActionExecutionException ex) {
+      throw translate(ex);
     }
+  }
+
+  private RuntimeException translate(DbActionExecutionException ex) {
+    if (ex.getCause() instanceof DuplicateKeyException) {
+      return new DuplicateDataException(
+          ErrorMessages.EMAIL_ALREADY_EXISTS,
+          ex
+      );
+    }
+    return new DataStoreException(ErrorMessages.APP_USER_NOT_SAVED, ex);
   }
 }

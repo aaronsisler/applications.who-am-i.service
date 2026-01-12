@@ -9,8 +9,8 @@ import jakarta.validation.ConstraintViolationException;
 import java.util.Collections;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -34,8 +34,8 @@ public class GlobalControllerExceptionHandler {
    * @return custom response with descriptive error messages
    */
   @ApiResponses({
-      @ApiResponse(responseCode = "401",
-          content = @Content(mediaType = "application/json",
+      @ApiResponse(responseCode = HttpResponseCodes.UNAUTHORIZED,
+          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
               schema = @Schema(implementation = ErrorResponse.class)))
   })
   @ExceptionHandler(MissingRequestHeaderException.class)
@@ -45,7 +45,7 @@ public class GlobalControllerExceptionHandler {
     return ResponseEntity
         .status(HttpStatus.UNAUTHORIZED)
         .body(ErrorResponse.builder()
-            .messages(Collections.singletonList("Missing Authorization header"))
+            .messages(Collections.singletonList(ErrorMessages.MISSING_AUTH_N_HEADER))
             .build());
   }
 
@@ -58,8 +58,8 @@ public class GlobalControllerExceptionHandler {
    * @return custom response with descriptive error messages
    */
   @ApiResponses({
-      @ApiResponse(responseCode = "403",
-          content = @Content(mediaType = "application/json",
+      @ApiResponse(responseCode = HttpResponseCodes.FORBIDDEN,
+          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
               schema = @Schema(implementation = ErrorResponse.class)))
   })
   @ExceptionHandler(ResponseStatusException.class)
@@ -86,24 +86,13 @@ public class GlobalControllerExceptionHandler {
    * @return custom response with descriptive error messages
    */
   @ApiResponses({
-      @ApiResponse(responseCode = "400",
-          content = @Content(mediaType = "application/json",
+      @ApiResponse(responseCode = HttpResponseCodes.BAD_REQUEST,
+          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
               schema = @Schema(implementation = ErrorResponse.class)))
   })
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(
       MethodArgumentNotValidException methodArgumentNotValidException) {
-
-    //    List<String> messages = methodArgumentNotValidException.getBindingResult()
-    //        .getAllErrors()
-    //        .stream()
-    //        .map(DefaultMessageSourceResolvable::getDefaultMessage)
-    //        .toList();
-    //
-    //    return ResponseEntity.badRequest()
-    //        .body(ErrorResponse.builder()
-    //            .messages(messages)
-    //            .build());
 
     List<String> messages = methodArgumentNotValidException.getBindingResult()
         .getAllErrors()
@@ -131,8 +120,8 @@ public class GlobalControllerExceptionHandler {
    * @return custom response with descriptive error messages
    */
   @ApiResponses({
-      @ApiResponse(responseCode = "400",
-          content = @Content(mediaType = "application/json",
+      @ApiResponse(responseCode = HttpResponseCodes.BAD_REQUEST,
+          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
               schema = @Schema(implementation = ErrorResponse.class)))
   })
   @ExceptionHandler(ConstraintViolationException.class)
@@ -160,8 +149,8 @@ public class GlobalControllerExceptionHandler {
    * @return custom response with descriptive error messages
    */
   @ApiResponses({
-      @ApiResponse(responseCode = "405",
-          content = @Content(mediaType = "application/json",
+      @ApiResponse(responseCode = HttpResponseCodes.METHOD_NOT_ALLOWED,
+          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
               schema = @Schema(implementation = ErrorResponse.class)))
   })
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -171,31 +160,31 @@ public class GlobalControllerExceptionHandler {
     return ResponseEntity
         .status(HttpStatus.METHOD_NOT_ALLOWED)
         .body(ErrorResponse.builder()
-            .messages(Collections.singletonList("HTTP method not allowed"))
+            .messages(Collections.singletonList(ErrorMessages.HTTP_METHOD_NOT_ALLOWED))
             .build());
   }
 
   /* ========== 409 – CONFLICT ========== */
 
   /**
-   * This will be called when database integrity constraints are violated
+   * This will be called when database duplication constraints are violated
    *
-   * @param dataIntegrityViolationException caught in controller
+   * @param duplicateDataException caught in controller
    * @return custom response with descriptive error messages
    */
   @ApiResponses({
-      @ApiResponse(responseCode = "409",
-          content = @Content(mediaType = "application/json",
+      @ApiResponse(responseCode = HttpResponseCodes.CONFLICT,
+          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
               schema = @Schema(implementation = ErrorResponse.class)))
   })
-  @ExceptionHandler(DataIntegrityViolationException.class)
-  public ResponseEntity<ErrorResponse> handleDataIntegrity(
-      DataIntegrityViolationException dataIntegrityViolationException) {
+  @ExceptionHandler(DuplicateDataException.class)
+  public ResponseEntity<ErrorResponse> handleDuplicateData(
+      DuplicateDataException duplicateDataException) {
 
     return ResponseEntity
         .status(HttpStatus.CONFLICT)
         .body(ErrorResponse.builder()
-            .messages(Collections.singletonList("emailAddress already exists"))
+            .messages(Collections.singletonList(duplicateDataException.getMessage()))
             .build());
   }
 
@@ -208,8 +197,8 @@ public class GlobalControllerExceptionHandler {
    * @return custom response with descriptive error messages
    */
   @ApiResponses({
-      @ApiResponse(responseCode = "415",
-          content = @Content(mediaType = "application/json",
+      @ApiResponse(responseCode = HttpResponseCodes.UNSUPPORTED_MEDIA_TYPE,
+          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
               schema = @Schema(implementation = ErrorResponse.class)))
   })
   @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
@@ -219,7 +208,7 @@ public class GlobalControllerExceptionHandler {
     return ResponseEntity
         .status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
         .body(ErrorResponse.builder()
-            .messages(Collections.singletonList("Unsupported Content-Type"))
+            .messages(Collections.singletonList(ErrorMessages.UNSUPPORTED_CONTENT_TYPE))
             .build());
   }
 
@@ -232,8 +221,8 @@ public class GlobalControllerExceptionHandler {
    * @return custom response with descriptive error messages
    */
   @ApiResponses({
-      @ApiResponse(responseCode = "503",
-          content = @Content(mediaType = "application/json",
+      @ApiResponse(responseCode = HttpResponseCodes.SERVICE_UNAVAILABLE,
+          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
               schema = @Schema(implementation = ErrorResponse.class)))
   })
   @ExceptionHandler(DataStoreException.class)
@@ -256,8 +245,8 @@ public class GlobalControllerExceptionHandler {
    * @return custom response with descriptive error messages
    */
   @ApiResponses({
-      @ApiResponse(responseCode = "500",
-          content = @Content(mediaType = "application/json",
+      @ApiResponse(responseCode = HttpResponseCodes.INTERNAL_SERVER_ERROR,
+          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
               schema = @Schema(implementation = ErrorResponse.class)))
   })
   @ExceptionHandler(Exception.class)
@@ -267,7 +256,7 @@ public class GlobalControllerExceptionHandler {
     return ResponseEntity
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
         .body(ErrorResponse.builder()
-            .messages(Collections.singletonList("Unexpected server error"))
+            .messages(Collections.singletonList(ErrorMessages.UNEXPECTED_SERVER_ERROR))
             .build());
   }
 }
