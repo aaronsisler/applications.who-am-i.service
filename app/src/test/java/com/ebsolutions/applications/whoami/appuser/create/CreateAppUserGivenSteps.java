@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 public class CreateAppUserGivenSteps extends BaseSteps {
   @Before
   public void beforeScenario() {
+    scenarioContext.reset();
     Mockito.reset(appUserRepository);
   }
 
@@ -42,7 +43,11 @@ public class CreateAppUserGivenSteps extends BaseSteps {
 
   @And("the data store is unavailable")
   public void theDataStoreIsUnavailable() {
-    var exception = new DbActionExecutionException(null, new Exception("Something blew up"));
+    var exception =
+        new DbActionExecutionException(
+            null,
+            new Exception("Something blew up")
+        );
 
     when(appUserRepository.save(any()))
         .thenThrow(exception);
@@ -51,7 +56,8 @@ public class CreateAppUserGivenSteps extends BaseSteps {
   @And("the data store contains an app user with the same email address")
   public void theDataStoreContainsAnAppUserWithTheSameEmailAddress() {
     DbActionExecutionException exception =
-        new DbActionExecutionException(null,
+        new DbActionExecutionException(
+            null,
             new DuplicateKeyException("duplicate email")
         );
 
@@ -66,5 +72,10 @@ public class CreateAppUserGivenSteps extends BaseSteps {
       case MediaType.TEXT_PLAIN_VALUE -> MediaType.TEXT_PLAIN;
       default -> throw new IllegalArgumentException("Unsupported content type: " + mediaType);
     };
+  }
+
+  @Given("a create-user request with invalid JSON payload")
+  public void aCreateUserRequestWithInvalidJSONPayload() {
+    scenarioContext.requestPayload.put("taco", "{invalid-json:");
   }
 }

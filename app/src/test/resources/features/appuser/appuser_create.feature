@@ -39,7 +39,7 @@ Feature: Create App User
       | lastName     | 1         | 45        | Johnny    | <blank>   | johnny.appleseed@gmail.com |
       | emailAddress | 1         | 100       | Johnny    | Appleseed | <blank>                    |
 
-  Scenario Outline: 400 -Creating an app user with fields that are too long should fail
+  Scenario Outline: 400 - Creating an app user with fields that are too long should fail
     Given the client provides a create-user request with the following fields:
       | firstName    | <firstName>    |
       | lastName     | <lastName>     |
@@ -54,6 +54,13 @@ Feature: Create App User
       | firstName    | 1         | 45        | ThisIsToLongOfAValueToBeProvidedToThisSpecificField | Appleseed                                           | johnny.appleseed@gmail.com                                                                                                                                |
       | lastName     | 1         | 45        | Johnny                                              | ThisIsToLongOfAValueToBeProvidedToThisSpecificField | johnny.appleseed@gmail.com                                                                                                                                |
       | emailAddress | 1         | 100       | Johnny                                              | Appleseed                                           | ThisIsToLongOfAValueToBeProvidedToThisSpecificFieldThisIsToLongOfAValueToBeProvidedToThisSpecificFieldThisIsToLongOfAValueToBeProvidedToThisSpecificField |
+
+  Scenario: 400 - Creating an app user with malformed JSON should fail
+    Given a create-user request with invalid JSON payload
+    And the request has a content type of "application/json"
+    When the client submits the create-user request
+    Then the create-user response status should be 400
+    And the create-user response error message should contain "Submitted message was not readable"
 
   Scenario: 409 - Creating an app user with an email that already exists should fail
     Given the client provides a create-user request with the following fields:

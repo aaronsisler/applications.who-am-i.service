@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -74,7 +75,8 @@ public class GlobalControllerExceptionHandler {
               .build());
     }
 
-    throw exception;   // delegate to other handlers
+    // Delegate to other handlers
+    throw exception;
   }
 
   /* ========== 400 – BAD REQUESTS (INPUT / CONTRACT) ========== */
@@ -137,6 +139,28 @@ public class GlobalControllerExceptionHandler {
         .badRequest()
         .body(ErrorResponse.builder()
             .messages(messages)
+            .build());
+  }
+
+  /**
+   * This will be called when the body of http request is not parseable
+   *
+   * @param httpMessageNotReadableException caught in controller
+   * @return custom response with descriptive error messages
+   */
+  @ApiResponses({
+      @ApiResponse(responseCode = HttpResponseCodes.BAD_REQUEST,
+          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+              schema = @Schema(implementation = ErrorResponse.class)))
+  })
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public ResponseEntity<ErrorResponse> handleMessageNotReadable(
+      HttpMessageNotReadableException httpMessageNotReadableException) {
+
+    return ResponseEntity
+        .badRequest()
+        .body(ErrorResponse.builder()
+            .messages(Collections.singletonList(ErrorMessages.MESSAGE_NOT_READABLE))
             .build());
   }
 

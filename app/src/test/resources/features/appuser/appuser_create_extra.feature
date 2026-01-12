@@ -29,15 +29,3 @@
 ##      | not-an-email      |
 ##      | johnny@@gmail.com |
 #
-#  Scenario: Creating an app user with malformed JSON should fail
-#    Given a create-user request with invalid JSON payload
-#    When I submit the create-user request
-#    Then the create-user response status should be 400
-#    And the error message should contain "Malformed JSON request"
-#
-#  Scenario: Submitting without application/json content type should fail
-#    Given the client submits create-user request with Content-Type "text/plain"
-#    When the client submits the create-user request
-#    Then the response status should be 415
-#
-#

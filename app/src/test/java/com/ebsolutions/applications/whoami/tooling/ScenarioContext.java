@@ -10,9 +10,13 @@ import org.springframework.stereotype.Component;
 public class ScenarioContext {
   public MediaType mediaType;
 
-  // Store the request payload for the scenario
   public Map<String, Object> requestPayload = new HashMap<>();
 
-  // Store the latest response for the scenario
   public MockHttpServletResponse latestResponse;
+
+  public void reset() {
+    requestPayload = new HashMap<>();
+    mediaType = null;
+    latestResponse = null;
+  }
 }
