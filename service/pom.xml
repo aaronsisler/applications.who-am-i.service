@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.ebsolutions.applications.whoami</groupId>
+        <artifactId>who-am-i-parent</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>who-am-i-service</artifactId>
+    <version>${revision}</version>
+    <name>Who Am I Service</name>
+    <packaging>jar</packaging>
+
+    <properties>
+        <start-class>com.ebsolutions.applications.whoami.Application</start-class>
+
+        <!-- Sonar Cloud or SonarQube settings -->
+        <!-- Sources and binaries -->
+        <sonar.sources>src/main/java</sonar.sources>
+        <sonar.java.binaries>target/classes</sonar.java.binaries>
+        <!-- Exclusions -->
+        <sonar.exclusions>
+            **/Application.java,
+            **/config/*,
+            **/model/*
+        </sonar.exclusions>
+
+        <!-- Versions: Dependencies: Service -->
+        <mapstruct.version>1.6.3</mapstruct.version>
+
+        <!-- Versions: Dependencies: Testing -->
+        <mockito.version>5.17.0</mockito.version>
+
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- MapStruct annotation processor for compile time annotations -->
+            <!-- Version: Explicit -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- Contains Spring Boot Starter and Tomcat web server -->
+        <!-- Version: Spring Parent -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Exposes the actuator API health/info/etc. -->
+        <!-- Version: Spring Parent -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- Used for authentication -->
+        <!-- Version: Spring Parent -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- Used for validation annotations in Controller, etc. -->
+        <!-- Version: Spring Parent -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- Used for Swagger UI and Open API annotations -->
+        <!-- Version: Parent POM - Dep Management -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
+
+        <!-- Used for database framework -->
+        <!-- Version: Spring Parent -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jdbc</artifactId>
+        </dependency>
+
+        <!-- Required for driver class: org.postgresql.Driver -->
+        <!-- Version: Installed on runtime machine -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Used for mapping between OpenAPI DTO and database entity -->
+        <!-- Version: Explicit -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+
+        <!-- MapStruct annotation processor for compile time annotations -->
+        <!-- Version: Dep Management -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Used for the validation annotations -->
+        <!-- Version: Parent POM - Dep Management -->
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+        </dependency>
+
+        <!-- Used for Swagger and serialization of Local Date -->
+        <!-- Version: Spring Parent -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
+        <!-- Used for POJO annotations within project -->
+        <!-- Version: Spring Parent -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Testing framework for starting Spring context and MockMVC -->
+        <!-- Version: Spring Parent -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <!-- Exclude mockito-inline to avoid self-attaching agent warning -->
+                <exclusion>
+                    <groupId>org.mockito</groupId>
+                    <artifactId>mockito-inline</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Explicitly add Mockito core (no inline agent needed) -->
+        <!-- Version: Spring Parent -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Needed for running tests in Junit -->
+        <!-- Version: Parent POM - Dep Management -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Testing linkage between Cucumber and Spring context -->
+        <!-- Version: Parent POM - Dep Management -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-spring</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Testing linkage between Cucumber and Java -->
+        <!-- Version: Parent POM - Dep Management -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Testing linkage between Cucumber and JUnit -->
+        <!-- Version: Parent POM - Dep Management -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Maintains strict Code Styles -->
+            <!-- Version: Parent POM - Plugin Management -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+            <!-- Used to compile the sources of your project -->
+            <!-- Version: Parent POM - Plugin Management -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <!-- Lombok must be prior to MapStruct -->
+                        <!-- Version: Spring Parent -->
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </path>
+                        <!-- MapStruct must be after Lombok -->
+                        <!-- Version: Dep Management -->
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <!-- Gives the actuator/info API build information -->
+            <!-- Version: Parent POM - Plugin Management -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <!-- Generates Java classes from OpenAPI contracts -->
+            <!-- Version: Parent POM - Plugin Management -->
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>models-common</id>
+                    </execution>
+                    <execution>
+                        <id>models-actuator</id>
+                    </execution>
+                    <execution>
+                        <id>models-user</id>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- By default, surefire is running so setting skipTests to true -->
+            <!-- We want to run tests during integration-test phase using failsafe plugin -->
+            <!-- Version: Parent POM - Plugin Management -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>true</skipTests>
+                    <argLine>
+                        <!-- Used to suppress warnings during test running -->
+                        -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
+                        <!-- Used to suppress warnings during test running -->
+                        -Xshare:off
+                    </argLine>
+                </configuration>
+            </plugin>
+            <!-- Used to run agent that collects code coverage -->
+            <!-- Version: Parent POM - Plugin Management -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>jacoco-initialize</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <propertyName>failsafeJacocoAgent</propertyName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>jacoco-report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Used for running the Cucumber feature tests -->
+            <!-- Version: Parent POM - Plugin Management -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>mocked-integration-tests</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <!--suppress UnresolvedMavenProperty-->
+                            <argLine>
+                                <!-- Used to suppress warnings during test running -->
+                                -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
+                                <!-- Used to suppress warnings during test running -->
+                                -Xshare:off
+                                <!-- This comes from the JaCoCo plugin -->
+                                ${failsafeJacocoAgent}
+                            </argLine>
+                            <testFailureIgnore>false</testFailureIgnore>
+                            <systemPropertyVariables>
+                                <!-- This triggers the correct application-test.yaml -->
+                                <spring.profiles.active>test</spring.profiles.active>
+                            </systemPropertyVariables>
+                            <includes>
+                                <include>**/MockedIntegrationFeatures.java</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Used to integrate SonarQube analysis into the Maven build -->
+            <!-- Version: Parent POM - Plugin Management -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

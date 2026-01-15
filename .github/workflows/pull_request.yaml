@@ -23,7 +23,7 @@ jobs:
         run: mvn clean install --activate-profiles docker --no-transfer-progress --batch-mode
 
       - name: Build Docker image
-        run: docker build . --tag who-am-i-service --file app/Dockerfile
+        run: docker build . --tag who-am-i-service --file service/Dockerfile
 
       - name: SonarQube Scan
         run: |

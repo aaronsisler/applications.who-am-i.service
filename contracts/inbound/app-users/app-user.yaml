@@ -1,0 +1,35 @@
+openapi: "3.1.0"
+info:
+  title: App User API
+  version: "1.0"
+servers:
+  - url: http://localhost:8080
+paths:
+  /users:
+    post:
+      summary: Create a new user
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppUserCreateRequest'
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppUserResponse'
+
+components:
+  schemas:
+    AppUserCreateRequest:
+      $comment: "Format is required to correctly import and name the output POJO"
+      allOf:
+        - $ref: 'app-user-create-request.yaml#/components/schemas/AppUserCreateRequest'
+    AppUserResponse:
+      $comment: "Format is required to correctly import and name the output POJO"
+      allOf:
+        - $ref: 'app-user-response.yaml#/components/schemas/AppUserResponse'

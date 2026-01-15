@@ -1,0 +1,15 @@
+<configuration>
+    <!--  Reduces log verbosity during tests by setting specific loggers to WARN level, while keeping the root logger at INFO level.  -->
+    <logger name="org.springframework.test.context.support.AnnotationConfigContextLoaderUtils" level="WARN"/>
+    <logger name="org.springframework.boot.test.context.SpringBootTestContextBootstrapper" level="WARN"/>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+</configuration>

@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth?currentSchema=auth
+    username: auth_app_user
+    password: CHANGE_ME

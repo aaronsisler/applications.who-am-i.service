@@ -17,18 +17,20 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>app</module>
+        <module>service</module>
         <module>integration-tests</module>
     </modules>
 
     <properties>
         <!-- This is the property that is propagated to all children modules -->
-        <revision>0.2.0</revision>
+        <revision>0.3.0</revision>
 
         <java.version>21</java.version>
         <sonar.organization>aaronsisler</sonar.organization>
         <sonar.projectKey>aaronsisler_applications.who-am-i.service</sonar.projectKey>
         <sonar.projectName>Who Am I Service</sonar.projectName>
+        <sonar.projectDescription>A service that provides AuthN and AuthZ information about the caller.
+        </sonar.projectDescription>
 
         <!-- Exclusions -->
         <sonar.exclusions>
@@ -185,6 +187,16 @@
                         <generatorName>spring</generatorName>
                         <generateApis>false</generateApis>
                         <generateSupportingFiles>false</generateSupportingFiles>
+                        <configOptions>
+                            <serializableModel>true</serializableModel>
+                            <!-- This also enabled useJakartaEe-->
+                            <useSpringBoot3>true</useSpringBoot3>
+                            <useBeanValidation>true</useBeanValidation>
+                            <additionalModelTypeAnnotations>
+                                @lombok.Builder
+                            </additionalModelTypeAnnotations>
+                        </configOptions>
+
                         <!-- typeMappings links the contract (left side) to the right side -->
                         <typeMappings>
                             <!-- This Pascal format is the standard for baked in OpenAPI supported types -->
@@ -198,19 +210,46 @@
                             <importMapping>LocalDateTime=java.time.LocalDateTime</importMapping>
                             <importMapping>LocalDate=java.time.LocalDate</importMapping>
                         </importMappings>
-                        <configOptions>
-                            <serializableModel>true</serializableModel>
-                            <!-- This also enabled useJakartaEe-->
-                            <useSpringBoot3>true</useSpringBoot3>
-                            <additionalModelTypeAnnotations>
-                                @lombok.Builder
-                                @lombok.AllArgsConstructor
-                                @lombok.NoArgsConstructor
-                                @lombok.Data
-                            </additionalModelTypeAnnotations>
-                        </configOptions>
                     </configuration>
+                    <executions>
+                        <execution>
+                            <id>models-common</id>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                            <configuration>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <!-- This is the path relative to the child modules -->
+                                <inputSpec>${project.parent.basedir}/contracts/inbound/common.yaml</inputSpec>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>models-actuator</id>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                            <configuration>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <!-- This is the path relative to the child modules -->
+                                <inputSpec>${project.parent.basedir}/contracts/inbound/actuator.yaml</inputSpec>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>models-app-user</id>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                            <configuration>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <!-- This is the path relative to the child modules -->
+                                <inputSpec>
+                                    ${project.parent.basedir}/contracts/inbound/app-users/app-user.yaml
+                                </inputSpec>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
+
                 <!-- Used for running JUnit tests that link to Cucumber feature files -->
                 <!-- Version: Explicit -->
                 <plugin>
@@ -253,6 +292,13 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <repositories>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/aaronsisler/applications.who-am-i.database</url>
+        </repository>
+    </repositories>
 
     <scm>
         <connection/>

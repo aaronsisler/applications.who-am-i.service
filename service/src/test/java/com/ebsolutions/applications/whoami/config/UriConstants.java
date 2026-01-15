@@ -1,9 +1,7 @@
 package com.ebsolutions.applications.whoami.config;
 
-public class TestConstants {
-  public static final int APPLICATION_START_TIME_WAIT_PERIOD_IN_MILLISECONDS = 30000;
-
-  public static final String BASE_URL = "http://localhost:8080";
+public class UriConstants {
+  // Spring Boot Actuator Endpoints
   public static final String HEALTH_CHECK_URI = "/actuator/health";
   public static final String INFO_CHECK_URI = "/actuator/info";
 }
