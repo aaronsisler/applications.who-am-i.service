@@ -19,4 +19,19 @@ public class BaseStepsConfig {
   AppUserRepository appUserRepository() {
     return Mockito.mock(AppUserRepository.class);
   }
+
+  //  @Bean
+  //  LocalDateTimeGenerator localDateTimeGenerator() {
+  //    return Mockito.mock(LocalDateTimeGenerator.class);
+  //  }
+
+  //  @Bean
+  //  UuidGenerator uuidGenerator() {
+  //    return Mockito.mock(UuidGenerator.class);
+  //  }
+
+  //  @Bean
+  //  EmailAddressValidator emailAddressValidator() {
+  //    return Mockito.mock(EmailAddressValidator.class);
+  //  }
 }

@@ -12,20 +12,3 @@
 #      | emailAddress | johnny.appleseed@gmail.com |
 #      | firstName    | Johnny                     |
 #      | lastName     | Appleseed                  |
-#
-#
-#  # This will be Phase 2
-##  Scenario Outline: Creating an app user with invalid email format should fail
-##    Given the client provides a create-user request with emailAddress "<email>"
-##    And the client provides firstName "Johnny"
-##    And the client provides lastName "Appleseed"
-##    When the client submits the create-user request
-##    Then the response status should be 400
-##    And the response error message should contain "emailAddress must be a well-formed email"
-##
-##    Examples:
-##      | email             |
-##      | john@             |
-##      | not-an-email      |
-##      | johnny@@gmail.com |
-#

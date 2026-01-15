@@ -95,6 +95,7 @@ public class GlobalControllerExceptionHandler {
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(
       MethodArgumentNotValidException methodArgumentNotValidException) {
+    System.out.println("MethodArgumentNotValidException");
 
     List<String> messages = methodArgumentNotValidException.getBindingResult()
         .getAllErrors()
@@ -129,6 +130,7 @@ public class GlobalControllerExceptionHandler {
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<ErrorResponse> handleConstraintViolation(
       ConstraintViolationException constraintViolationException) {
+    System.out.println("ConstraintViolationException");
 
     List<String> messages = constraintViolationException.getConstraintViolations()
         .stream()
@@ -156,11 +158,35 @@ public class GlobalControllerExceptionHandler {
   @ExceptionHandler(HttpMessageNotReadableException.class)
   public ResponseEntity<ErrorResponse> handleMessageNotReadable(
       HttpMessageNotReadableException httpMessageNotReadableException) {
+    System.out.println("HttpMessageNotReadableException");
+
 
     return ResponseEntity
         .badRequest()
         .body(ErrorResponse.builder()
             .messages(Collections.singletonList(ErrorMessages.MESSAGE_NOT_READABLE))
+            .build());
+  }
+
+  /**
+   * This will be called when any data format is invalid and thrown from a service
+   *
+   * @param invalidDataFormatException caught in controller
+   * @return custom response with descriptive error messages
+   */
+  @ApiResponses({
+      @ApiResponse(responseCode = HttpResponseCodes.BAD_REQUEST,
+          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+              schema = @Schema(implementation = ErrorResponse.class)))
+  })
+  @ExceptionHandler(InvalidDataFormatException.class)
+  public ResponseEntity<ErrorResponse> handleInvalidDataFormatException(
+      InvalidDataFormatException invalidDataFormatException) {
+    System.out.println("InvalidDataFormatException");
+    return ResponseEntity
+        .badRequest()
+        .body(ErrorResponse.builder()
+            .messages(Collections.singletonList(invalidDataFormatException.getMessage()))
             .build());
   }
 

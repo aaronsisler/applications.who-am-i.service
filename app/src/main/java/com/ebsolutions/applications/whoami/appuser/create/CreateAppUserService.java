@@ -3,6 +3,7 @@ package com.ebsolutions.applications.whoami.appuser.create;
 import com.ebsolutions.applications.whoami.appuser.core.AppUser;
 import com.ebsolutions.applications.whoami.appuser.core.AppUserMapper;
 import com.ebsolutions.applications.whoami.appuser.core.AppUserRepository;
+import com.ebsolutions.applications.whoami.appuser.core.EmailAddressValidator;
 import com.ebsolutions.applications.whoami.core.DataStoreException;
 import com.ebsolutions.applications.whoami.core.DuplicateDataException;
 import com.ebsolutions.applications.whoami.core.ErrorMessages;
@@ -20,8 +21,14 @@ import org.springframework.stereotype.Service;
 public class CreateAppUserService {
   private final AppUserRepository repository;
   private final AppUserMapper mapper;
+  private final EmailAddressValidator emailAddressValidator;
 
   public AppUserResponse createAppUser(AppUserCreateRequest request) {
+
+    System.out.println("HERE UP");
+    emailAddressValidator.validate(request.getEmailAddress());
+    System.out.println("HERE DOWN");
+
     try {
       AppUser entity = mapper.toEntity(request);
       AppUser saved = repository.save(entity);

@@ -55,6 +55,24 @@ Feature: Create App User
       | lastName     | 1         | 45        | Johnny                                              | ThisIsToLongOfAValueToBeProvidedToThisSpecificField | johnny.appleseed@gmail.com                                                                                                                                |
       | emailAddress | 1         | 100       | Johnny                                              | Appleseed                                           | ThisIsToLongOfAValueToBeProvidedToThisSpecificFieldThisIsToLongOfAValueToBeProvidedToThisSpecificFieldThisIsToLongOfAValueToBeProvidedToThisSpecificField |
 
+  Scenario Outline: 400 - Creating an app user with invalid email format should fail
+    Given the client provides a create-user request with the following fields:
+      | firstName    | Johnny         |
+      | lastName     | Appleseed      |
+      | emailAddress | <emailAddress> |
+    And the request has a content type of "application/json"
+    When the client submits the create-user request
+    Then the create-user response status should be 400
+    And the create-user response error message should contain "emailAddress must be a well-formed email address"
+
+    Examples:
+      | emailAddress      |
+      | john@             |
+      | not-an-email      |
+      | johnny@@gmail.com |
+      | johnny@@gmail     |
+      | johnny@gmail      |
+
   Scenario: 400 - Creating an app user with malformed JSON should fail
     Given a create-user request with invalid JSON payload
     And the request has a content type of "application/json"
