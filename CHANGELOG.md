@@ -14,7 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.1.0] Base Repo
+## [0.3.0] App User: Create
+
+### Added
+
+- Create User functionality
+- Negative tests for Create User
+
+## [0.2.0] Base Repo
 
 ### Added
 
