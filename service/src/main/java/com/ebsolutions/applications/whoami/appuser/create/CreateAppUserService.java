@@ -25,9 +25,7 @@ public class CreateAppUserService {
 
   public AppUserResponse createAppUser(AppUserCreateRequest request) {
 
-    System.out.println("HERE UP");
     emailAddressValidator.validate(request.getEmailAddress());
-    System.out.println("HERE DOWN");
 
     try {
       AppUser entity = mapper.toEntity(request);
