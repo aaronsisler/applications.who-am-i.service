@@ -91,7 +91,7 @@
         </dependency>
 
         <!-- Required for driver class: org.postgresql.Driver -->
-        <!-- Version: I am not sure yet. I think from my system having it installed -->
+        <!-- Version: Installed on runtime machine -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
