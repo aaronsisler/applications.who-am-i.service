@@ -19,7 +19,7 @@ public class EmailAddressValidator {
    */
   public void validate(@NonNull String rawEmailAddress) throws InvalidDataFormatException {
     if (!STRICT_EMAIL.matcher(rawEmailAddress).matches()) {
-      throw new InvalidDataFormatException(ErrorMessages.EMAIL_FORMAT_INVALID);
+      throw new InvalidDataFormatException(ErrorMessages.EMAIL_FORMAT_INVALID.message());
     }
   }
 }

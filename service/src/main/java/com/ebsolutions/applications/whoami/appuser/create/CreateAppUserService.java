@@ -42,10 +42,10 @@ public class CreateAppUserService {
   private RuntimeException translate(DbActionExecutionException ex) {
     if (ex.getCause() instanceof DuplicateKeyException) {
       return new DuplicateDataException(
-          ErrorMessages.EMAIL_ALREADY_EXISTS,
+          ErrorMessages.EMAIL_ALREADY_EXISTS.message(),
           ex
       );
     }
-    return new DataStoreException(ErrorMessages.APP_USER_NOT_SAVED, ex);
+    return new DataStoreException(ErrorMessages.APP_USER_NOT_SAVED.message(), ex);
   }
 }

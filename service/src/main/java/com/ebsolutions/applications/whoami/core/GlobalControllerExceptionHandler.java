@@ -46,7 +46,7 @@ public class GlobalControllerExceptionHandler {
     return ResponseEntity
         .status(HttpStatus.UNAUTHORIZED)
         .body(ErrorResponse.builder()
-            .messages(Collections.singletonList(ErrorMessages.MISSING_AUTH_N_HEADER))
+            .messages(Collections.singletonList(ErrorMessages.MISSING_AUTH_N_HEADER.message()))
             .build());
   }
 
@@ -164,7 +164,7 @@ public class GlobalControllerExceptionHandler {
     return ResponseEntity
         .badRequest()
         .body(ErrorResponse.builder()
-            .messages(Collections.singletonList(ErrorMessages.MESSAGE_NOT_READABLE))
+            .messages(Collections.singletonList(ErrorMessages.MESSAGE_NOT_READABLE.message()))
             .build());
   }
 
@@ -210,7 +210,7 @@ public class GlobalControllerExceptionHandler {
     return ResponseEntity
         .status(HttpStatus.METHOD_NOT_ALLOWED)
         .body(ErrorResponse.builder()
-            .messages(Collections.singletonList(ErrorMessages.HTTP_METHOD_NOT_ALLOWED))
+            .messages(Collections.singletonList(ErrorMessages.HTTP_METHOD_NOT_ALLOWED.message()))
             .build());
   }
 
@@ -258,7 +258,7 @@ public class GlobalControllerExceptionHandler {
     return ResponseEntity
         .status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
         .body(ErrorResponse.builder()
-            .messages(Collections.singletonList(ErrorMessages.UNSUPPORTED_CONTENT_TYPE))
+            .messages(Collections.singletonList(ErrorMessages.UNSUPPORTED_CONTENT_TYPE.message()))
             .build());
   }
 
@@ -306,7 +306,7 @@ public class GlobalControllerExceptionHandler {
     return ResponseEntity
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
         .body(ErrorResponse.builder()
-            .messages(Collections.singletonList(ErrorMessages.UNEXPECTED_SERVER_ERROR))
+            .messages(Collections.singletonList(ErrorMessages.UNEXPECTED_SERVER_ERROR.message()))
             .build());
   }
 }
