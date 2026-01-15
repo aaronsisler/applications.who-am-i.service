@@ -24,15 +24,8 @@ public class BaseSteps {
   protected MockMvc mockMvc;
   @Autowired
   protected ScenarioContext scenarioContext;
-
   @Autowired
   protected AppUserRepository appUserRepository;
-  //  @Autowired
-  //  protected LocalDateTimeGenerator localDateTimeGenerator;
-  //  @Autowired
-  //  protected UuidGenerator uuidGenerator;
-  //  @Autowired
-  //  protected EmailAddressValidator emailAddressValidator;
 
   protected String normalize(String value) {
     return switch (value) {
