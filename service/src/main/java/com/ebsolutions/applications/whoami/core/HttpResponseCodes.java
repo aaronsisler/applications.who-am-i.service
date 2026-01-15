@@ -1,7 +1,5 @@
 package com.ebsolutions.applications.whoami.core;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 public final class HttpResponseCodes {
   public static final String BAD_REQUEST = "400";
   public static final String UNAUTHORIZED = "401";
@@ -13,6 +11,5 @@ public final class HttpResponseCodes {
   public static final String SERVICE_UNAVAILABLE = "503";
 
   private HttpResponseCodes() {
-    throw new NotImplementedException("Private constructor; not to be instantiated");
   }
 }
