@@ -6,6 +6,25 @@ Feature: Create App User
   Background:
     Given the application is running
 
+#  @Only
+  Scenario: 201 - Creating an app user with all required fields
+    Given the client provides a create-user request with the following fields:
+      | emailAddress | johnny.appleseed@gmail.com |
+      | firstName    | Johnny                     |
+      | lastName     | Appleseed                  |
+    And the request has a content type of "application/json"
+    And the data store is able to save the new user
+    When the client submits the create-user request
+    Then the create-user response status should be 201
+    And the create-user response should have a body
+    And the response body should contain:
+      | emailAddress | johnny.appleseed@gmail.com |
+      | firstName    | Johnny                     |
+      | lastName     | Appleseed                  |
+    And the client facing id should be returned in the response
+    And the correct created at timestamp should be returned in the response
+    And the correct updated at timestamp should be returned in the response
+
   Scenario Outline: 400 - Creating an app user with missing required fields should fail
     Given the client provides a create-user request with the following fields:
       | emailAddress | johnny.appleseed@gmail.com |

@@ -1,8 +1,10 @@
 package com.ebsolutions.applications.whoami.appuser.create;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.when;
 
+import com.ebsolutions.applications.whoami.appuser.core.AppUser;
 import com.ebsolutions.applications.whoami.tooling.BaseSteps;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
@@ -77,5 +79,21 @@ public class CreateAppUserGivenSteps extends BaseSteps {
   @Given("a create-user request with invalid JSON payload")
   public void aCreateUserRequestWithInvalidJSONPayload() {
     scenarioContext.requestPayload.put("taco", "{invalid-json:");
+  }
+
+  @And("the data store is able to save the new user")
+  public void theDataStoreIsAbleToSaveTheNewUser() {
+    AppUser mockedAppUser = AppUser.builder()
+        .userId(MOCKED_UUID)
+        .emailAddress((String) scenarioContext.requestPayload.get("emailAddress"))
+        .firstName((String) scenarioContext.requestPayload.get("firstName"))
+        .lastName((String) scenarioContext.requestPayload.get("lastName"))
+        .createdAt(MOCKED_NOW)
+        .updatedAt(MOCKED_NOW)
+        .build();
+
+    when(appUserRepository
+        .save(argThat(appUser -> appUser.getUserId() == null))
+    ).thenReturn(mockedAppUser);
   }
 }

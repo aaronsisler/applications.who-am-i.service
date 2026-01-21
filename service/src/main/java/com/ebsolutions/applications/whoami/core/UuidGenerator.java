@@ -10,7 +10,7 @@ public class UuidGenerator {
    *
    * @return A randomly generated UUID.
    */
-  public UUID randomUuid() {
+  public UUID generate() {
     return UUID.randomUUID();
   }
 }
