@@ -20,7 +20,7 @@ jobs:
           cache: "maven"
 
       - name: Build Application
-        run: mvn clean package --no-transfer-progress --batch-mode
+        run: mvn clean install --activate-profiles docker --no-transfer-progress --batch-mode
 
       - name: Build Docker image
         run: docker build . --tag who-am-i-service --file service/Dockerfile
