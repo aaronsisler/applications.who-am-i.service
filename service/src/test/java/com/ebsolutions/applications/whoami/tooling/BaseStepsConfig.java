@@ -14,9 +14,6 @@ public class BaseStepsConfig {
 
   @Bean
   ObjectMapper objectMapper() {
-    //    return JsonMapper.builder()
-    //        .addModule(new JavaTimeModule())
-    //        .build();
     return new ObjectMapper().findAndRegisterModules();
   }
 

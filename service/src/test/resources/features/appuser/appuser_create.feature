@@ -6,7 +6,6 @@ Feature: Create App User
   Background:
     Given the application is running
 
-#  @Only
   Scenario: 201 - Creating an app user with all required fields
     Given the client provides a create-user request with the following fields:
       | emailAddress | johnny.appleseed@gmail.com |
@@ -35,6 +34,7 @@ Feature: Create App User
     When the client submits the create-user request
     Then the create-user response status should be 400
     And the create-user response error message should contain "<missingField> must not be null"
+    And the data store was not called to save the new user
 
     Examples:
       | missingField |
@@ -51,6 +51,7 @@ Feature: Create App User
     When the client submits the create-user request
     Then the create-user response status should be 400
     And the create-user response error message should contain "<field> length must be between <minLength> and <maxLength>"
+    And the data store was not called to save the new user
 
     Examples:
       | field        | minLength | maxLength | firstName | lastName  | emailAddress               |
@@ -67,6 +68,7 @@ Feature: Create App User
     When the client submits the create-user request
     Then the create-user response status should be 400
     And the create-user response error message should contain "<field> length must be between <minLength> and <maxLength>"
+    And the data store was not called to save the new user
 
     Examples:
       | field        | minLength | maxLength | firstName                                           | lastName                                            | emailAddress                                                                                                                                              |
@@ -83,6 +85,7 @@ Feature: Create App User
     When the client submits the create-user request
     Then the create-user response status should be 400
     And the create-user response error message should contain "emailAddress must be a well-formed email address"
+    And the data store was not called to save the new user
 
     Examples:
       | emailAddress      |
@@ -98,6 +101,7 @@ Feature: Create App User
     When the client submits the create-user request
     Then the create-user response status should be 400
     And the create-user response error message should contain "Submitted message was not readable"
+    And the data store was not called to save the new user
 
   Scenario: 409 - Creating an app user with an email that already exists should fail
     Given the client provides a create-user request with the following fields:
@@ -118,6 +122,7 @@ Feature: Create App User
     And the request has a content type of "text/plain"
     When the client submits the create-user request
     Then the create-user response status should be 415
+    And the data store was not called to save the new user
 
   Scenario: 503 - Data store failure while creating an app user should return server error
     Given the client provides a create-user request with the following fields:

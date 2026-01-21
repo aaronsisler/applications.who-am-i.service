@@ -1,6 +1,9 @@
 package com.ebsolutions.applications.whoami.appuser.create;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 import com.ebsolutions.applications.whoami.tooling.BaseSteps;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -111,5 +114,10 @@ public class CreateAppUserThenSteps extends BaseSteps {
     assertThat(updatedAt)
         .as("Value for key 'updatedAt'")
         .isEqualTo(MOCKED_NOW);
+  }
+
+  @And("the data store was not called to save the new user")
+  public void theDataStoreWasNotCalledToSaveTheNewUser() {
+    verify(appUserRepository, never()).save(any());
   }
 }

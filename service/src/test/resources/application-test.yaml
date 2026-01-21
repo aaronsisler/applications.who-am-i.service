@@ -9,11 +9,11 @@ management:
     env:
       enabled: true
 # Used to disable logging during test run
-#logging:
-#  level:
-#    root: OFF
-#    org:
-#      springframework: OFF
+logging:
+  level:
+    root: OFF
+    org:
+      springframework: OFF
 spring:
   autoconfigure:
     exclude:
@@ -23,6 +23,7 @@ spring:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 springdoc:
   api-docs:
+    # Disable Swagger API docs generation during tests
     enabled: false
 # Everything above these dashes will be applied to all profiles
 ---
