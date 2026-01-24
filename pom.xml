@@ -27,10 +27,6 @@
 
         <java.version>21</java.version>
 
-        <!--        <sonar.coverage.jacoco.xmlReportPaths>-->
-        <!--            service/target/site/jacoco/jacoco.xml-->
-        <!--        </sonar.coverage.jacoco.xmlReportPaths>-->
-
         <!-- Versions: Plugins -->
         <checkstyle-maven-plugin.version>3.6.0</checkstyle-maven-plugin.version>
         <exec-maven-plugin.version>3.6.2</exec-maven-plugin.version>
