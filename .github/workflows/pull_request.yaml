@@ -28,6 +28,7 @@ jobs:
       - name: SonarQube Scan
         run: |
           mvn --batch-mode sonar:sonar --no-transfer-progress \
-          -Dsonar.token=${{ env.SONAR_TOKEN }}
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.pullrequest.key=${{ github.event.pull_request.number }} \
+            -Dsonar.pullrequest.branch=${{ github.head_ref }} \
+            -Dsonar.pullrequest.base=${{ github.base_ref }}
