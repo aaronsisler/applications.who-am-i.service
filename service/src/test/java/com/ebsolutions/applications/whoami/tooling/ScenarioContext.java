@@ -13,6 +13,7 @@ public class ScenarioContext {
   public Map<String, Object> requestPayload = new HashMap<>();
 
   public MockHttpServletResponse latestResponse;
+  public Map<String, Object> responseBody = new HashMap<>();
 
   public void reset() {
     requestPayload = new HashMap<>();

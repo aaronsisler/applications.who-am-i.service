@@ -28,7 +28,10 @@ jobs:
       - name: SonarQube Scan
         run: |
           mvn --batch-mode sonar:sonar --no-transfer-progress \
-          -Dsonar.token=${{ env.SONAR_TOKEN }}
+            -Dsonar.organization=aaronsisler \
+            -Dsonar.projectKey=aaronsisler_applications.who-am-i.service \
+            -Dsonar.token="$SONAR_TOKEN" \
+            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 #

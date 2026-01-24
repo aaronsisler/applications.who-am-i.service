@@ -21,6 +21,9 @@ spring:
       - org.springframework.boot.autoconfigure.data.jdbc.JdbcRepositoriesAutoConfiguration
       # This is excluded to prevent autoconfiguration of DataSource during tests
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-
+springdoc:
+  api-docs:
+    # Disable Swagger API docs generation during tests
+    enabled: false
 # Everything above these dashes will be applied to all profiles
 ---

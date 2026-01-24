@@ -16,11 +16,7 @@
     <properties>
         <start-class>com.ebsolutions.applications.whoami.Application</start-class>
 
-        <!-- Sonar Cloud or SonarQube settings -->
-        <!-- Sources and binaries -->
-        <sonar.sources>src/main/java</sonar.sources>
-        <sonar.java.binaries>target/classes</sonar.java.binaries>
-        <!-- Exclusions -->
+        <!-- Sonar Exclusions -->
         <sonar.exclusions>
             **/Application.java,
             **/config/*,

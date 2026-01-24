@@ -19,7 +19,7 @@ public class AppUserPrePersistenceHandler implements BeforeConvertCallback<AppUs
   public AppUser onBeforeConvert(@NonNull AppUser entity) {
     // Ensure userId is set
     if (entity.getUserId() == null) {
-      entity.setUserId(uuidGenerator.randomUuid());
+      entity.setUserId(uuidGenerator.generate());
     }
 
     // Set timestamps

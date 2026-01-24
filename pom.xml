@@ -26,16 +26,7 @@
         <revision>0.3.0</revision>
 
         <java.version>21</java.version>
-        <sonar.organization>aaronsisler</sonar.organization>
-        <sonar.projectKey>aaronsisler_applications.who-am-i.service</sonar.projectKey>
-        <sonar.projectName>Who Am I Service</sonar.projectName>
-        <sonar.projectDescription>A service that provides AuthN and AuthZ information about the caller.
-        </sonar.projectDescription>
 
-        <!-- Exclusions -->
-        <sonar.exclusions>
-            .github/**
-        </sonar.exclusions>
         <!-- Versions: Plugins -->
         <checkstyle-maven-plugin.version>3.6.0</checkstyle-maven-plugin.version>
         <exec-maven-plugin.version>3.6.2</exec-maven-plugin.version>
