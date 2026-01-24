@@ -20,11 +20,10 @@
         <sonar.organization>aaronsisler</sonar.organization>
         <sonar.projectKey>aaronsisler_applications.who-am-i.service</sonar.projectKey>
         <sonar.projectName>Who Am I Service</sonar.projectName>
-        <sonar.projectDescription>A service that provides AuthN and AuthZ information about the caller.
+        <sonar.projectDescription>
+            A service that provides AuthN and AuthZ information about the caller.
         </sonar.projectDescription>
-        <sonar.coverage.jacoco.xmlReportPaths>
-            target/site/jacoco/jacoco.xml
-        </sonar.coverage.jacoco.xmlReportPaths>
+
         <!-- Exclusions -->
         <sonar.exclusions>
             **/Application.java,
