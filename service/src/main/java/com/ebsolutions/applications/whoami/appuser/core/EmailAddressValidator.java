@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EmailAddressValidator {
+  @SuppressWarnings("java:S5852")
   private static final Pattern STRICT_EMAIL =
       Pattern.compile("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$");
 

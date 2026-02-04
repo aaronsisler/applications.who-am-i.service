@@ -4,7 +4,6 @@ import com.ebsolutions.applications.whoami.model.ErrorResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.ConstraintViolationException;
 import java.util.Collections;
 import java.util.List;
@@ -34,11 +33,9 @@ public class GlobalControllerExceptionHandler {
    * @param missingRequestHeaderException caught in controller
    * @return custom response with descriptive error messages
    */
-  @ApiResponses({
-      @ApiResponse(responseCode = HttpResponseCodes.UNAUTHORIZED,
-          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-              schema = @Schema(implementation = ErrorResponse.class)))
-  })
+  @ApiResponse(responseCode = HttpResponseCodes.UNAUTHORIZED,
+      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(MissingRequestHeaderException.class)
   public ResponseEntity<ErrorResponse> handleMissingHeader(
       MissingRequestHeaderException missingRequestHeaderException) {
@@ -58,11 +55,9 @@ public class GlobalControllerExceptionHandler {
    * @param exception caught in controller
    * @return custom response with descriptive error messages
    */
-  @ApiResponses({
-      @ApiResponse(responseCode = HttpResponseCodes.FORBIDDEN,
-          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-              schema = @Schema(implementation = ErrorResponse.class)))
-  })
+  @ApiResponse(responseCode = HttpResponseCodes.FORBIDDEN,
+      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(ResponseStatusException.class)
   public ResponseEntity<ErrorResponse> handleForbidden(
       ResponseStatusException exception) {
@@ -87,15 +82,12 @@ public class GlobalControllerExceptionHandler {
    * @param methodArgumentNotValidException caught in controller
    * @return custom response with descriptive error messages
    */
-  @ApiResponses({
-      @ApiResponse(responseCode = HttpResponseCodes.BAD_REQUEST,
-          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-              schema = @Schema(implementation = ErrorResponse.class)))
-  })
+  @ApiResponse(responseCode = HttpResponseCodes.BAD_REQUEST,
+      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(
       MethodArgumentNotValidException methodArgumentNotValidException) {
-    System.out.println("MethodArgumentNotValidException");
 
     List<String> messages = methodArgumentNotValidException.getBindingResult()
         .getAllErrors()
@@ -122,15 +114,12 @@ public class GlobalControllerExceptionHandler {
    * @param constraintViolationException caught in controller
    * @return custom response with descriptive error messages
    */
-  @ApiResponses({
-      @ApiResponse(responseCode = HttpResponseCodes.BAD_REQUEST,
-          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-              schema = @Schema(implementation = ErrorResponse.class)))
-  })
+  @ApiResponse(responseCode = HttpResponseCodes.BAD_REQUEST,
+      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<ErrorResponse> handleConstraintViolation(
       ConstraintViolationException constraintViolationException) {
-    System.out.println("ConstraintViolationException");
 
     List<String> messages = constraintViolationException.getConstraintViolations()
         .stream()
@@ -150,16 +139,12 @@ public class GlobalControllerExceptionHandler {
    * @param httpMessageNotReadableException caught in controller
    * @return custom response with descriptive error messages
    */
-  @ApiResponses({
-      @ApiResponse(responseCode = HttpResponseCodes.BAD_REQUEST,
-          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-              schema = @Schema(implementation = ErrorResponse.class)))
-  })
+  @ApiResponse(responseCode = HttpResponseCodes.BAD_REQUEST,
+      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(HttpMessageNotReadableException.class)
   public ResponseEntity<ErrorResponse> handleMessageNotReadable(
       HttpMessageNotReadableException httpMessageNotReadableException) {
-    System.out.println("HttpMessageNotReadableException");
-
 
     return ResponseEntity
         .badRequest()
@@ -174,15 +159,12 @@ public class GlobalControllerExceptionHandler {
    * @param invalidDataFormatException caught in controller
    * @return custom response with descriptive error messages
    */
-  @ApiResponses({
-      @ApiResponse(responseCode = HttpResponseCodes.BAD_REQUEST,
-          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-              schema = @Schema(implementation = ErrorResponse.class)))
-  })
+  @ApiResponse(responseCode = HttpResponseCodes.BAD_REQUEST,
+      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(InvalidDataFormatException.class)
   public ResponseEntity<ErrorResponse> handleInvalidDataFormatException(
       InvalidDataFormatException invalidDataFormatException) {
-    System.out.println("InvalidDataFormatException");
     return ResponseEntity
         .badRequest()
         .body(ErrorResponse.builder()
@@ -198,11 +180,9 @@ public class GlobalControllerExceptionHandler {
    * @param httpRequestMethodNotSupportedException caught in controller
    * @return custom response with descriptive error messages
    */
-  @ApiResponses({
-      @ApiResponse(responseCode = HttpResponseCodes.METHOD_NOT_ALLOWED,
-          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-              schema = @Schema(implementation = ErrorResponse.class)))
-  })
+  @ApiResponse(responseCode = HttpResponseCodes.METHOD_NOT_ALLOWED,
+      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
   public ResponseEntity<ErrorResponse> handleMethodNotSupported(
       HttpRequestMethodNotSupportedException httpRequestMethodNotSupportedException) {
@@ -222,11 +202,9 @@ public class GlobalControllerExceptionHandler {
    * @param duplicateDataException caught in controller
    * @return custom response with descriptive error messages
    */
-  @ApiResponses({
-      @ApiResponse(responseCode = HttpResponseCodes.CONFLICT,
-          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-              schema = @Schema(implementation = ErrorResponse.class)))
-  })
+  @ApiResponse(responseCode = HttpResponseCodes.CONFLICT,
+      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(DuplicateDataException.class)
   public ResponseEntity<ErrorResponse> handleDuplicateData(
       DuplicateDataException duplicateDataException) {
@@ -246,11 +224,9 @@ public class GlobalControllerExceptionHandler {
    * @param httpMediaTypeNotSupportedException caught in controller
    * @return custom response with descriptive error messages
    */
-  @ApiResponses({
-      @ApiResponse(responseCode = HttpResponseCodes.UNSUPPORTED_MEDIA_TYPE,
-          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-              schema = @Schema(implementation = ErrorResponse.class)))
-  })
+  @ApiResponse(responseCode = HttpResponseCodes.UNSUPPORTED_MEDIA_TYPE,
+      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
   public ResponseEntity<ErrorResponse> handleUnsupportedMedia(
       HttpMediaTypeNotSupportedException httpMediaTypeNotSupportedException) {
@@ -270,11 +246,9 @@ public class GlobalControllerExceptionHandler {
    * @param dataStoreException caught in controller
    * @return custom response with descriptive error messages
    */
-  @ApiResponses({
-      @ApiResponse(responseCode = HttpResponseCodes.SERVICE_UNAVAILABLE,
-          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-              schema = @Schema(implementation = ErrorResponse.class)))
-  })
+  @ApiResponse(responseCode = HttpResponseCodes.SERVICE_UNAVAILABLE,
+      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(DataStoreException.class)
   public ResponseEntity<ErrorResponse> handleDataStoreUnavailable(
       DataStoreException dataStoreException) {
@@ -294,11 +268,9 @@ public class GlobalControllerExceptionHandler {
    * @param exception caught in controller
    * @return custom response with descriptive error messages
    */
-  @ApiResponses({
-      @ApiResponse(responseCode = HttpResponseCodes.INTERNAL_SERVER_ERROR,
-          content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-              schema = @Schema(implementation = ErrorResponse.class)))
-  })
+  @ApiResponse(responseCode = HttpResponseCodes.INTERNAL_SERVER_ERROR,
+      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleGeneric(Exception exception) {
     log.error("Server Error:", exception);

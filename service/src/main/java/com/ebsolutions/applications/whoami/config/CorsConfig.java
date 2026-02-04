@@ -10,6 +10,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 @Component
 public class CorsConfig implements CorsConfigurationSource {
+  @SuppressWarnings("java:S1313") // Ignoring IP addresses from common locations
   private static final List<String> ALLOWED_ORIGINS =
       List.of(
           "http://localhost:3000",

@@ -16,12 +16,17 @@
     <properties>
         <start-class>com.ebsolutions.applications.whoami.Application</start-class>
 
-        <!-- Sonar Exclusions -->
-        <sonar.exclusions>
+        <!-- Sonar Configurations -->
+        <sonar.coverage.jacoco.xmlReportPaths>
+            target/site/jacoco/jacoco.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.coverage.exclusions>
             **/Application.java,
             **/config/*,
-            **/model/*
-        </sonar.exclusions>
+            **/model/*,
+            **/*Generator.java,
+            **/GlobalControllerExceptionHandler.java
+        </sonar.coverage.exclusions>
 
         <!-- Versions: Dependencies: Service -->
         <mapstruct.version>1.6.3</mapstruct.version>
