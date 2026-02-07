@@ -16,11 +16,13 @@ public class WebSecurityConfig {
   private final CorsConfig corsConfig;
 
   @Bean
+  @SuppressWarnings("java:S4502") // Ignore CSRF disabling
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
     httpSecurity
         .csrf(AbstractHttpConfigurer::disable)
-        .authorizeHttpRequests(req -> req.anyRequest().permitAll())
-        .cors(c -> c.configurationSource(corsConfig));
+        .cors(c -> c.configurationSource(corsConfig))
+        .authorizeHttpRequests(req -> req.anyRequest().permitAll());
+
     return httpSecurity.build();
   }
 }

@@ -1,6 +1,7 @@
 package com.ebsolutions.applications.whoami.appuser.create;
 
 import com.ebsolutions.applications.whoami.appuser.core.AppUserBaseController;
+import com.ebsolutions.applications.whoami.config.ControllerPathMappings;
 import com.ebsolutions.applications.whoami.model.AppUserCreateRequest;
 import com.ebsolutions.applications.whoami.model.AppUserResponse;
 import jakarta.validation.Valid;
@@ -25,7 +26,7 @@ public class CreateAppUserController extends AppUserBaseController {
     AppUserResponse appUserResponse = createAppUserService.createAppUser(appUserCreateRequest);
 
     return ResponseEntity
-        .created(URI.create(REQUEST_MAPPING_BASE_PATH + "/" + appUserResponse.getUserId()))
+        .created(URI.create(ControllerPathMappings.APP_USERS + "/" + appUserResponse.getUserId()))
         .body(appUserResponse);
   }
 }
