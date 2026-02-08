@@ -14,13 +14,6 @@ logging:
     root: OFF
     org:
       springframework: OFF
-spring:
-  autoconfigure:
-    exclude:
-      # This is excluded to prevent autoconfiguration of JDBC repositories during tests
-      - org.springframework.boot.autoconfigure.data.jdbc.JdbcRepositoriesAutoConfiguration
-      # This is excluded to prevent autoconfiguration of DataSource during tests
-      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 springdoc:
   api-docs:
     # Disable Swagger API docs generation during tests

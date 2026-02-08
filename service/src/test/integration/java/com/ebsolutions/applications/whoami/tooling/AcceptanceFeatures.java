@@ -11,10 +11,10 @@ import org.junit.platform.suite.api.Suite;
 
 @Suite
 @IncludeEngines("cucumber")
-@SelectPackages("features")
+@SelectPackages("features.acceptance")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.ebsolutions.applications.whoami")
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty")
 //@ConfigurationParameter(key = FILTER_TAGS_PROPERTY_NAME, value = "@Only")
 @ConfigurationParameter(key = FILTER_TAGS_PROPERTY_NAME, value = "not @Ignore")
-public class MockedIntegrationFeatures {
+public class AcceptanceFeatures {
 }

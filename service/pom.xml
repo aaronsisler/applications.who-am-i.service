@@ -287,14 +287,14 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Used for running the Cucumber feature tests -->
+            <!-- Used for running the integration and acceptance tests -->
             <!-- Version: Parent POM - Plugin Management -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>mocked-integration-tests</id>
+                        <id>integration-tests</id>
                         <goals>
                             <goal>integration-test</goal>
                             <goal>verify</goal>
@@ -312,10 +312,36 @@
                             <testFailureIgnore>false</testFailureIgnore>
                             <systemPropertyVariables>
                                 <!-- This triggers the correct application-test.yaml -->
-                                <spring.profiles.active>test</spring.profiles.active>
+                                <spring.profiles.active>integration</spring.profiles.active>
                             </systemPropertyVariables>
                             <includes>
-                                <include>**/MockedIntegrationFeatures.java</include>
+                                <include>**/IntegrationTestRunner.java</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>acceptance-tests</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <!--suppress UnresolvedMavenProperty-->
+                            <argLine>
+                                <!-- Used to suppress warnings during test running -->
+                                -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
+                                <!-- Used to suppress warnings during test running -->
+                                -Xshare:off
+                                <!-- This comes from the JaCoCo plugin -->
+                                ${failsafeJacocoAgent}
+                            </argLine>
+                            <testFailureIgnore>false</testFailureIgnore>
+                            <systemPropertyVariables>
+                                <!-- This triggers the correct application-test.yaml -->
+                                <spring.profiles.active>acceptance</spring.profiles.active>
+                            </systemPropertyVariables>
+                            <includes>
+                                <include>**/AcceptanceTestRunner.java</include>
                             </includes>
                         </configuration>
                     </execution>
