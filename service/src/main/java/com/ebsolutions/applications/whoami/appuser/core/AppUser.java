@@ -1,6 +1,6 @@
 package com.ebsolutions.applications.whoami.appuser.core;
 
-import com.ebsolutions.applications.whoami.core.PersistedEntity;
+import com.ebsolutions.applications.whoami.core.persistence.PersistedEntity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;

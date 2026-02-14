@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.core;
+package com.ebsolutions.applications.whoami.core.exception;
 
 import org.jspecify.annotations.NonNull;
 

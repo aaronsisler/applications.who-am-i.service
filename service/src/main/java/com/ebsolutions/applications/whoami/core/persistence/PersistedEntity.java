@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.core;
+package com.ebsolutions.applications.whoami.core.persistence;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

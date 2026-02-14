@@ -1,5 +1,7 @@
-package com.ebsolutions.applications.whoami.core;
+package com.ebsolutions.applications.whoami.core.exception;
 
+import com.ebsolutions.applications.whoami.core.ErrorMessages;
+import com.ebsolutions.applications.whoami.core.HttpResponseCodes;
 import com.ebsolutions.applications.whoami.model.ErrorResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

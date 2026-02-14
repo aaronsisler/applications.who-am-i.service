@@ -1,7 +1,7 @@
 package com.ebsolutions.applications.whoami.appuser.core;
 
 import com.ebsolutions.applications.whoami.core.ErrorMessages;
-import com.ebsolutions.applications.whoami.core.InvalidDataFormatException;
+import com.ebsolutions.applications.whoami.core.exception.InvalidDataFormatException;
 import java.util.regex.Pattern;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Component;

@@ -1,5 +1,7 @@
-package com.ebsolutions.applications.whoami.core;
+package com.ebsolutions.applications.whoami.core.persistence;
 
+import com.ebsolutions.applications.whoami.core.generator.LocalDateTimeGenerator;
+import com.ebsolutions.applications.whoami.core.generator.UuidGenerator;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;

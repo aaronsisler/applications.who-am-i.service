@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.core;
+package com.ebsolutions.applications.whoami.core.generator;
 
 import java.util.UUID;
 import org.springframework.stereotype.Component;
