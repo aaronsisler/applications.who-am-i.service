@@ -1,4 +1,4 @@
-Feature: Acceptance - Create App User
+Feature: Create App User - Acceptance
 
   Background:
     Given the application is running

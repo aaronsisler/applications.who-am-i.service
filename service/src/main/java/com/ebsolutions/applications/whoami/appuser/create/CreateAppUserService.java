@@ -7,6 +7,7 @@ import com.ebsolutions.applications.whoami.appuser.core.EmailAddressValidator;
 import com.ebsolutions.applications.whoami.core.DataStoreException;
 import com.ebsolutions.applications.whoami.core.DuplicateDataException;
 import com.ebsolutions.applications.whoami.core.ErrorMessages;
+import com.ebsolutions.applications.whoami.core.PrePersistenceHandler;
 import com.ebsolutions.applications.whoami.model.AppUserCreateRequest;
 import com.ebsolutions.applications.whoami.model.AppUserResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class CreateAppUserService {
   private final AppUserRepository repository;
   private final AppUserMapper mapper;
   private final EmailAddressValidator emailAddressValidator;
+  private final PrePersistenceHandler<AppUser> appUserPrePersistenceHandler;
 
   public AppUserResponse createAppUser(AppUserCreateRequest request) {
 
@@ -29,7 +31,8 @@ public class CreateAppUserService {
 
     try {
       AppUser entity = mapper.toEntity(request);
-      AppUser saved = repository.save(entity);
+      AppUser preProcessedEntity = appUserPrePersistenceHandler.onBeforePersist(entity);
+      AppUser saved = repository.save(preProcessedEntity);
 
       return mapper.toDto(saved);
     } catch (DbActionExecutionException ex) {

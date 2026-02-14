@@ -6,6 +6,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import com.ebsolutions.applications.whoami.support.StepsContext;
+import com.ebsolutions.applications.whoami.support.TestFixtures;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.cucumber.datatable.DataTable;
@@ -55,7 +56,7 @@ public class CreateAppUserThenStepsContext extends StepsContext {
     assertThat(scenarioContext.responseBody.get("userId"))
         .as("Value for key 'userId'")
         .isNotNull()
-        .hasToString(String.valueOf(MOCKED_UUID));
+        .hasToString(String.valueOf(TestFixtures.MOCKED_UUID));
   }
 
   @And("the create-user response should have a body")
@@ -90,7 +91,7 @@ public class CreateAppUserThenStepsContext extends StepsContext {
 
     assertThat(createdAt)
         .as("Value for key 'createdAt'")
-        .isEqualTo(MOCKED_NOW);
+        .isEqualTo(TestFixtures.MOCKED_NOW);
   }
 
   @And("the correct updated at timestamp should be returned in the response")
@@ -113,7 +114,7 @@ public class CreateAppUserThenStepsContext extends StepsContext {
 
     assertThat(updatedAt)
         .as("Value for key 'updatedAt'")
-        .isEqualTo(MOCKED_NOW);
+        .isEqualTo(TestFixtures.MOCKED_NOW);
   }
 
   @And("the data store was not called to save the new user")
