@@ -1,4 +1,4 @@
-Feature: Application Health
+Feature: Application Info - Integration
 
   Scenario: Application status and build information is made available through default endpoints
     Given the application is running

@@ -1,4 +1,4 @@
-Feature: Create App User -Integration
+Feature: Create App User - Integration
 
   Scenario Outline: Missing required fields returns 400
     Given the client provides a create-user request with the following fields:
