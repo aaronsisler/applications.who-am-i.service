@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.tooling;
+package com.ebsolutions.applications.whoami.support;
 
 import com.ebsolutions.applications.whoami.appuser.core.AppUserRepository;
 import com.ebsolutions.applications.whoami.core.LocalDateTimeGenerator;
@@ -17,8 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 @CucumberContextConfiguration
-@Import(BaseStepsConfig.class)
-public class BaseSteps {
+@Import(StepContextConfig.class)
+public class StepsContext {
   protected static final String BLANK_STRING_IDENTIFIER = "<blank>";
   protected static final String NULL_STRING_IDENTIFIER = "<null>";
   protected static final UUID MOCKED_UUID = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");

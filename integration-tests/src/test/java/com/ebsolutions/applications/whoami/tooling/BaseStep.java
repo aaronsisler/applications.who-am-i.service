@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.tooling;
+package com.ebsolutions.applications.whoami.support;
 
 import com.ebsolutions.applications.whoami.config.TestConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;

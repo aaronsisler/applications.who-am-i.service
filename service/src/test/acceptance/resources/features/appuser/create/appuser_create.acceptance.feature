@@ -1,4 +1,4 @@
-Feature: Create App User (Acceptance)
+Feature: Acceptance - Create App User
 
   Background:
     Given the application is running
@@ -19,14 +19,14 @@ Feature: Create App User (Acceptance)
     And createdAt and updatedAt timestamps should be returned
     And the app user should be persisted in the data store
 
-  Scenario: Unsupported content type returns 415
-    Given the client provides a valid create-user request
-    And the request has content type "text/plain"
-    When the client submits the request
-    Then the response status should be 415
+  Scenario: Duplicate email returns 409
+    Given an app user already exists with email "test@example.com"
+    When the client submits a create-user request with email "test@example.com"
+    Then the response status should be 409
+    And the error message should contain "Email address already exists"
 
-  Scenario: Database unavailable returns 503
+  Scenario: Database unavailable returns 500
     Given the database is unavailable
     When the client submits a valid create-user request
-    Then the response status should be 503
+    Then the response status should be 500
     And the error message should contain "App user cannot be saved"

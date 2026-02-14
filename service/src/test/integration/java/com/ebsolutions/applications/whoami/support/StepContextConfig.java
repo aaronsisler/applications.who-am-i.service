@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.tooling;
+package com.ebsolutions.applications.whoami.support;
 
 import com.ebsolutions.applications.whoami.appuser.core.AppUserRepository;
 import com.ebsolutions.applications.whoami.core.LocalDateTimeGenerator;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 
 
 @TestConfiguration
-public class BaseStepsConfig {
+public class StepContextConfig {
 
   @Bean
   ObjectMapper objectMapper() {
@@ -21,7 +21,7 @@ public class BaseStepsConfig {
   LocalDateTimeGenerator localDateTimeGenerator() {
     LocalDateTimeGenerator mock = Mockito.mock(LocalDateTimeGenerator.class);
 
-    Mockito.when(mock.now()).thenReturn(BaseSteps.MOCKED_NOW);
+    Mockito.when(mock.now()).thenReturn(StepsContext.MOCKED_NOW);
 
     return mock;
   }
@@ -30,7 +30,7 @@ public class BaseStepsConfig {
   UuidGenerator uuidGenerator() {
     UuidGenerator mock = Mockito.mock(UuidGenerator.class);
 
-    Mockito.when(mock.generate()).thenReturn(BaseSteps.MOCKED_UUID);
+    Mockito.when(mock.generate()).thenReturn(StepsContext.MOCKED_UUID);
 
     return mock;
   }

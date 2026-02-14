@@ -5,7 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-import com.ebsolutions.applications.whoami.tooling.BaseSteps;
+import com.ebsolutions.applications.whoami.support.StepsContext;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.cucumber.datatable.DataTable;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class CreateAppUserThenSteps extends BaseSteps {
+public class CreateAppUserThenStepsContext extends StepsContext {
   @And("the response body should contain:")
   public void theResponseBodyShouldContain(DataTable dataTable) {
     // expected values from feature file

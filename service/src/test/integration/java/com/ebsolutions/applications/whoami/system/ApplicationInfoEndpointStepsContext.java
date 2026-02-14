@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.tooling;
+package com.ebsolutions.applications.whoami.system;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import com.ebsolutions.applications.whoami.config.UriConstants;
 import com.ebsolutions.applications.whoami.model.ApplicationInfo;
 import com.ebsolutions.applications.whoami.model.BuildMetadata;
+import com.ebsolutions.applications.whoami.support.StepsContext;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -15,7 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MvcResult;
 
-public class InfoActuatorSteps extends BaseSteps {
+public class ApplicationInfoEndpointStepsContext extends StepsContext {
   protected MvcResult result;
 
   @When("the info endpoint is invoked")

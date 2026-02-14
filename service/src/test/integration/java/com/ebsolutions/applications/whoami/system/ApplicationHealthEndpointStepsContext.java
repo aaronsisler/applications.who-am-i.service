@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.tooling;
+package com.ebsolutions.applications.whoami.system;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -6,9 +6,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.ebsolutions.applications.whoami.config.UriConstants;
+import com.ebsolutions.applications.whoami.support.StepsContext;
 import io.cucumber.java.en.Given;
 
-public class ApplicationRunningSteps extends BaseSteps {
+public class ApplicationHealthEndpointStepsContext extends StepsContext {
 
   @Given("the application is running")
   public void theApplicationIsRunning() throws Exception {
@@ -16,5 +17,4 @@ public class ApplicationRunningSteps extends BaseSteps {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.status", is("UP")));
   }
-
 }
