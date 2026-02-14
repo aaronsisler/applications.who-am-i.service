@@ -5,8 +5,6 @@ import com.ebsolutions.applications.whoami.core.LocalDateTimeGenerator;
 import com.ebsolutions.applications.whoami.core.UuidGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.spring.CucumberContextConfiguration;
-import java.time.LocalDateTime;
-import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,11 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 @CucumberContextConfiguration
 @Import(StepContextConfig.class)
 public class StepsContext {
-  protected static final String BLANK_STRING_IDENTIFIER = "<blank>";
-  protected static final String NULL_STRING_IDENTIFIER = "<null>";
-  protected static final UUID MOCKED_UUID = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
-  protected static final LocalDateTime MOCKED_NOW = LocalDateTime.of(2024, 1, 1, 12, 0);
-
   @Autowired
   protected ObjectMapper objectMapper;
   @Autowired
@@ -39,8 +32,8 @@ public class StepsContext {
 
   protected String normalize(String value) {
     return switch (value) {
-      case BLANK_STRING_IDENTIFIER -> StringUtils.EMPTY;
-      case NULL_STRING_IDENTIFIER -> null;
+      case TestFixtures.BLANK_STRING_IDENTIFIER -> StringUtils.EMPTY;
+      case TestFixtures.NULL_STRING_IDENTIFIER -> null;
       default -> value;
     };
   }

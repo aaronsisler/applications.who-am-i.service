@@ -21,7 +21,7 @@ public class StepContextConfig {
   LocalDateTimeGenerator localDateTimeGenerator() {
     LocalDateTimeGenerator mock = Mockito.mock(LocalDateTimeGenerator.class);
 
-    Mockito.when(mock.now()).thenReturn(StepsContext.MOCKED_NOW);
+    Mockito.when(mock.now()).thenReturn(TestFixtures.MOCKED_NOW);
 
     return mock;
   }
@@ -30,7 +30,7 @@ public class StepContextConfig {
   UuidGenerator uuidGenerator() {
     UuidGenerator mock = Mockito.mock(UuidGenerator.class);
 
-    Mockito.when(mock.generate()).thenReturn(StepsContext.MOCKED_UUID);
+    Mockito.when(mock.generate()).thenReturn(TestFixtures.MOCKED_UUID);
 
     return mock;
   }
