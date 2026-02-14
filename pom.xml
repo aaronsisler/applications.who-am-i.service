@@ -146,7 +146,7 @@
                         </execution>
                     </executions>
                 </plugin>
-                <!-- Used to add the integration test source and resource directories to the project -->
+                <!-- Used to add the different test source and resource directories to the project -->
                 <!-- Version: Explicit -->
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -252,7 +252,6 @@
                         </execution>
                     </executions>
                 </plugin>
-
                 <!-- Used for running JUnit tests that link to Cucumber feature files -->
                 <!-- Version: Explicit -->
                 <plugin>
@@ -273,10 +272,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>${maven-failsafe-plugin.version}</version>
-                    <configuration>
-                        <!-- I am not sure why this is set to true but false in children executions -->
-                        <testFailureIgnore>true</testFailureIgnore>
-                    </configuration>
                 </plugin>
                 <!-- Used to execute commands on the command line -->
                 <!-- For this case, it spins up a clean docker environment for running tests-->
