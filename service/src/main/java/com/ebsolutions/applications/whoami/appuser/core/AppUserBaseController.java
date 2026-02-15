@@ -1,9 +1,9 @@
 package com.ebsolutions.applications.whoami.appuser.core;
 
-import com.ebsolutions.applications.whoami.config.ControllerPathMappings;
+import com.ebsolutions.applications.whoami.config.ApiPaths;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequestMapping(ControllerPathMappings.APP_USERS)
+@RequestMapping(ApiPaths.APP_USERS_PATH)
 public abstract class AppUserBaseController {
   /**
    * This abstract class should not be instantiated

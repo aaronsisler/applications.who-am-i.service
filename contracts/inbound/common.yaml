@@ -7,6 +7,25 @@ servers:
 paths: { }
 components:
   schemas:
+    BaseResourceResponse:
+      type: object
+      required:
+        - externalId
+        - createdAt
+        - updatedAt
+      properties:
+        externalId:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-01-02T12:00:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-01-02T12:00:00Z'
     ErrorResponse:
       type: object
       properties:

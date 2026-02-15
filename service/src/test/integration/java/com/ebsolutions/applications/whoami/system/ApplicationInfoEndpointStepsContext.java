@@ -3,7 +3,7 @@ package com.ebsolutions.applications.whoami.system;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-import com.ebsolutions.applications.whoami.config.UriConstants;
+import com.ebsolutions.applications.whoami.config.ApiPaths;
 import com.ebsolutions.applications.whoami.model.ApplicationInfo;
 import com.ebsolutions.applications.whoami.model.BuildMetadata;
 import com.ebsolutions.applications.whoami.support.StepsContext;
@@ -21,7 +21,7 @@ public class ApplicationInfoEndpointStepsContext extends StepsContext {
 
   @When("the info endpoint is invoked")
   public void theInfoEndpointIsInvoked() throws Exception {
-    result = mockMvc.perform(get(UriConstants.INFO_CHECK_URI)).andReturn();
+    result = mockMvc.perform(get(ApiPaths.APPLICATION_INFO_PATH)).andReturn();
   }
 
   @Then("the correct info response is returned")
