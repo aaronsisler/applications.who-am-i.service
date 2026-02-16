@@ -1,8 +1,6 @@
 package com.ebsolutions.applications.whoami.support;
 
 import com.ebsolutions.applications.whoami.appuser.core.AppUserRepository;
-import com.ebsolutions.applications.whoami.core.generator.LocalDateTimeGenerator;
-import com.ebsolutions.applications.whoami.core.generator.UuidGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.apache.commons.lang3.StringUtils;
@@ -23,10 +21,6 @@ public class StepsContext {
   protected MockMvc mockMvc;
   @Autowired
   protected ScenarioContext scenarioContext;
-  @Autowired
-  protected LocalDateTimeGenerator localDateTimeGenerator;
-  @Autowired
-  protected UuidGenerator uuidGenerator;
   @Autowired
   protected AppUserRepository appUserRepository;
 

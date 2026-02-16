@@ -1,6 +1,10 @@
 package com.ebsolutions.applications.whoami.appuser.create;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import com.ebsolutions.applications.whoami.support.StepsContext;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -17,8 +21,8 @@ public class CreateAppUserGivenStepsContext extends StepsContext {
     Mockito.reset(appUserRepository);
   }
 
-  @Given("the client provides a create-user request with the following fields:")
-  public void theClientProvidesACreateUserRequestWithTheFollowingFields(DataTable dataTable) {
+  @Given("the client provides a create-user request body with the following fields:")
+  public void theClientProvidesACreateUserRequestBodyWithTheFollowingFields(DataTable dataTable) {
     scenarioContext.requestPayload.putAll(
         dataTable
             .asMap()
@@ -45,8 +49,33 @@ public class CreateAppUserGivenStepsContext extends StepsContext {
     };
   }
 
-  @Given("a create-user request with malformed JSON")
-  public void aCreateUserRequestWithMalformedJSON() {
+  @Given("a create-user request body with malformed JSON")
+  public void aCreateUserRequestBodyWithMalformedJSON() {
     scenarioContext.requestPayload.put("taco", "{invalid-json:");
+  }
+
+  @Given("the client provides two unique create-user request bodies")
+  public void theClientProvidesTwoUniqueCreateUserRequestBodies() throws JsonProcessingException {
+    Map<String, Object> firstRequestBodyContent = Map.of(
+        "emailAddress", "johnny.appleseed@gmail.com",
+        "firstName", "Johnny",
+        "lastName", "Appleseed");
+
+    Map<String, Object> secondRequestBodyContent = Map.of(
+        "emailAddress", "not.johnny.appleseed@gmail.com",
+        "firstName", "Not Johnny",
+        "lastName", "Appleseed");
+
+    scenarioContext.listOfRequestContents
+        .add(objectMapper.writeValueAsString(firstRequestBodyContent));
+
+    scenarioContext.listOfRequestContents
+        .add(objectMapper.writeValueAsString(secondRequestBodyContent));
+  }
+
+  @And("the data store is configured to save the new users")
+  public void theDataStoreIsConfiguredToSaveTheNewUsers() {
+    when(appUserRepository.save(any()))
+        .thenAnswer(invocation -> invocation.getArgument(0));
   }
 }

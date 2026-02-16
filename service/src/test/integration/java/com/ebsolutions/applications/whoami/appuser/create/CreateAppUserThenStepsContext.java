@@ -5,17 +5,16 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import com.ebsolutions.applications.whoami.appuser.core.AppUser;
 import com.ebsolutions.applications.whoami.support.StepsContext;
-import com.ebsolutions.applications.whoami.support.TestFixtures;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 public class CreateAppUserThenStepsContext extends StepsContext {
@@ -38,87 +37,55 @@ public class CreateAppUserThenStepsContext extends StepsContext {
 
   @Then("the create-user response status should be {int}")
   public void theCreateUserResponseStatusShouldBe(int statusCode) {
-    assertThat(scenarioContext.latestResponse.getStatus()).isEqualTo(statusCode);
+    assertThat(scenarioContext.responses.getFirst().getStatus()).isEqualTo(statusCode);
   }
 
   @And("the create-user response error message should contain {string}")
   public void theCreateUserResponseErrorMessageShouldContain(String errorMessage)
       throws UnsupportedEncodingException {
-    assertThat(scenarioContext.latestResponse.getContentAsString()).contains(errorMessage);
-  }
-
-  @And("the client facing id should be returned in the response")
-  public void theClientFacingIdShouldBeReturnedInTheResponse() {
-    assertThat(scenarioContext.responseBody)
-        .as("Response body should contain key 'userId'")
-        .containsKey("userId");
-
-    assertThat(scenarioContext.responseBody.get("userId"))
-        .as("Value for key 'userId'")
-        .isNotNull()
-        .hasToString(String.valueOf(TestFixtures.MOCKED_UUID));
-  }
-
-  @And("the create-user response should have a body")
-  public void theCreateUserResponseShouldHaveABody()
-      throws UnsupportedEncodingException, JsonProcessingException {
-
-    scenarioContext.responseBody = objectMapper.readValue(
-        scenarioContext.latestResponse.getContentAsString(),
-        new TypeReference<>() {
-        }
-    );
-
-  }
-
-  @And("the correct created at timestamp should be returned in the response")
-  public void theCorrectCreatedAtTimestampShouldBeReturnedInTheResponse() {
-    assertThat(scenarioContext.responseBody)
-        .as("Response body should contain key 'createdAt'")
-        .containsKey("createdAt");
-
-    @SuppressWarnings("unchecked")
-    var createdAtParts = (List<Integer>) scenarioContext.responseBody.get("createdAt");
-
-    var createdAt =
-        LocalDateTime.of(
-            createdAtParts.get(0),
-            createdAtParts.get(1),
-            createdAtParts.get(2),
-            createdAtParts.get(3),
-            createdAtParts.get(4)
-        );
-
-    assertThat(createdAt)
-        .as("Value for key 'createdAt'")
-        .isEqualTo(TestFixtures.MOCKED_NOW);
-  }
-
-  @And("the correct updated at timestamp should be returned in the response")
-  public void theCorrectUpdatedAtTimestampShouldBeReturnedInTheResponse() {
-    assertThat(scenarioContext.responseBody)
-        .as("Response body should contain key 'updatedAt'")
-        .containsKey("updatedAt");
-
-    @SuppressWarnings("unchecked")
-    var updatedAtParts = (List<Integer>) scenarioContext.responseBody.get("updatedAt");
-
-    var updatedAt =
-        LocalDateTime.of(
-            updatedAtParts.get(0),
-            updatedAtParts.get(1),
-            updatedAtParts.get(2),
-            updatedAtParts.get(3),
-            updatedAtParts.get(4)
-        );
-
-    assertThat(updatedAt)
-        .as("Value for key 'updatedAt'")
-        .isEqualTo(TestFixtures.MOCKED_NOW);
+    assertThat(scenarioContext.responses.getFirst().getContentAsString()).contains(errorMessage);
   }
 
   @And("the data store was not called to save the new user")
   public void theDataStoreWasNotCalledToSaveTheNewUser() {
     verify(appUserRepository, never()).save(any());
+  }
+
+  @Then("each create-user response should include unique client-facing identifiers")
+  public void eachCreateUserResponseShouldIncludeUniqueClientFacingIdentifiers() {
+    Set<String> contentResponses = scenarioContext.responses.stream()
+        .map(response -> {
+          try {
+            return response.getContentAsString();
+          } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+          }
+        })
+        .collect(Collectors.toSet());
+
+
+    assertThat(contentResponses)
+        .as("Each response should be unique")
+        .hasSize(scenarioContext.responses.size());
+
+    Set<AppUser> appUsers = contentResponses.stream().map(contentResponse -> {
+      try {
+        return objectMapper.readValue(contentResponse, AppUser.class);
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    }).collect(Collectors.toSet());
+
+    assertThat(appUsers)
+        .as("Each app user should be unique")
+        .hasSize(scenarioContext.responses.size());
+
+    Set<UUID> externalIds = appUsers.stream()
+        .map(AppUser::getExternalId)
+        .collect(Collectors.toSet());
+
+    assertThat(externalIds)
+        .as("Each app user's external id should be unique")
+        .hasSize(scenarioContext.responses.size());
   }
 }
