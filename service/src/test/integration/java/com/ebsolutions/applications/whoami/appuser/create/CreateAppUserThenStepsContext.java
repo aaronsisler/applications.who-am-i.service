@@ -7,34 +7,15 @@ import static org.mockito.Mockito.verify;
 
 import com.ebsolutions.applications.whoami.appuser.core.AppUser;
 import com.ebsolutions.applications.whoami.support.StepsContext;
-import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import java.io.UnsupportedEncodingException;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 
 public class CreateAppUserThenStepsContext extends StepsContext {
-  @And("the response body should contain:")
-  public void theResponseBodyShouldContain(DataTable dataTable) {
-    // expected values from feature file
-    Map<String, String> expected = dataTable.asMap(String.class, String.class);
-
-    expected.forEach((key, expectedValue) -> {
-      assertThat(scenarioContext.responseBody)
-          .as("Response body should contain key '%s'", key)
-          .containsKey(key);
-
-      assertThat(scenarioContext.responseBody.get(key))
-          .as("Value for key '%s'", key)
-          .isNotNull()
-          .hasToString(expectedValue);
-    });
-  }
-
   @Then("the create-user response status should be {int}")
   public void theCreateUserResponseStatusShouldBe(int statusCode) {
     assertThat(scenarioContext.responses.getFirst().getStatus()).isEqualTo(statusCode);

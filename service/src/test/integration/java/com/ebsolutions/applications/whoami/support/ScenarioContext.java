@@ -16,14 +16,12 @@ public class ScenarioContext {
 
   public List<String> listOfRequestContents = new ArrayList<>();
 
-  public Map<String, Object> responseBody = new HashMap<>();
-
   public List<MockHttpServletResponse> responses = new ArrayList<>();
 
   public void reset() {
     mediaType = null;
     requestPayload.clear();
-    responseBody.clear();
+    listOfRequestContents.clear();
     responses.clear();
   }
 }
