@@ -25,10 +25,10 @@ public class PrePersistenceHandler<T extends PersistedEntity> {
     if (entity.getCreatedAt() == null) {
       entity.setCreatedAt(now);
     }
+
     // Always update on insert or update
     entity.setUpdatedAt(now);
 
-    // This method can be overridden by subclasses to implement pre-persistence logic
     return entity;
   }
 }
