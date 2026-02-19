@@ -10,7 +10,6 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.mockito.Mockito;
 import org.springframework.http.MediaType;
 
@@ -23,15 +22,9 @@ public class CreateAppUserGivenStepsContext extends StepsContext {
 
   @Given("the client provides a create-user request body with the following fields:")
   public void theClientProvidesACreateUserRequestBodyWithTheFollowingFields(DataTable dataTable) {
-    scenarioContext.requestPayload.putAll(
-        dataTable
-            .asMap()
-            .entrySet().stream()
-            .collect(Collectors
-                .toMap(
-                    Map.Entry::getKey,
-                    e -> normalize(e.getValue())
-                )));
+    dataTable.asMap().forEach((key, value) ->
+        scenarioContext.requestPayload.put(key, normalize(value))
+    );
   }
 
   @And("the client provides the create-user request without the {string} field")
