@@ -1,6 +1,6 @@
 Feature: Create App User - Integration
 
-  Scenario Outline: Missing required fields returns 400
+  Scenario Outline: 400 - Creating an app user with missing required fields
     Given the client provides a create-user request body with the following fields:
       | emailAddress | johnny.appleseed@gmail.com |
       | firstName    | Johnny                     |
@@ -18,7 +18,7 @@ Feature: Create App User - Integration
       | firstName    |
       | lastName     |
 
-  Scenario Outline: 400 - Creating an app user with invalid field length should fail
+  Scenario Outline: 400 - Creating an app user with an invalid null field
     Given the client provides a create-user request body with the following fields:
       | firstName    | <firstName>    |
       | lastName     | <lastName>     |
@@ -35,7 +35,7 @@ Feature: Create App User - Integration
       | lastName     | Johnny    | <null>    | johnny.appleseed@gmail.com |
       | emailAddress | Johnny    | Appleseed | <null>                     |
 
-  Scenario Outline: 400 - Creating an app user with invalid field length should fail
+  Scenario Outline: 400 - Creating an app user with invalid field length
     Given the client provides a create-user request body with the following fields:
       | firstName    | <firstName>    |
       | lastName     | <lastName>     |
@@ -55,7 +55,7 @@ Feature: Create App User - Integration
       | lastName     | 1         | 45        | Johnny                 | <textFieldMaxLength45> | johnny.appleseed@gmail.com      |
       | emailAddress | 1         | 100       | Johnny                 | Appleseed              | <emailAddressFieldMaxLength100> |
 
-  Scenario: Malformed JSON returns 400
+  Scenario: 400 - Creating an app user with malformed JSON
     Given a create-user request body with malformed JSON
     And the create-user request has a content type of "application/json"
     When the client submits the create-user request
@@ -63,7 +63,7 @@ Feature: Create App User - Integration
     And the create-user response error message should contain "Submitted message was not readable"
     And the data store was not called to save the new user
 
-  Scenario: Unsupported content type returns 415
+  Scenario: 415 - Creating an app user with unsupported content type
     Given the client provides a create-user request body with the following fields:
       | emailAddress | johnny.appleseed@gmail.com |
       | firstName    | Johnny                     |

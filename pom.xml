@@ -51,6 +51,15 @@
         <cucumber-bom.version>7.31.0</cucumber-bom.version>
         <junit-bom.version>6.0.1</junit-bom.version>
 
+        <!-- Contract Paths -->
+        <!-- These paths are relative to the child modules -->
+        <!--suppress UnresolvedMavenProperty -->
+        <inbound-contracts.path>${project.parent.basedir}/contracts/inbound</inbound-contracts.path>
+        <inbound-common-contract.path>${inbound-contracts.path}/common.yaml</inbound-common-contract.path>
+        <inbound-actuator-contract.path>${inbound-contracts.path}/actuator.yaml</inbound-actuator-contract.path>
+        <inbound-app-user-contract.path>${inbound-contracts.path}/app-user/app-user.yaml
+        </inbound-app-user-contract.path>
+
     </properties>
 
     <dependencyManagement>
@@ -152,105 +161,6 @@
                     <artifactId>build-helper-maven-plugin</artifactId>
                     <version>${build-helper-maven-plugin.version}</version>
                 </plugin>
-                <!-- Maintains strict Code Styles -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>${checkstyle-maven-plugin.version}</version>
-                    <configuration>
-                        <excludeGeneratedSources>true</excludeGeneratedSources>
-                        <consoleOutput>true</consoleOutput>
-                        <violationSeverity>warning</violationSeverity>
-                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                        <includeTestResources>true</includeTestResources>
-                        <failOnViolation>true</failOnViolation>
-                        <failsOnError>true</failsOnError>
-                        <configLocation>google_checks.xml</configLocation>
-                        <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <phase>validate</phase>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <!-- Generates Java classes from OpenAPI contracts -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.openapitools</groupId>
-                    <artifactId>openapi-generator-maven-plugin</artifactId>
-                    <version>${openapi-generator-maven-plugin.version}</version>
-                    <configuration>
-                        <modelPackage>com.ebsolutions.applications.whoami.model</modelPackage>
-                        <generatorName>spring</generatorName>
-                        <generateApis>false</generateApis>
-                        <generateSupportingFiles>false</generateSupportingFiles>
-                        <configOptions>
-                            <serializableModel>true</serializableModel>
-                            <!-- This also enabled useJakartaEe-->
-                            <useSpringBoot3>true</useSpringBoot3>
-                            <useBeanValidation>true</useBeanValidation>
-                            <additionalModelTypeAnnotations>
-                                @lombok.Builder
-                            </additionalModelTypeAnnotations>
-                        </configOptions>
-
-                        <!-- typeMappings links the contract (left side) to the right side -->
-                        <typeMappings>
-                            <!-- This Pascal format is the standard for baked in OpenAPI supported types -->
-                            <typeMapping>DateTime=LocalDateTime</typeMapping>
-                            <!-- Kebab format is the format for custom mappings  -->
-                            <typeMapping>local-date=LocalDate</typeMapping>
-                        </typeMappings>
-                        <!-- importMappings then links the typeMapping (left side) to a Java import (right side) -->
-                        <importMappings>
-                            <!-- Left side in importMappings maps to the right side in typeMappings -->
-                            <importMapping>LocalDateTime=java.time.LocalDateTime</importMapping>
-                            <importMapping>LocalDate=java.time.LocalDate</importMapping>
-                        </importMappings>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>models-common</id>
-                            <goals>
-                                <goal>generate</goal>
-                            </goals>
-                            <configuration>
-                                <!--suppress UnresolvedMavenProperty -->
-                                <!-- This is the path relative to the child modules -->
-                                <inputSpec>${project.parent.basedir}/contracts/inbound/common.yaml</inputSpec>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>models-actuator</id>
-                            <goals>
-                                <goal>generate</goal>
-                            </goals>
-                            <configuration>
-                                <!--suppress UnresolvedMavenProperty -->
-                                <!-- This is the path relative to the child modules -->
-                                <inputSpec>${project.parent.basedir}/contracts/inbound/actuator.yaml</inputSpec>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>models-app-user</id>
-                            <goals>
-                                <goal>generate</goal>
-                            </goals>
-                            <configuration>
-                                <!--suppress UnresolvedMavenProperty -->
-                                <!-- This is the path relative to the child modules -->
-                                <inputSpec>
-                                    ${project.parent.basedir}/contracts/inbound/app-users/app-user.yaml
-                                </inputSpec>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
                 <!-- Used for running JUnit tests that link to Cucumber feature files -->
                 <!-- Version: Explicit -->
                 <plugin>
@@ -286,6 +196,97 @@
                     <groupId>org.sonarsource.scanner.maven</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
                     <version>${sonar-maven-plugin.version}</version>
+                </plugin>
+                <!-- Maintains strict Code Styles -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${checkstyle-maven-plugin.version}</version>
+                    <configuration>
+                        <excludeGeneratedSources>true</excludeGeneratedSources>
+                        <consoleOutput>true</consoleOutput>
+                        <violationSeverity>warning</violationSeverity>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        <includeTestResources>true</includeTestResources>
+                        <failOnViolation>true</failOnViolation>
+                        <failsOnError>true</failsOnError>
+                        <configLocation>google_checks.xml</configLocation>
+                        <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- Generates Java classes from OpenAPI contracts -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.openapitools</groupId>
+                    <artifactId>openapi-generator-maven-plugin</artifactId>
+                    <version>${openapi-generator-maven-plugin.version}</version>
+                    <configuration>
+                        <modelPackage>com.ebsolutions.applications.whoami.dto</modelPackage>
+                        <generatorName>spring</generatorName>
+                        <generateApis>false</generateApis>
+                        <generateSupportingFiles>false</generateSupportingFiles>
+                        <configOptions>
+                            <serializableModel>true</serializableModel>
+                            <!-- This also enabled useJakartaEe-->
+                            <useSpringBoot3>true</useSpringBoot3>
+                            <useBeanValidation>true</useBeanValidation>
+                            <additionalModelTypeAnnotations>
+                                @lombok.Builder
+                            </additionalModelTypeAnnotations>
+                        </configOptions>
+
+                        <!-- typeMappings links the contract (left side) to the right side -->
+                        <typeMappings>
+                            <!-- This Pascal format is the standard for baked in OpenAPI supported types -->
+                            <typeMapping>DateTime=LocalDateTime</typeMapping>
+                            <!-- Kebab format is the format for custom mappings  -->
+                            <typeMapping>local-date=LocalDate</typeMapping>
+                        </typeMappings>
+                        <!-- importMappings then links the typeMapping (left side) to a Java import (right side) -->
+                        <importMappings>
+                            <!-- Left side in importMappings maps to the right side in typeMappings -->
+                            <importMapping>LocalDateTime=java.time.LocalDateTime</importMapping>
+                            <importMapping>LocalDate=java.time.LocalDate</importMapping>
+                        </importMappings>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>models-common</id>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                            <configuration>
+                                <inputSpec>${inbound-common-contract.path}</inputSpec>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>models-actuator</id>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                            <configuration>
+                                <inputSpec>${inbound-actuator-contract.path}</inputSpec>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>models-app-user</id>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                            <configuration>
+                                <inputSpec>${inbound-app-user-contract.path}</inputSpec>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

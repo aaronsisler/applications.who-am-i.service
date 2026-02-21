@@ -1,0 +1,48 @@
+openapi: "3.1.0"
+info:
+  title: App User API
+  version: "1.0"
+servers:
+  - url: http://localhost:8080
+paths:
+  /app-users:
+    post:
+      summary: Create a new user
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'app-user-create.yaml#/components/schemas/AppUserCreate'
+      responses:
+        '201':
+          description: App user created
+          content:
+            application/json:
+              schema:
+                $ref: 'app-user-dto.yaml#/components/schemas/AppUserDto'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '../common.yaml#/components/schemas/ErrorDto'
+        '409':
+          description: Email address already exists
+          content:
+            application/json:
+              schema:
+                $ref: '../common.yaml#/components/schemas/ErrorDto'
+        '415':
+          description: Unsupported content type
+          content:
+            application/json:
+              schema:
+                $ref: '../common.yaml#/components/schemas/ErrorDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '../common.yaml#/components/schemas/ErrorDto'

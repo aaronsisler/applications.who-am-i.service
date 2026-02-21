@@ -1,16 +1,15 @@
 openapi: "3.1.0"
 info:
-  title: User API
+  title: App User Create
   version: "1.0"
 servers:
   - url: http://localhost:8080
 components:
   schemas:
-    AppUserResponse:
-      allOf:
-        - $ref: '../common.yaml#/components/schemas/BaseResourceResponse'
+    AppUserCreate:
+      title: AppUserCreate
       type: object
-      description: App user returned to clients
+      description: Payload for creating an app user
       required:
         - emailAddress
         - firstName
@@ -19,10 +18,16 @@ components:
         emailAddress:
           type: string
           format: email
+          minLength: 1
+          maxLength: 100
           example: "johnny.appleseed@gmail.com"
         firstName:
           type: string
-          example: "Johnny"
+          minLength: 1
+          maxLength: 45
+          example: Johnny
         lastName:
           type: string
-          example: "Appleseed"
+          minLength: 1
+          maxLength: 45
+          example: Appleseed
