@@ -1,286 +1,253 @@
 package com.ebsolutions.applications.whoami.core.exception;
 
 import com.ebsolutions.applications.whoami.core.ErrorMessages;
-import com.ebsolutions.applications.whoami.core.HttpResponseCodes;
-import com.ebsolutions.applications.whoami.model.ErrorResponse;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import com.ebsolutions.applications.whoami.dto.ErrorCode;
+import com.ebsolutions.applications.whoami.dto.ErrorDetail;
+import com.ebsolutions.applications.whoami.dto.ErrorDto;
 import jakarta.validation.ConstraintViolationException;
 import java.util.Collections;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * Global handler for all exceptions thrown in controllers.
+ * Handles validation, HTTP errors, and service-level exceptions,
+ * converting them into structured {@link ErrorDto} responses
+ * suitable for clients.
+ */
 @Slf4j
 @RestControllerAdvice
 public class GlobalControllerExceptionHandler {
 
-  /* ========== 401 – UNAUTHORIZED ========== */
+  /* ================= 400 – BAD REQUESTS (INPUT / CONTRACT) ================= */
 
   /**
-   * This will be called when Authorization header is missing or invalid
+   * Handles validation errors on request body fields annotated with {@code @Valid}.
    *
-   * @param missingRequestHeaderException caught in controller
-   * @return custom response with descriptive error messages
+   * @param ex the exception thrown by Spring when {@link jakarta.validation.Valid} fails
+   * @return 400 {@link ResponseEntity} with {@link ErrorDto} listing field errors
    */
-  @ApiResponse(responseCode = HttpResponseCodes.UNAUTHORIZED,
-      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-          schema = @Schema(implementation = ErrorResponse.class)))
-  @ExceptionHandler(MissingRequestHeaderException.class)
-  public ResponseEntity<ErrorResponse> handleMissingHeader(
-      MissingRequestHeaderException missingRequestHeaderException) {
-
-    return ResponseEntity
-        .status(HttpStatus.UNAUTHORIZED)
-        .body(ErrorResponse.builder()
-            .messages(Collections.singletonList(ErrorMessages.MISSING_AUTH_N_HEADER.message()))
-            .build());
-  }
-
-  /* ========== 403 – FORBIDDEN ========== */
-
-  /**
-   * This will be called when the authenticated client lacks permission
-   *
-   * @param exception caught in controller
-   * @return custom response with descriptive error messages
-   */
-  @ApiResponse(responseCode = HttpResponseCodes.FORBIDDEN,
-      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-          schema = @Schema(implementation = ErrorResponse.class)))
-  @ExceptionHandler(ResponseStatusException.class)
-  public ResponseEntity<ErrorResponse> handleForbidden(
-      ResponseStatusException exception) {
-
-    if (exception.getStatusCode() == HttpStatus.FORBIDDEN) {
-      return ResponseEntity
-          .status(HttpStatus.FORBIDDEN)
-          .body(ErrorResponse.builder()
-              .messages(Collections.singletonList(exception.getReason()))
-              .build());
-    }
-
-    // Delegate to other handlers
-    throw exception;
-  }
-
-  /* ========== 400 – BAD REQUESTS (INPUT / CONTRACT) ========== */
-
-  /**
-   * This will be called when a body field does not meet constraints
-   *
-   * @param methodArgumentNotValidException caught in controller
-   * @return custom response with descriptive error messages
-   */
-  @ApiResponse(responseCode = HttpResponseCodes.BAD_REQUEST,
-      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(
-      MethodArgumentNotValidException methodArgumentNotValidException) {
-
-    List<String> messages = methodArgumentNotValidException.getBindingResult()
-        .getAllErrors()
+  public ResponseEntity<ErrorDto> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+    List<ErrorDetail> errors = ex.getBindingResult()
+        .getFieldErrors()
         .stream()
-        .map(error -> {
-          if (error instanceof FieldError fieldError) {
-            return fieldError.getField() + " " + fieldError.getDefaultMessage();
-          }
-          return error.getDefaultMessage();
-        })
+        .map(this::mapFieldError)
         .toList();
 
-    return ResponseEntity.badRequest()
-        .body(
-            ErrorResponse.builder()
-                .messages(messages)
-                .build()
-        );
+    return ResponseEntity
+        .badRequest()
+        .body(ErrorDto.builder().errors(errors).build());
   }
 
   /**
-   * This will be called when query or contract constraints are violated
+   * Handles validation errors thrown on request parameters, path variables, etc.
    *
-   * @param constraintViolationException caught in controller
-   * @return custom response with descriptive error messages
+   * @param ex the {@link ConstraintViolationException} thrown by Spring
+   * @return 400 {@link ResponseEntity} with {@link ErrorDto} listing constraint violations
    */
-  @ApiResponse(responseCode = HttpResponseCodes.BAD_REQUEST,
-      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<ErrorResponse> handleConstraintViolation(
-      ConstraintViolationException constraintViolationException) {
-
-    List<String> messages = constraintViolationException.getConstraintViolations()
+  public ResponseEntity<ErrorDto> handleConstraintViolation(ConstraintViolationException ex) {
+    List<ErrorDetail> errors = ex.getConstraintViolations()
         .stream()
-        .map(v -> v.getPropertyPath() + " " + v.getMessage())
+        .map(v -> ErrorDetail.builder()
+            .field(v.getPropertyPath().toString())
+            .code(mapConstraintCode(
+                v.getConstraintDescriptor().getAnnotation().annotationType().getSimpleName()))
+            .message(v.getMessage())
+            .build())
         .toList();
 
     return ResponseEntity
         .badRequest()
-        .body(ErrorResponse.builder()
-            .messages(messages)
-            .build());
+        .body(ErrorDto.builder().errors(errors).build());
   }
 
   /**
-   * This will be called when the body of http request is not parseable
+   * Handles malformed JSON or unreadable request bodies.
    *
-   * @param httpMessageNotReadableException caught in controller
-   * @return custom response with descriptive error messages
+   * @param ex the exception thrown when request body cannot be parsed
+   * @return 400 {@link ResponseEntity} with single {@link ErrorDetail} for malformed input
    */
-  @ApiResponse(responseCode = HttpResponseCodes.BAD_REQUEST,
-      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(HttpMessageNotReadableException.class)
-  public ResponseEntity<ErrorResponse> handleMessageNotReadable(
-      HttpMessageNotReadableException httpMessageNotReadableException) {
-
+  public ResponseEntity<ErrorDto> handleMessageNotReadable(HttpMessageNotReadableException ex) {
     return ResponseEntity
         .badRequest()
-        .body(ErrorResponse.builder()
-            .messages(Collections.singletonList(ErrorMessages.MESSAGE_NOT_READABLE.message()))
+        .body(ErrorDto.builder()
+            .errors(Collections.singletonList(
+                ErrorDetail.builder()
+                    .code(ErrorCode.MALFORMED_JSON)
+                    .message(ErrorMessages.MESSAGE_NOT_READABLE.message())
+                    .build()))
             .build());
   }
 
-  /**
-   * This will be called when any data format is invalid and thrown from a service
-   *
-   * @param invalidDataFormatException caught in controller
-   * @return custom response with descriptive error messages
-   */
-  @ApiResponse(responseCode = HttpResponseCodes.BAD_REQUEST,
-      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-          schema = @Schema(implementation = ErrorResponse.class)))
-  @ExceptionHandler(InvalidDataFormatException.class)
-  public ResponseEntity<ErrorResponse> handleInvalidDataFormatException(
-      InvalidDataFormatException invalidDataFormatException) {
-    return ResponseEntity
-        .badRequest()
-        .body(ErrorResponse.builder()
-            .messages(Collections.singletonList(invalidDataFormatException.getMessage()))
-            .build());
-  }
-
-  /* ========== 405 – METHOD NOT ALLOWED ========== */
+  /* ================= 405 – METHOD NOT ALLOWED ================= */
 
   /**
-   * This will be called when an HTTP method is not allowed
+   * Handles requests using unsupported HTTP methods.
    *
-   * @param httpRequestMethodNotSupportedException caught in controller
-   * @return custom response with descriptive error messages
+   * @param ex the exception thrown when method is not allowed
+   * @return 405 {@link ResponseEntity} with single {@link ErrorDetail}
    */
-  @ApiResponse(responseCode = HttpResponseCodes.METHOD_NOT_ALLOWED,
-      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-  public ResponseEntity<ErrorResponse> handleMethodNotSupported(
-      HttpRequestMethodNotSupportedException httpRequestMethodNotSupportedException) {
-
+  public ResponseEntity<ErrorDto> handleMethodNotSupported(
+      HttpRequestMethodNotSupportedException ex) {
     return ResponseEntity
         .status(HttpStatus.METHOD_NOT_ALLOWED)
-        .body(ErrorResponse.builder()
-            .messages(Collections.singletonList(ErrorMessages.HTTP_METHOD_NOT_ALLOWED.message()))
+        .body(ErrorDto.builder()
+            .errors(Collections.singletonList(
+                ErrorDetail.builder()
+                    .code(ErrorCode.METHOD_NOT_ALLOWED)
+                    .message(ErrorMessages.HTTP_METHOD_NOT_ALLOWED.message())
+                    .build()))
             .build());
   }
 
-  /* ========== 409 – CONFLICT ========== */
+  /* ================= 409 – CONFLICT ================= */
 
   /**
-   * This will be called when database duplication constraints are violated
+   * Handles unique constraint violations in the data store.
    *
-   * @param duplicateDataException caught in controller
-   * @return custom response with descriptive error messages
+   * @param ex the {@link DuplicateDataException} thrown by service
+   * @return 409 {@link ResponseEntity} with single {@link ErrorDetail}
    */
-  @ApiResponse(responseCode = HttpResponseCodes.CONFLICT,
-      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(DuplicateDataException.class)
-  public ResponseEntity<ErrorResponse> handleDuplicateData(
-      DuplicateDataException duplicateDataException) {
-
+  public ResponseEntity<ErrorDto> handleDuplicateData(DuplicateDataException ex) {
     return ResponseEntity
         .status(HttpStatus.CONFLICT)
-        .body(ErrorResponse.builder()
-            .messages(Collections.singletonList(duplicateDataException.getMessage()))
+        .body(ErrorDto.builder()
+            .errors(Collections.singletonList(
+                ErrorDetail.builder()
+                    .code(ErrorCode.EMAIL_ALREADY_EXISTS)
+                    .message(ex.getMessage())
+                    .build()))
             .build());
   }
 
-  /* ========== 415 – UNSUPPORTED MEDIA TYPE ========== */
+  /* ================= 415 – UNSUPPORTED MEDIA TYPE ================= */
 
   /**
-   * This will be called when unsupported Content-Type is supplied
+   * Handles requests with unsupported Content-Type headers.
    *
-   * @param httpMediaTypeNotSupportedException caught in controller
-   * @return custom response with descriptive error messages
+   * @param ex the exception thrown when media type is unsupported
+   * @return 415 {@link ResponseEntity} with single {@link ErrorDetail}
    */
-  @ApiResponse(responseCode = HttpResponseCodes.UNSUPPORTED_MEDIA_TYPE,
-      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-  public ResponseEntity<ErrorResponse> handleUnsupportedMedia(
-      HttpMediaTypeNotSupportedException httpMediaTypeNotSupportedException) {
-
+  public ResponseEntity<ErrorDto> handleUnsupportedMedia(HttpMediaTypeNotSupportedException ex) {
     return ResponseEntity
         .status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-        .body(ErrorResponse.builder()
-            .messages(Collections.singletonList(ErrorMessages.UNSUPPORTED_CONTENT_TYPE.message()))
+        .body(ErrorDto.builder()
+            .errors(Collections.singletonList(
+                ErrorDetail.builder()
+                    .code(ErrorCode.UNSUPPORTED_MEDIA_TYPE)
+                    .message(ErrorMessages.UNSUPPORTED_CONTENT_TYPE.message())
+                    .build()))
             .build());
   }
 
-  /* ========== 503 – SERVICE UNAVAILABLE ========== */
+  /* ================= 503 – SERVICE UNAVAILABLE ================= */
 
   /**
-   * This will be called when the data store cannot be reached
+   * Handles exceptions caused by unavailable data store.
    *
-   * @param dataStoreException caught in controller
-   * @return custom response with descriptive error messages
+   * @param ex the exception thrown when persistence fails
+   * @return 503 {@link ResponseEntity} with single {@link ErrorDetail}
    */
-  @ApiResponse(responseCode = HttpResponseCodes.SERVICE_UNAVAILABLE,
-      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(DataStoreException.class)
-  public ResponseEntity<ErrorResponse> handleDataStoreUnavailable(
-      DataStoreException dataStoreException) {
-
+  public ResponseEntity<ErrorDto> handleDataStoreUnavailable(DataStoreException ex) {
     return ResponseEntity
         .status(HttpStatus.SERVICE_UNAVAILABLE)
-        .body(ErrorResponse.builder()
-            .messages(Collections.singletonList(dataStoreException.getMessage()))
+        .body(ErrorDto.builder()
+            .errors(Collections.singletonList(
+                ErrorDetail.builder()
+                    .code(ErrorCode.INTERNAL_SERVER_ERROR)
+                    .message(ex.getMessage())
+                    .build()))
             .build());
   }
 
-  /* ========== 500 – INTERNAL SERVER ERROR ========== */
+  /* ================= 500 – INTERNAL SERVER ERROR ================= */
 
   /**
-   * This will handle any unexpected exceptions
+   * Handles all uncaught exceptions as internal server errors.
    *
-   * @param exception caught in controller
-   * @return custom response with descriptive error messages
+   * @param ex the exception caught from controller
+   * @return 500 {@link ResponseEntity} with single {@link ErrorDetail}
    */
-  @ApiResponse(responseCode = HttpResponseCodes.INTERNAL_SERVER_ERROR,
-      content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-          schema = @Schema(implementation = ErrorResponse.class)))
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<ErrorResponse> handleGeneric(Exception exception) {
-    log.error("Server Error:", exception);
-
+  public ResponseEntity<ErrorDto> handleGeneric(Exception ex) {
+    log.error("Unexpected server error:", ex);
     return ResponseEntity
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .body(ErrorResponse.builder()
-            .messages(Collections.singletonList(ErrorMessages.UNEXPECTED_SERVER_ERROR.message()))
+        .body(ErrorDto.builder()
+            .errors(Collections.singletonList(
+                ErrorDetail.builder()
+                    .code(ErrorCode.INTERNAL_SERVER_ERROR)
+                    .message(ErrorMessages.UNEXPECTED_SERVER_ERROR.message())
+                    .build()))
             .build());
+  }
+
+  /* ==================== Helper Methods ==================== */
+
+  /**
+   * Maps a Spring {@link FieldError} to a contract-safe {@link ErrorDetail}.
+   *
+   * @param fieldError the {@link FieldError} from Spring validation
+   * @return {@link ErrorDetail} with mapped {@link ErrorCode}
+   */
+  private ErrorDetail mapFieldError(FieldError fieldError) {
+    ErrorCode code = mapValidationCode(fieldError.getCode());
+    return ErrorDetail.builder()
+        .field(fieldError.getField())
+        .code(code)
+        .message(fieldError.getDefaultMessage())
+        .build();
+  }
+
+  /**
+   * Maps Spring validation codes to {@link ErrorCode} enum.
+   *
+   * @param springCode code from {@link FieldError} (may be null)
+   * @return corresponding {@link ErrorCode} from contract
+   */
+  private ErrorCode mapValidationCode(String springCode) {
+    if (springCode == null) {
+      return ErrorCode.INTERNAL_SERVER_ERROR;
+    }
+
+    return switch (springCode) {
+      case "NotNull" -> ErrorCode.NOT_NULL;
+      case "NotBlank" -> ErrorCode.NOT_BLANK;
+      case "Size" -> ErrorCode.SIZE;
+      case "Email" -> ErrorCode.EMAIL_FORMAT_INVALID;
+      default -> ErrorCode.INTERNAL_SERVER_ERROR;
+    };
+  }
+
+  /**
+   * Maps Java validation annotations (for ConstraintViolationException) to {@link ErrorCode}.
+   *
+   * @param annotationSimpleName simple name of the annotation (e.g., "NotNull")
+   * @return mapped {@link ErrorCode} for contract
+   */
+  private ErrorCode mapConstraintCode(String annotationSimpleName) {
+    return switch (annotationSimpleName) {
+      case "NotNull" -> ErrorCode.NOT_NULL;
+      case "NotBlank" -> ErrorCode.NOT_BLANK;
+      case "Size" -> ErrorCode.SIZE;
+      case "Email" -> ErrorCode.EMAIL_FORMAT_INVALID;
+      default -> ErrorCode.INTERNAL_SERVER_ERROR;
+    };
   }
 }

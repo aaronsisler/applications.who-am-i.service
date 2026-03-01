@@ -6,10 +6,14 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import com.ebsolutions.applications.whoami.appuser.core.AppUser;
+import com.ebsolutions.applications.whoami.dto.ErrorDto;
 import com.ebsolutions.applications.whoami.support.StepsContext;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -68,5 +72,43 @@ public class CreateAppUserThenStepsContext extends StepsContext {
     assertThat(externalIds)
         .as("Each app user's external id should be unique")
         .hasSize(scenarioContext.responses.size());
+  }
+
+  @And("the create-user response should contain exactly {int} error")
+  public void theCreateUserResponseShouldContainExactlyError(int errorCount)
+      throws UnsupportedEncodingException, JsonProcessingException {
+    assertThat(scenarioContext.responses.size()).isEqualTo(1);
+
+    ErrorDto errorDto = objectMapper
+        .readValue(scenarioContext.responses.getFirst().getContentAsString(), ErrorDto.class);
+
+    assertThat(errorDto.getErrors()).hasSize(errorCount);
+  }
+
+  @And("the create-user response should contain an error with:")
+  public void theCreateUserResponseShouldContainAnErrorWith(DataTable dataTable)
+      throws UnsupportedEncodingException, JsonProcessingException {
+
+    Map<String, String> expected = dataTable.asMap(String.class, String.class);
+
+    String expectedField = expected.get("field");
+    String expectedCode = expected.get("code");
+
+    ErrorDto errorDto = objectMapper
+        .readValue(scenarioContext.responses.getFirst().getContentAsString(), ErrorDto.class);
+
+    assertThat(errorDto).isNotNull();
+    assertThat(errorDto.getErrors()).isNotEmpty();
+
+    boolean matchFound = errorDto.getErrors().stream()
+        .anyMatch(error ->
+            (expectedField == null || expectedField.equals(error.getField())) &&
+                (expectedCode == null || expectedCode.equals(error.getCode().name()))
+        );
+
+    assertThat(matchFound)
+        .as("Expected error with field '%s' and code '%s' was not found",
+            expectedField, expectedCode)
+        .isTrue();
   }
 }

@@ -34,8 +34,13 @@ components:
         - MALFORMED_JSON
         - REQUIRED
         - NOT_NULL
+        - NOT_BLANK
         - SIZE
+        - EMAIL_FORMAT_INVALID
         - EMAIL_ALREADY_EXISTS
+        - INTERNAL_SERVER_ERROR
+        - UNSUPPORTED_MEDIA_TYPE
+        - METHOD_NOT_ALLOWED
       example: EMAIL_ALREADY_EXISTS
     ErrorDetail:
       title: ErrorDetail

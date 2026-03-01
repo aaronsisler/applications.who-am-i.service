@@ -7,7 +7,6 @@ public enum ErrorMessages {
   EMAIL_FORMAT_INVALID("emailAddress must be a well-formed email address"),
   HTTP_METHOD_NOT_ALLOWED("HTTP method not allowed"),
   MESSAGE_NOT_READABLE("Submitted message was not readable"),
-  MISSING_AUTH_N_HEADER("Missing Authentication header"),
   UNEXPECTED_SERVER_ERROR("Unexpected server error"),
   UNSUPPORTED_CONTENT_TYPE("Unsupported Content-Type");
 

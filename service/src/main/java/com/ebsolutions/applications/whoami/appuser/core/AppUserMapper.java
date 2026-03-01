@@ -1,19 +1,19 @@
 package com.ebsolutions.applications.whoami.appuser.core;
 
-import com.ebsolutions.applications.whoami.model.AppUserCreateRequest;
-import com.ebsolutions.applications.whoami.model.AppUserResponse;
+import com.ebsolutions.applications.whoami.dto.AppUserCreate;
+import com.ebsolutions.applications.whoami.dto.AppUserDto;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface AppUserMapper {
 
   /**
-   * Maps an AppUserCreateRequest (STO) to an AppUser entity.
+   * Maps an AppUserCreate (STO) to an AppUser entity.
    */
-  AppUser toEntity(AppUserCreateRequest sto);
+  AppUser toEntity(AppUserCreate appUserCreate);
 
   /**
-   * Maps an AppUser entity to an AppUserResponse (DTO).
+   * Maps an AppUser entity to an AppUserDto (DTO).
    */
-  AppUserResponse toDto(AppUser entity);
+  AppUserDto toDto(AppUser entity);
 }

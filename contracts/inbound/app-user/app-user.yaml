@@ -1,48 +1,54 @@
 openapi: "3.1.0"
 info:
-  title: App User API
+  title: App User Create
   version: "1.0"
 servers:
   - url: http://localhost:8080
-paths:
-  /app-users:
-    post:
-      summary: Create a new user
-      operationId: createUser
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: 'app-user-create.yaml#/components/schemas/AppUserCreate'
-      responses:
-        '201':
-          description: App user created
-          content:
-            application/json:
-              schema:
-                $ref: 'app-user-dto.yaml#/components/schemas/AppUserDto'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '../common.yaml#/components/schemas/ErrorDto'
-        '409':
-          description: Email address already exists
-          content:
-            application/json:
-              schema:
-                $ref: '../common.yaml#/components/schemas/ErrorDto'
-        '415':
-          description: Unsupported content type
-          content:
-            application/json:
-              schema:
-                $ref: '../common.yaml#/components/schemas/ErrorDto'
-        '500':
-          description: Server error
-          content:
-            application/json:
-              schema:
-                $ref: '../common.yaml#/components/schemas/ErrorDto'
+components:
+  schemas:
+    AppUserDto:
+      title: AppUserDto
+      type: object
+      allOf:
+        - $ref: '../common.yaml#/components/schemas/BaseDto'
+      description: App user returned to clients
+      required:
+        - emailAddress
+        - firstName
+        - lastName
+      properties:
+        emailAddress:
+          type: string
+          format: email
+          example: "johnny.appleseed@gmail.com"
+        firstName:
+          type: string
+          example: "Johnny"
+        lastName:
+          type: string
+          example: "Appleseed"
+    AppUserCreate:
+      title: AppUserCreate
+      type: object
+      description: Payload for creating an app user
+      required:
+        - emailAddress
+        - firstName
+        - lastName
+      properties:
+        emailAddress:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+          example: "johnny.appleseed@gmail.com"
+        firstName:
+          type: string
+          minLength: 1
+          maxLength: 45
+          example: Johnny
+        lastName:
+          type: string
+          minLength: 1
+          maxLength: 45
+          example: Appleseed

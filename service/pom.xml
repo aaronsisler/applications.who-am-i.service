@@ -237,13 +237,13 @@
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>models-common</id>
+                        <id>${common-dto-id.executions}</id>
                     </execution>
                     <execution>
-                        <id>models-actuator</id>
+                        <id>${actuator-dto-id.executions}</id>
                     </execution>
                     <execution>
-                        <id>models-user</id>
+                        <id>${app-user-dto-id.executions}</id>
                     </execution>
                 </executions>
             </plugin>
