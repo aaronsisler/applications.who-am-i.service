@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.tooling;
+package com.ebsolutions.applications.whoami.support;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

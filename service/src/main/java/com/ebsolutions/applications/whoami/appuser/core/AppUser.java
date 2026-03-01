@@ -1,5 +1,6 @@
 package com.ebsolutions.applications.whoami.appuser.core;
 
+import com.ebsolutions.applications.whoami.core.persistence.PersistedEntity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -18,10 +19,10 @@ import org.springframework.data.relational.core.mapping.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table("app_user")
-public class AppUser {
+public class AppUser implements PersistedEntity {
   @Id
-  private Long id;
-  private UUID userId;
+  private Long internalId;
+  private UUID externalId;
   private String emailAddress;
   private String firstName;
   private String lastName;

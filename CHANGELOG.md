@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
+## [0.4.0] Integration Tests
+
+### Changed
+
+- Refactor integration tests to follow a more structured approach
+- Updating the test cases for user creation to ensure better coverage and reliability
+
 ## [0.3.0] App User: Create
 
 ### Added

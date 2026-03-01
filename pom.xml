@@ -18,12 +18,11 @@
 
     <modules>
         <module>service</module>
-        <module>integration-tests</module>
     </modules>
 
     <properties>
         <!-- This is the property that is propagated to all children modules -->
-        <revision>0.3.0</revision>
+        <revision>0.4.0</revision>
 
         <java.version>21</java.version>
 
@@ -32,8 +31,8 @@
         <sonar.projectKey>aaronsisler_applications.who-am-i.service</sonar.projectKey>
 
         <!-- Versions: Plugins -->
+        <build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
         <checkstyle-maven-plugin.version>3.6.0</checkstyle-maven-plugin.version>
-        <exec-maven-plugin.version>3.6.2</exec-maven-plugin.version>
         <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
@@ -50,6 +49,21 @@
         <!-- Versions: Dependencies: Testing -->
         <cucumber-bom.version>7.31.0</cucumber-bom.version>
         <junit-bom.version>6.0.1</junit-bom.version>
+
+        <!-- Contract Paths -->
+        <!-- These paths are relative to the child modules -->
+        <!--suppress UnresolvedMavenProperty -->
+        <inbound-contracts.path>${project.parent.basedir}/contracts/inbound</inbound-contracts.path>
+        <inbound-common-contract.path>${inbound-contracts.path}/common.yaml</inbound-common-contract.path>
+        <inbound-actuator-contract.path>${inbound-contracts.path}/actuator.yaml</inbound-actuator-contract.path>
+        <inbound-app-user-contract.path>${inbound-contracts.path}/app-user/app-user.yaml
+        </inbound-app-user-contract.path>
+
+        <!-- Execution IDs of the OpenAPI Generator plugin -->
+        <common-dto-id.executions>dto-common</common-dto-id.executions>
+        <actuator-dto-id.executions>dto-actuator</actuator-dto-id.executions>
+        <app-user-dto-id.executions>dto-app-user</app-user-dto-id.executions>
+
 
     </properties>
 
@@ -145,6 +159,41 @@
                         </execution>
                     </executions>
                 </plugin>
+                <!-- Used to add the different test source and resource directories to the project -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${build-helper-maven-plugin.version}</version>
+                </plugin>
+                <!-- Used for running JUnit tests that link to Cucumber feature files -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                </plugin>
+                <!-- Provides the JaCoCo runtime agent to your tests and allows basic report creation -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco-maven-plugin.version}</version>
+                </plugin>
+                <!-- Used for running the Cucumber tests and finding feature files -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven-failsafe-plugin.version}</version>
+                </plugin>
+                <!-- Used to integrate SonarQube analysis into the Maven build -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${sonar-maven-plugin.version}</version>
+                </plugin>
                 <!-- Maintains strict Code Styles -->
                 <!-- Version: Explicit -->
                 <plugin>
@@ -178,11 +227,13 @@
                     <artifactId>openapi-generator-maven-plugin</artifactId>
                     <version>${openapi-generator-maven-plugin.version}</version>
                     <configuration>
-                        <modelPackage>com.ebsolutions.applications.whoami.model</modelPackage>
+                        <modelPackage>com.ebsolutions.applications.whoami.dto</modelPackage>
                         <generatorName>spring</generatorName>
                         <generateApis>false</generateApis>
                         <generateSupportingFiles>false</generateSupportingFiles>
                         <configOptions>
+                            <requiredPropertiesMustBeNotNull>true</requiredPropertiesMustBeNotNull>
+                            <generateConstructorWithAllArgs>true</generateConstructorWithAllArgs>
                             <serializableModel>true</serializableModel>
                             <!-- This also enabled useJakartaEe-->
                             <useSpringBoot3>true</useSpringBoot3>
@@ -208,81 +259,33 @@
                     </configuration>
                     <executions>
                         <execution>
-                            <id>models-common</id>
+                            <id>${common-dto-id.executions}</id>
                             <goals>
                                 <goal>generate</goal>
                             </goals>
                             <configuration>
-                                <!--suppress UnresolvedMavenProperty -->
-                                <!-- This is the path relative to the child modules -->
-                                <inputSpec>${project.parent.basedir}/contracts/inbound/common.yaml</inputSpec>
+                                <inputSpec>${inbound-common-contract.path}</inputSpec>
                             </configuration>
                         </execution>
                         <execution>
-                            <id>models-actuator</id>
+                            <id>${actuator-dto-id.executions}</id>
                             <goals>
                                 <goal>generate</goal>
                             </goals>
                             <configuration>
-                                <!--suppress UnresolvedMavenProperty -->
-                                <!-- This is the path relative to the child modules -->
-                                <inputSpec>${project.parent.basedir}/contracts/inbound/actuator.yaml</inputSpec>
+                                <inputSpec>${inbound-actuator-contract.path}</inputSpec>
                             </configuration>
                         </execution>
                         <execution>
-                            <id>models-app-user</id>
+                            <id>${app-user-dto-id.executions}</id>
                             <goals>
                                 <goal>generate</goal>
                             </goals>
                             <configuration>
-                                <!--suppress UnresolvedMavenProperty -->
-                                <!-- This is the path relative to the child modules -->
-                                <inputSpec>
-                                    ${project.parent.basedir}/contracts/inbound/app-users/app-user.yaml
-                                </inputSpec>
+                                <inputSpec>${inbound-app-user-contract.path}</inputSpec>
                             </configuration>
                         </execution>
                     </executions>
-                </plugin>
-
-                <!-- Used for running JUnit tests that link to Cucumber feature files -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surefire-plugin.version}</version>
-                </plugin>
-                <!-- Provides the JaCoCo runtime agent to your tests and allows basic report creation -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${jacoco-maven-plugin.version}</version>
-                </plugin>
-                <!-- Used for running the Cucumber tests and finding feature files -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>${maven-failsafe-plugin.version}</version>
-                    <configuration>
-                        <testFailureIgnore>true</testFailureIgnore>
-                    </configuration>
-                </plugin>
-                <!-- Used to execute commands on the command line -->
-                <!-- For this case, it spins up a clean docker environment for running tests-->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>exec-maven-plugin</artifactId>
-                    <version>${exec-maven-plugin.version}</version>
-                </plugin>
-                <!-- Used to integrate SonarQube analysis into the Maven build -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.sonarsource.scanner.maven</groupId>
-                    <artifactId>sonar-maven-plugin</artifactId>
-                    <version>${sonar-maven-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

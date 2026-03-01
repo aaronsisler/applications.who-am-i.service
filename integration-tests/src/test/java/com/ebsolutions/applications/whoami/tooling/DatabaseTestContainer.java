@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.tooling;
+package com.ebsolutions.applications.whoami.support;
 
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;

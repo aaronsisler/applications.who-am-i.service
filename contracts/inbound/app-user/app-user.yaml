@@ -1,0 +1,54 @@
+openapi: "3.1.0"
+info:
+  title: App User Create
+  version: "1.0"
+servers:
+  - url: http://localhost:8080
+components:
+  schemas:
+    AppUserDto:
+      title: AppUserDto
+      type: object
+      allOf:
+        - $ref: '../common.yaml#/components/schemas/BaseDto'
+      description: App user returned to clients
+      required:
+        - emailAddress
+        - firstName
+        - lastName
+      properties:
+        emailAddress:
+          type: string
+          format: email
+          example: "johnny.appleseed@gmail.com"
+        firstName:
+          type: string
+          example: "Johnny"
+        lastName:
+          type: string
+          example: "Appleseed"
+    AppUserCreate:
+      title: AppUserCreate
+      type: object
+      description: Payload for creating an app user
+      required:
+        - emailAddress
+        - firstName
+        - lastName
+      properties:
+        emailAddress:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+          example: "johnny.appleseed@gmail.com"
+        firstName:
+          type: string
+          minLength: 1
+          maxLength: 45
+          example: Johnny
+        lastName:
+          type: string
+          minLength: 1
+          maxLength: 45
+          example: Appleseed

@@ -1,0 +1,28 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+  info:
+    env:
+      enabled: true
+# Used to disable logging during test run
+logging:
+  level:
+    root: OFF
+    org:
+      springframework: OFF
+springdoc:
+  api-docs:
+    # Disable Swagger API docs generation during tests
+    enabled: false
+
+spring:
+  autoconfigure:
+    exclude:
+      # This is excluded to prevent autoconfiguration of JDBC repositories during tests
+      - org.springframework.boot.autoconfigure.data.jdbc.JdbcRepositoriesAutoConfiguration
+      # This is excluded to prevent autoconfiguration of DataSource during tests
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration

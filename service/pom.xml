@@ -237,13 +237,13 @@
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>models-common</id>
+                        <id>${common-dto-id.executions}</id>
                     </execution>
                     <execution>
-                        <id>models-actuator</id>
+                        <id>${actuator-dto-id.executions}</id>
                     </execution>
                     <execution>
-                        <id>models-user</id>
+                        <id>${app-user-dto-id.executions}</id>
                     </execution>
                 </executions>
             </plugin>
@@ -287,14 +287,49 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Used for running the Cucumber feature tests -->
+            <!-- Used to add the integration test source and resource directories to the project -->
+            <!-- Version: Parent POM - Plugin Management -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-integration-test-source</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/test/integration/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-integration-test-resources</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>add-test-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src/test/integration/resources</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Used for running the integration and acceptance tests -->
             <!-- Version: Parent POM - Plugin Management -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>mocked-integration-tests</id>
+                        <id>integration-tests</id>
+                        <phase>integration-test</phase>
                         <goals>
                             <goal>integration-test</goal>
                             <goal>verify</goal>
@@ -312,13 +347,39 @@
                             <testFailureIgnore>false</testFailureIgnore>
                             <systemPropertyVariables>
                                 <!-- This triggers the correct application-test.yaml -->
-                                <spring.profiles.active>test</spring.profiles.active>
+                                <spring.profiles.active>integration</spring.profiles.active>
                             </systemPropertyVariables>
                             <includes>
-                                <include>**/MockedIntegrationFeatures.java</include>
+                                <include>**/IntegrationTestRunner</include>
                             </includes>
                         </configuration>
                     </execution>
+                    <!--                    <execution>-->
+                    <!--                        <id>acceptance-tests</id>-->
+                    <!--                        <goals>-->
+                    <!--                            <goal>integration-test</goal>-->
+                    <!--                            <goal>verify</goal>-->
+                    <!--                        </goals>-->
+                    <!--                        <configuration>-->
+                    <!--                            &lt;!&ndash;suppress UnresolvedMavenProperty&ndash;&gt;-->
+                    <!--                            <argLine>-->
+                    <!--                                &lt;!&ndash; Used to suppress warnings during test running &ndash;&gt;-->
+                    <!--                                -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar-->
+                    <!--                                &lt;!&ndash; Used to suppress warnings during test running &ndash;&gt;-->
+                    <!--                                -Xshare:off-->
+                    <!--                                &lt;!&ndash; This comes from the JaCoCo plugin &ndash;&gt;-->
+                    <!--                                ${failsafeJacocoAgent}-->
+                    <!--                            </argLine>-->
+                    <!--                            <testFailureIgnore>false</testFailureIgnore>-->
+                    <!--                            <systemPropertyVariables>-->
+                    <!--                                &lt;!&ndash; This triggers the correct application-test.yaml &ndash;&gt;-->
+                    <!--                                <spring.profiles.active>acceptance</spring.profiles.active>-->
+                    <!--                            </systemPropertyVariables>-->
+                    <!--                            <includes>-->
+                    <!--                                <include>**/AcceptanceTestRunner.java</include>-->
+                    <!--                            </includes>-->
+                    <!--                        </configuration>-->
+                    <!--                    </execution>-->
                 </executions>
             </plugin>
             <!-- Used to integrate SonarQube analysis into the Maven build -->

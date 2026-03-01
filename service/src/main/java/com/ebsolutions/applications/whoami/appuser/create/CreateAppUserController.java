@@ -1,9 +1,9 @@
 package com.ebsolutions.applications.whoami.appuser.create;
 
 import com.ebsolutions.applications.whoami.appuser.core.AppUserBaseController;
-import com.ebsolutions.applications.whoami.config.ControllerPathMappings;
-import com.ebsolutions.applications.whoami.model.AppUserCreateRequest;
-import com.ebsolutions.applications.whoami.model.AppUserResponse;
+import com.ebsolutions.applications.whoami.config.ApiPaths;
+import com.ebsolutions.applications.whoami.dto.AppUserCreate;
+import com.ebsolutions.applications.whoami.dto.AppUserDto;
 import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +20,13 @@ public class CreateAppUserController extends AppUserBaseController {
   private final CreateAppUserService createAppUserService;
 
   @PostMapping
-  public ResponseEntity<AppUserResponse> postAppUser(
-      @Valid @RequestBody AppUserCreateRequest appUserCreateRequest) {
+  public ResponseEntity<AppUserDto> postAppUser(
+      @Valid @RequestBody AppUserCreate appUserCreate) {
 
-    AppUserResponse appUserResponse = createAppUserService.createAppUser(appUserCreateRequest);
+    AppUserDto appUserResponse = createAppUserService.createAppUser(appUserCreate);
 
     return ResponseEntity
-        .created(URI.create(ControllerPathMappings.APP_USERS + "/" + appUserResponse.getUserId()))
+        .created(URI.create(ApiPaths.APP_USERS_PATH + "/" + appUserResponse.getExternalId()))
         .body(appUserResponse);
   }
 }

@@ -3,12 +3,12 @@ package com.ebsolutions.applications.whoami.appuser.create;
 import com.ebsolutions.applications.whoami.appuser.core.AppUser;
 import com.ebsolutions.applications.whoami.appuser.core.AppUserMapper;
 import com.ebsolutions.applications.whoami.appuser.core.AppUserRepository;
-import com.ebsolutions.applications.whoami.appuser.core.EmailAddressValidator;
-import com.ebsolutions.applications.whoami.core.DataStoreException;
-import com.ebsolutions.applications.whoami.core.DuplicateDataException;
 import com.ebsolutions.applications.whoami.core.ErrorMessages;
-import com.ebsolutions.applications.whoami.model.AppUserCreateRequest;
-import com.ebsolutions.applications.whoami.model.AppUserResponse;
+import com.ebsolutions.applications.whoami.core.exception.DataStoreException;
+import com.ebsolutions.applications.whoami.core.exception.DuplicateDataException;
+import com.ebsolutions.applications.whoami.core.persistence.PrePersistenceHandler;
+import com.ebsolutions.applications.whoami.dto.AppUserCreate;
+import com.ebsolutions.applications.whoami.dto.AppUserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
@@ -21,15 +21,14 @@ import org.springframework.stereotype.Service;
 public class CreateAppUserService {
   private final AppUserRepository repository;
   private final AppUserMapper mapper;
-  private final EmailAddressValidator emailAddressValidator;
+  private final PrePersistenceHandler<AppUser> appUserPrePersistenceHandler;
 
-  public AppUserResponse createAppUser(AppUserCreateRequest request) {
-
-    emailAddressValidator.validate(request.getEmailAddress());
+  public AppUserDto createAppUser(AppUserCreate appUserCreate) {
 
     try {
-      AppUser entity = mapper.toEntity(request);
-      AppUser saved = repository.save(entity);
+      AppUser entity = mapper.toEntity(appUserCreate);
+      AppUser preProcessedEntity = appUserPrePersistenceHandler.onBeforePersist(entity);
+      AppUser saved = repository.save(preProcessedEntity);
 
       return mapper.toDto(saved);
     } catch (DbActionExecutionException ex) {
