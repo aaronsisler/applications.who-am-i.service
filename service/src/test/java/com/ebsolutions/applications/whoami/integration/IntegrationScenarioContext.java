@@ -1,0 +1,27 @@
+package com.ebsolutions.applications.whoami.integration;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.stereotype.Component;
+
+@Component
+public class IntegrationScenarioContext {
+  public MediaType mediaType;
+
+  public Map<String, Object> requestPayload = new HashMap<>();
+
+  public List<String> listOfRequestContents = new ArrayList<>();
+
+  public List<MockHttpServletResponse> responses = new ArrayList<>();
+
+  public void reset() {
+    mediaType = null;
+    requestPayload.clear();
+    listOfRequestContents.clear();
+    responses.clear();
+  }
+}

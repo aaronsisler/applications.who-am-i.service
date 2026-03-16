@@ -328,6 +328,33 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>unit-tests</id>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <!--suppress UnresolvedMavenProperty-->
+                            <argLine>
+                                <!-- Used to suppress warnings during test running -->
+                                -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
+                                <!-- Used to suppress warnings during test running -->
+                                -Xshare:off
+                                <!-- This comes from the JaCoCo plugin -->
+                                ${failsafeJacocoAgent}
+                            </argLine>
+                            <testFailureIgnore>false</testFailureIgnore>
+                            <systemPropertyVariables>
+                                <!-- This triggers the correct application-test.yaml -->
+                                <spring.profiles.active>integration</spring.profiles.active>
+                            </systemPropertyVariables>
+                            <includes>
+                                <include>**/UnitTestRunner</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>integration-tests</id>
                         <phase>integration-test</phase>
                         <goals>
