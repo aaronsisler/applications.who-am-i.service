@@ -18,7 +18,11 @@ spring:
       mode: always
       platform: postgres
   mvc:
+    # Required for Spring MVC to throw NoHandlerFoundException for unmapped endpoints
+    # This is caught in the GlobalExceptionHandler as a 404 error
     throw-exception-if-no-handler-found: true
   web:
     resources:
+      # Required for Spring MVC to throw NoHandlerFoundException for unmapped endpoints
+      # This is caught in the GlobalExceptionHandler as a 404 error
       add-mappings: false

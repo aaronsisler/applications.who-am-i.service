@@ -1,13 +1,3 @@
-management:
-  endpoints:
-    web:
-      exposure:
-        include:
-          - health
-          - info
-  info:
-    env:
-      enabled: true
 # Used to disable logging during test run
 logging:
   level:
