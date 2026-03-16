@@ -17,6 +17,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
  * Global handler for all exceptions thrown in controllers.
@@ -91,6 +92,26 @@ public class GlobalControllerExceptionHandler {
             .build());
   }
 
+  /* ================= 404 – URL or PATH NOT FOUND ================= */
+
+  /**
+   * Handles requests where no matching endpoint is found.
+   */
+  @ExceptionHandler(NoHandlerFoundException.class)
+  public ResponseEntity<ErrorDto> handleNoHandlerFound(
+      NoHandlerFoundException ex) {
+
+    return ResponseEntity
+        .status(HttpStatus.NOT_FOUND)
+        .body(ErrorDto.builder()
+            .errors(Collections.singletonList(
+                ErrorDetail.builder()
+                    .code(ErrorCode.NOT_FOUND)
+                    .message(ErrorMessages.HTTP_METHOD_NOT_ALLOWED.message())
+                    .build()))
+            .build());
+  }
+
   /* ================= 405 – METHOD NOT ALLOWED ================= */
 
   /**
@@ -155,28 +176,7 @@ public class GlobalControllerExceptionHandler {
             .build());
   }
 
-  /* ================= 503 – SERVICE UNAVAILABLE ================= */
-
-  /**
-   * Handles exceptions caused by unavailable data store.
-   *
-   * @param ex the exception thrown when persistence fails
-   * @return 503 {@link ResponseEntity} with single {@link ErrorDetail}
-   */
-  @ExceptionHandler(DataStoreException.class)
-  public ResponseEntity<ErrorDto> handleDataStoreUnavailable(DataStoreException ex) {
-    return ResponseEntity
-        .status(HttpStatus.SERVICE_UNAVAILABLE)
-        .body(ErrorDto.builder()
-            .errors(Collections.singletonList(
-                ErrorDetail.builder()
-                    .code(ErrorCode.INTERNAL_SERVER_ERROR)
-                    .message(ex.getMessage())
-                    .build()))
-            .build());
-  }
-
-  /* ================= 500 – INTERNAL SERVER ERROR ================= */
+  /* ================= 500 – INTERNAL_SERVER_ERROR ================= */
 
   /**
    * Handles all uncaught exceptions as internal server errors.
@@ -194,6 +194,25 @@ public class GlobalControllerExceptionHandler {
                 ErrorDetail.builder()
                     .code(ErrorCode.INTERNAL_SERVER_ERROR)
                     .message(ErrorMessages.UNEXPECTED_SERVER_ERROR.message())
+                    .build()))
+            .build());
+  }
+
+  /**
+   * Handles exceptions caused by unavailable data store.
+   *
+   * @param ex the exception thrown when persistence fails
+   * @return 503 {@link ResponseEntity} with single {@link ErrorDetail}
+   */
+  @ExceptionHandler(DataStoreException.class)
+  public ResponseEntity<ErrorDto> handleDataStoreUnavailable(DataStoreException ex) {
+    return ResponseEntity
+        .status(HttpStatus.SERVICE_UNAVAILABLE)
+        .body(ErrorDto.builder()
+            .errors(Collections.singletonList(
+                ErrorDetail.builder()
+                    .code(ErrorCode.INTERNAL_SERVER_ERROR)
+                    .message(ex.getMessage())
                     .build()))
             .build());
   }

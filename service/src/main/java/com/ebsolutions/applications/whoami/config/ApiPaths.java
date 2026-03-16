@@ -8,6 +8,18 @@ public class ApiPaths {
   public static final String APP_USERS_PATH = "/app-users";
 
   /**
+   * Base path for all API endpoints related
+   * to app users {@link com.ebsolutions.applications.whoami.core.system.SystemTestBaseController}
+   */
+  public static final String SYSTEM_TEST_PATH = "/system-test";
+
+  /**
+   * Path for testing exception handling by deliberately throwing an exception
+   * to app users {@link com.ebsolutions.applications.whoami.core.system.ExceptionTestController}
+   */
+  public static final String EXCEPTION_TEST_PATH = "/exception";
+
+  /**
    * Base path for all Spring Boot Actuator endpoints
    */
   private static final String APPLICATION_BASE_PATH = "/actuator";

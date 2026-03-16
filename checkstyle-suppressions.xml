@@ -3,16 +3,17 @@
         "https://checkstyle.org/dtds/suppressions_1_0.dtd">
 
 <suppressions>
-    <!-- Suppressing Javadoc since this application is not that large overall -->
+    <!-- Suppressing Javadoc until we can find a good balance for this -->
     <suppress checks="Javadoc" files="."/>
-    <!-- Handles the fact words could be like 'AThing" from Gherkin -->
+
+    <!-- Handles the fact that sentences could be like 'AThing" from Gherkin -->
     <suppress checks="Abbreviation" files="Steps.java"/>
-    <!-- Handles the fact words could be like 'AThing" from Gherkin -->
-    <suppress checks="AbbreviationAsWordInName" files="Steps.java"/>
-    <!-- This will suppress the auto generated method names coming from Cucumber Feature files -->
+    <suppress checks="AbbreviationAsWordInName" files="StepsContext.java"/>
+
+    <!-- This will suppress the characters coming in Cucumber auto generated method names -->
     <suppress checks="MethodName" files="Steps.java"/>
+    <suppress checks="MethodName" files="StepsContext.java"/>
+
     <!-- This will suppress the @Given/When/Then that are too long -->
     <suppress checks="LineLength" files="Steps.java"/>
-    <!-- This will suppress the warning on the Cucumber configuration file since the package name is so long-->
-    <suppress checks="LineLength" files="Features.java"/>
 </suppressions>
