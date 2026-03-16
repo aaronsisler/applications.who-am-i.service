@@ -31,16 +31,17 @@ components:
       title: ErrorCode
       type: string
       enum:
+        - EMAIL_ALREADY_EXISTS
+        - EMAIL_FORMAT_INVALID
+        - INTERNAL_SERVER_ERROR
         - MALFORMED_JSON
-        - REQUIRED
+        - METHOD_NOT_ALLOWED
+        - NOT_FOUND
         - NOT_NULL
         - NOT_BLANK
+        - REQUIRED
         - SIZE
-        - EMAIL_FORMAT_INVALID
-        - EMAIL_ALREADY_EXISTS
-        - INTERNAL_SERVER_ERROR
         - UNSUPPORTED_MEDIA_TYPE
-        - METHOD_NOT_ALLOWED
       example: EMAIL_ALREADY_EXISTS
     ErrorDetail:
       title: ErrorDetail
