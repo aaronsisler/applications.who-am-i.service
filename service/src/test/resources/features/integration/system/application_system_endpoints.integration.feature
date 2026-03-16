@@ -1,4 +1,4 @@
-Feature: Application Valid Endpoints - Integration
+Feature: Application System Endpoints - Integration
   In order to enforce proper API usage
   As a client
   I want to receive a clear 405 response when using unsupported HTTP methods

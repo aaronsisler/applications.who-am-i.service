@@ -13,7 +13,7 @@ import java.io.UnsupportedEncodingException;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class ApplicationValidEndpointsIntegrationStepsContext extends IntegrationStepsContext {
+public class ApplicationSystemEndpointsIntegrationStepsContext extends IntegrationStepsContext {
   @When("the client makes a {string} request to {string}")
   public void theClientMakesAHttpMethodRequestToEndpoint(String httpMethod, String endpoint)
       throws Exception {
