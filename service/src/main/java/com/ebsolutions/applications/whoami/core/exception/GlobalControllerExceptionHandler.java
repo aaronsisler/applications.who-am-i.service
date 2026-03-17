@@ -1,5 +1,6 @@
 package com.ebsolutions.applications.whoami.core.exception;
 
+import com.ebsolutions.applications.whoami.core.ErrorCodeMapper;
 import com.ebsolutions.applications.whoami.core.ErrorMessages;
 import com.ebsolutions.applications.whoami.dto.ErrorCode;
 import com.ebsolutions.applications.whoami.dto.ErrorDetail;
@@ -7,6 +8,7 @@ import com.ebsolutions.applications.whoami.dto.ErrorDto;
 import jakarta.validation.ConstraintViolationException;
 import java.util.Collections;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,10 @@ import org.springframework.web.servlet.NoHandlerFoundException;
  */
 @Slf4j
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class GlobalControllerExceptionHandler {
+
+  private final ErrorCodeMapper errorCodeMapper;
 
   /* ================= 400 – BAD REQUESTS (INPUT / CONTRACT) ================= */
 
@@ -62,7 +67,7 @@ public class GlobalControllerExceptionHandler {
         .stream()
         .map(v -> ErrorDetail.builder()
             .field(v.getPropertyPath().toString())
-            .code(mapConstraintCode(
+            .code(errorCodeMapper.map(
                 v.getConstraintDescriptor().getAnnotation().annotationType().getSimpleName()))
             .message(v.getMessage())
             .build())
@@ -76,11 +81,10 @@ public class GlobalControllerExceptionHandler {
   /**
    * Handles malformed JSON or unreadable request bodies.
    *
-   * @param ex the exception thrown when request body cannot be parsed
    * @return 400 {@link ResponseEntity} with single {@link ErrorDetail} for malformed input
    */
   @ExceptionHandler(HttpMessageNotReadableException.class)
-  public ResponseEntity<ErrorDto> handleMessageNotReadable(HttpMessageNotReadableException ex) {
+  public ResponseEntity<ErrorDto> handleMessageNotReadable() {
     return ResponseEntity
         .badRequest()
         .body(ErrorDto.builder()
@@ -96,10 +100,11 @@ public class GlobalControllerExceptionHandler {
 
   /**
    * Handles requests where no matching endpoint is found.
+   *
+   * @return 404 {@link ResponseEntity} with single {@link ErrorDetail}
    */
   @ExceptionHandler(NoHandlerFoundException.class)
-  public ResponseEntity<ErrorDto> handleNoHandlerFound(
-      NoHandlerFoundException ex) {
+  public ResponseEntity<ErrorDto> handleNoHandlerFound() {
 
     return ResponseEntity
         .status(HttpStatus.NOT_FOUND)
@@ -117,12 +122,10 @@ public class GlobalControllerExceptionHandler {
   /**
    * Handles requests using unsupported HTTP methods.
    *
-   * @param ex the exception thrown when method is not allowed
    * @return 405 {@link ResponseEntity} with single {@link ErrorDetail}
    */
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-  public ResponseEntity<ErrorDto> handleMethodNotSupported(
-      HttpRequestMethodNotSupportedException ex) {
+  public ResponseEntity<ErrorDto> handleMethodNotSupported() {
     return ResponseEntity
         .status(HttpStatus.METHOD_NOT_ALLOWED)
         .body(ErrorDto.builder()
@@ -160,11 +163,10 @@ public class GlobalControllerExceptionHandler {
   /**
    * Handles requests with unsupported Content-Type headers.
    *
-   * @param ex the exception thrown when media type is unsupported
    * @return 415 {@link ResponseEntity} with single {@link ErrorDetail}
    */
   @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-  public ResponseEntity<ErrorDto> handleUnsupportedMedia(HttpMediaTypeNotSupportedException ex) {
+  public ResponseEntity<ErrorDto> handleUnsupportedMedia() {
     return ResponseEntity
         .status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
         .body(ErrorDto.builder()
@@ -177,6 +179,25 @@ public class GlobalControllerExceptionHandler {
   }
 
   /* ================= 500 – INTERNAL_SERVER_ERROR ================= */
+
+  /**
+   * Handles exceptions caused by unavailable data store.
+   *
+   * @param ex the exception thrown when persistence fails
+   * @return 503 {@link ResponseEntity} with single {@link ErrorDetail}
+   */
+  @ExceptionHandler(DataStoreException.class)
+  public ResponseEntity<ErrorDto> handleDataStoreUnavailable(DataStoreException ex) {
+    return ResponseEntity
+        .status(HttpStatus.SERVICE_UNAVAILABLE)
+        .body(ErrorDto.builder()
+            .errors(Collections.singletonList(
+                ErrorDetail.builder()
+                    .code(ErrorCode.INTERNAL_SERVER_ERROR)
+                    .message(ex.getMessage())
+                    .build()))
+            .build());
+  }
 
   /**
    * Handles all uncaught exceptions as internal server errors.
@@ -198,25 +219,6 @@ public class GlobalControllerExceptionHandler {
             .build());
   }
 
-  /**
-   * Handles exceptions caused by unavailable data store.
-   *
-   * @param ex the exception thrown when persistence fails
-   * @return 503 {@link ResponseEntity} with single {@link ErrorDetail}
-   */
-  @ExceptionHandler(DataStoreException.class)
-  public ResponseEntity<ErrorDto> handleDataStoreUnavailable(DataStoreException ex) {
-    return ResponseEntity
-        .status(HttpStatus.SERVICE_UNAVAILABLE)
-        .body(ErrorDto.builder()
-            .errors(Collections.singletonList(
-                ErrorDetail.builder()
-                    .code(ErrorCode.INTERNAL_SERVER_ERROR)
-                    .message(ex.getMessage())
-                    .build()))
-            .build());
-  }
-
   /* ==================== Helper Methods ==================== */
 
   /**
@@ -226,47 +228,12 @@ public class GlobalControllerExceptionHandler {
    * @return {@link ErrorDetail} with mapped {@link ErrorCode}
    */
   private ErrorDetail mapFieldError(FieldError fieldError) {
-    ErrorCode code = mapValidationCode(fieldError.getCode());
+    ErrorCode code = errorCodeMapper.map(fieldError.getCode());
+
     return ErrorDetail.builder()
         .field(fieldError.getField())
         .code(code)
         .message(fieldError.getDefaultMessage())
         .build();
-  }
-
-  /**
-   * Maps Spring validation codes to {@link ErrorCode} enum.
-   *
-   * @param springCode code from {@link FieldError} (may be null)
-   * @return corresponding {@link ErrorCode} from contract
-   */
-  private ErrorCode mapValidationCode(String springCode) {
-    if (springCode == null) {
-      return ErrorCode.INTERNAL_SERVER_ERROR;
-    }
-
-    return switch (springCode) {
-      case "NotNull" -> ErrorCode.NOT_NULL;
-      case "NotBlank" -> ErrorCode.NOT_BLANK;
-      case "Size" -> ErrorCode.SIZE;
-      case "Email" -> ErrorCode.EMAIL_FORMAT_INVALID;
-      default -> ErrorCode.INTERNAL_SERVER_ERROR;
-    };
-  }
-
-  /**
-   * Maps Java validation annotations (for ConstraintViolationException) to {@link ErrorCode}.
-   *
-   * @param annotationSimpleName simple name of the annotation (e.g., "NotNull")
-   * @return mapped {@link ErrorCode} for contract
-   */
-  private ErrorCode mapConstraintCode(String annotationSimpleName) {
-    return switch (annotationSimpleName) {
-      case "NotNull" -> ErrorCode.NOT_NULL;
-      case "NotBlank" -> ErrorCode.NOT_BLANK;
-      case "Size" -> ErrorCode.SIZE;
-      case "Email" -> ErrorCode.EMAIL_FORMAT_INVALID;
-      default -> ErrorCode.INTERNAL_SERVER_ERROR;
-    };
   }
 }

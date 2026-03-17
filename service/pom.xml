@@ -24,8 +24,7 @@
             **/Application.java,
             **/config/*,
             **/model/*,
-            **/*Generator.java,
-            **/GlobalControllerExceptionHandler.java
+            **/*Generator.java
         </sonar.coverage.exclusions>
 
         <!-- Versions: Dependencies: Service -->
