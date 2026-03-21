@@ -78,7 +78,7 @@ public class CreateAppUserThenStepsContext extends IntegrationStepsContext {
   @And("the create-user response should contain exactly {int} error")
   public void theCreateUserResponseShouldContainExactlyError(int errorCount)
       throws UnsupportedEncodingException, JsonProcessingException {
-    assertThat(integrationScenarioContext.responses.size()).isEqualTo(1);
+    assertThat(integrationScenarioContext.responses).hasSize(1);
 
     ErrorDto errorDto = objectMapper
         .readValue(integrationScenarioContext.responses.getFirst().getContentAsString(),

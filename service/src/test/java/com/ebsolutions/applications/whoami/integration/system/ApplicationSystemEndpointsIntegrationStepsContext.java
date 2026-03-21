@@ -50,6 +50,6 @@ public class ApplicationSystemEndpointsIntegrationStepsContext extends Integrati
 
     ErrorCode errorCode = ErrorCode.valueOf(rawErrorCode);
 
-    assertThat(errorCode.equals(errorDto.getErrors().getFirst().getCode())).isTrue();
+    assertThat(errorDto.getErrors().getFirst().getCode()).isEqualTo(errorCode);
   }
 }
