@@ -1,22 +1,23 @@
-#Feature: Create App User - Acceptance
-#
-#  Background:
-#    Given the application is running
-#
-#  Scenario: Successfully creating an app user
-#    Given the client provides a valid create-user request
-#      | emailAddress | johnny.appleseed@gmail.com |
-#      | firstName    | Johnny                     |
-#      | lastName     | Appleseed                  |
-#    And the request has content type "application/json"
-#    When the client submits the request
-#    Then the response status should be 201
+Feature: Create App User - Acceptance
+
+  Background:
+    Given the application is running
+
+  Scenario: 201 - Creating an app user with required fields
+    Given the client provides a create-user request body with the following fields:
+      | emailAddress | johnny.appleseed@gmail.com |
+      | firstName    | Johnny                     |
+      | lastName     | Appleseed                  |
+    And the create-user request has a content type of "application/json"
+    When the client submits the create-user request
+    Then the create-user response status should be 201
 #    And the response body should contain:
 #      | emailAddress | johnny.appleseed@gmail.com |
 #      | firstName    | Johnny                     |
 #      | lastName     | Appleseed                  |
 #    And a client-facing ID should be returned
-#    And createdAt and updatedAt timestamps should be returned
+#    And createdAt timestamp should be returned
+#    And updatedAt timestamp should be returned
 #    And the app user should be persisted in the data store
 #
 #  Scenario: Duplicate email returns 409

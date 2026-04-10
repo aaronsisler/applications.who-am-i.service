@@ -2,7 +2,7 @@ package com.ebsolutions.applications.whoami.integration.appuser.create;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-import com.ebsolutions.applications.whoami.config.ApiPaths;
+import com.ebsolutions.applications.whoami.core.config.ApiPaths;
 import com.ebsolutions.applications.whoami.integration.IntegrationStepsContext;
 import io.cucumber.java.en.When;
 import org.springframework.http.MediaType;

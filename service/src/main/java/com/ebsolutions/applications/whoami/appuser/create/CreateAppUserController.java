@@ -1,7 +1,7 @@
 package com.ebsolutions.applications.whoami.appuser.create;
 
 import com.ebsolutions.applications.whoami.appuser.core.AppUserBaseController;
-import com.ebsolutions.applications.whoami.config.ApiPaths;
+import com.ebsolutions.applications.whoami.core.config.ApiPaths;
 import com.ebsolutions.applications.whoami.dto.AppUserCreate;
 import com.ebsolutions.applications.whoami.dto.AppUserDto;
 import jakarta.validation.Valid;

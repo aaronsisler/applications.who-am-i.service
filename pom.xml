@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.7</version>
+        <version>3.5.13</version>
         <!-- lookup parent from repository -->
         <relativePath/>
     </parent>
@@ -44,14 +44,6 @@
         <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
         <spring-boot-maven-plugin.version>3.5.7</spring-boot-maven-plugin.version>
 
-        <!-- Versions: Dependencies: Service -->
-        <jackson-databind-nullable.version>0.2.8</jackson-databind-nullable.version>
-        <springdoc-openapi-starter-webmvc-ui.version>2.8.14</springdoc-openapi-starter-webmvc-ui.version>
-
-        <!-- Versions: Dependencies: Testing -->
-        <cucumber-bom.version>7.31.0</cucumber-bom.version>
-        <junit-bom.version>6.0.1</junit-bom.version>
-
         <!-- Contract Paths -->
         <!-- These paths are relative to the child modules -->
         <!--suppress UnresolvedMavenProperty -->
@@ -67,43 +59,6 @@
         <app-user-dto-id.executions>dto-app-user</app-user-dto-id.executions>
 
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <!-- Used for Swagger UI and Open API annotations -->
-            <!-- Version: Explicit -->
-            <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-                <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
-            </dependency>
-            <!-- Used for the validation annotations -->
-            <!-- Version: Explicit -->
-            <dependency>
-                <groupId>org.openapitools</groupId>
-                <artifactId>jackson-databind-nullable</artifactId>
-                <version>${jackson-databind-nullable.version}</version>
-            </dependency>
-            <!-- Used for JUnit and Mockito testing libs-->
-            <!-- Version: Explicit -->
-            <dependency>
-                <groupId>org.junit</groupId>
-                <artifactId>junit-bom</artifactId>
-                <version>${junit-bom.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <!-- Used for Cucumber BDD testing libs-->
-            <!-- Version: Explicit -->
-            <dependency>
-                <groupId>io.cucumber</groupId>
-                <artifactId>cucumber-bom</artifactId>
-                <version>${cucumber-bom.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <build>
         <plugins>

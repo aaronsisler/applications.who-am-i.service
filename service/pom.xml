@@ -28,15 +28,46 @@
         </sonar.coverage.exclusions>
 
         <!-- Versions: Dependencies: Service -->
+        <jackson-databind-nullable.version>0.2.10</jackson-databind-nullable.version>
         <mapstruct.version>1.6.3</mapstruct.version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.8.16</springdoc-openapi-starter-webmvc-ui.version>
 
         <!-- Versions: Dependencies: Testing -->
+        <cucumber-bom.version>7.31.0</cucumber-bom.version>
+        <junit-bom.version>6.0.1</junit-bom.version>
+        <!-- This must match what is in Spring Parent -->
         <mockito.version>5.17.0</mockito.version>
 
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- Dependency Management: BOMs : Start -->
+
+            <!-- Used for Cucumber BDD testing libs-->
+            <!-- Version: Explicit -->
+            <dependency>
+                <groupId>io.cucumber</groupId>
+                <artifactId>cucumber-bom</artifactId>
+                <version>${cucumber-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Used for JUnit and Mockito testing libs-->
+            <!-- Version: Explicit -->
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Dependency Management: BOMs : End -->
+
+            <!-- Dependency Management: Individual : Start -->
+
             <!-- MapStruct annotation processor for compile time annotations -->
             <!-- Version: Explicit -->
             <dependency>
@@ -44,15 +75,44 @@
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${mapstruct.version}</version>
             </dependency>
+
+            <!-- Dependency Management: Individual : End -->
+
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
-        <!-- Contains Spring Boot Starter and Tomcat web server -->
+        <!-- Dependencies: Compile : Start -->
+
+        <!-- Used for Swagger and serialization of Local Date -->
         <!-- Version: Spring Parent -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
+        <!-- Used for mapping between OpenAPI DTO and database entity -->
+        <!-- Version: Explicit -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+
+        <!-- Used for the validation annotations -->
+        <!-- Version: Explicit -->
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${jackson-databind-nullable.version}</version>
+        </dependency>
+
+        <!-- Used for Swagger UI and Open API annotations -->
+        <!-- Version: Explicit -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
         </dependency>
 
         <!-- Exposes the actuator API health/info/etc. -->
@@ -60,6 +120,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- Used for database framework -->
+        <!-- Version: Spring Parent -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jdbc</artifactId>
         </dependency>
 
         <!-- Used for authentication -->
@@ -76,19 +143,22 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
-        <!-- Used for Swagger UI and Open API annotations -->
-        <!-- Version: Parent POM - Dep Management -->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-        </dependency>
-
-        <!-- Used for database framework -->
+        <!-- Contains Spring Boot Starter and Tomcat web server -->
         <!-- Version: Spring Parent -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jdbc</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <!--            <scope>provided</scope>-->
+        </dependency>
+
+        <!-- Dependencies: Compile : End -->
+
+        <!-- Dependencies: Runtime : Start -->
 
         <!-- Required for driver class: org.postgresql.Driver -->
         <!-- Version: Installed on runtime machine -->
@@ -98,42 +168,48 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Used for mapping between OpenAPI DTO and database entity -->
-        <!-- Version: Explicit -->
+        <!-- Dependencies: Runtime : End -->
+
+        <!-- Dependencies: Test : Start -->
+
+        <!-- Testing linkage between Cucumber and Java -->
+        <!-- Version: Dependency Management -->
         <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>${mapstruct.version}</version>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <scope>test</scope>
         </dependency>
 
-        <!-- MapStruct annotation processor for compile time annotations -->
-        <!-- Version: Dep Management -->
+        <!-- Testing linkage between Cucumber and JUnit -->
+        <!-- Version: Dependency Management -->
         <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <scope>provided</scope>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <scope>test</scope>
         </dependency>
 
-        <!-- Used for the validation annotations -->
-        <!-- Version: Parent POM - Dep Management -->
+        <!-- Testing linkage between Cucumber and Spring context -->
+        <!-- Version: Dependency Management -->
         <dependency>
-            <groupId>org.openapitools</groupId>
-            <artifactId>jackson-databind-nullable</artifactId>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-spring</artifactId>
+            <scope>test</scope>
         </dependency>
 
-        <!-- Used for Swagger and serialization of Local Date -->
+        <!-- Needed for running tests in Junit -->
+        <!-- Version: Dependency Management -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Explicitly add Mockito core (no inline agent needed) -->
         <!-- Version: Spring Parent -->
         <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-        </dependency>
-
-        <!-- Used for POJO annotations within project -->
-        <!-- Version: Spring Parent -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <!-- Testing framework for starting Spring context and MockMVC -->
@@ -151,45 +227,31 @@
             </exclusions>
         </dependency>
 
-        <!-- Explicitly add Mockito core (no inline agent needed) -->
+        <!-- Used for Docker container during Acceptance tests -->
         <!-- Version: Spring Parent -->
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- Needed for running tests in Junit -->
-        <!-- Version: Parent POM - Dep Management -->
+        <!-- Used for Docker container during Acceptance tests -->
+        <!-- Version: Spring Parent -->
         <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-suite</artifactId>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- Testing linkage between Cucumber and Spring context -->
-        <!-- Version: Parent POM - Dep Management -->
+        <!-- Used for Docker container during Acceptance tests -->
+        <!-- Version: Spring Parent -->
         <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-spring</artifactId>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- Testing linkage between Cucumber and Java -->
-        <!-- Version: Parent POM - Dep Management -->
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Testing linkage between Cucumber and JUnit -->
-        <!-- Version: Parent POM - Dep Management -->
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit-platform-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
+        <!-- Dependencies: Test : End -->
 
     </dependencies>
 
@@ -209,13 +271,15 @@
                 <configuration>
                     <annotationProcessorPaths>
                         <!-- Lombok must be prior to MapStruct -->
+                        <!-- Used for POJO annotations within project -->
                         <!-- Version: Spring Parent -->
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                         </path>
                         <!-- MapStruct must be after Lombok -->
-                        <!-- Version: Dep Management -->
+                        <!-- MapStruct annotation processor for compile time annotations -->
+                        <!-- Version: Dependency Management -->
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
@@ -288,6 +352,7 @@
             </plugin>
             <!-- Used to add the integration test source and resource directories to the project -->
             <!-- Version: Parent POM - Plugin Management -->
+            <!-- TODO Is this plugin needed? If so, why and which executions? -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -328,13 +393,15 @@
                 <executions>
                     <execution>
                         <id>unit-tests</id>
+                        <!-- TODO Can this run with Surefire instead of Failsafe? -->
                         <phase>integration-test</phase>
                         <goals>
                             <goal>integration-test</goal>
                             <goal>verify</goal>
                         </goals>
                         <configuration>
-                            <!--suppress UnresolvedMavenProperty-->
+                            <!-- TODO Remove this -->
+                            <!--                            <skip>true</skip>-->
                             <argLine>
                                 <!-- Used to suppress warnings during test running -->
                                 -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
@@ -346,6 +413,7 @@
                             <testFailureIgnore>false</testFailureIgnore>
                             <systemPropertyVariables>
                                 <!-- This triggers the correct application-test.yaml -->
+                                <!-- TODO what should this be? -->
                                 <spring.profiles.active>integration</spring.profiles.active>
                             </systemPropertyVariables>
                             <includes>
@@ -361,7 +429,8 @@
                             <goal>verify</goal>
                         </goals>
                         <configuration>
-                            <!--suppress UnresolvedMavenProperty-->
+                            <!-- TODO Remove this -->
+                            <!--                            <skip>true</skip>-->
                             <argLine>
                                 <!-- Used to suppress warnings during test running -->
                                 -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
@@ -380,32 +449,33 @@
                             </includes>
                         </configuration>
                     </execution>
-                    <!--                    <execution>-->
-                    <!--                        <id>acceptance-tests</id>-->
-                    <!--                        <goals>-->
-                    <!--                            <goal>integration-test</goal>-->
-                    <!--                            <goal>verify</goal>-->
-                    <!--                        </goals>-->
-                    <!--                        <configuration>-->
-                    <!--                            &lt;!&ndash;suppress UnresolvedMavenProperty&ndash;&gt;-->
-                    <!--                            <argLine>-->
-                    <!--                                &lt;!&ndash; Used to suppress warnings during test running &ndash;&gt;-->
-                    <!--                                -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar-->
-                    <!--                                &lt;!&ndash; Used to suppress warnings during test running &ndash;&gt;-->
-                    <!--                                -Xshare:off-->
-                    <!--                                &lt;!&ndash; This comes from the JaCoCo plugin &ndash;&gt;-->
-                    <!--                                ${failsafeJacocoAgent}-->
-                    <!--                            </argLine>-->
-                    <!--                            <testFailureIgnore>false</testFailureIgnore>-->
-                    <!--                            <systemPropertyVariables>-->
-                    <!--                                &lt;!&ndash; This triggers the correct application-test.yaml &ndash;&gt;-->
-                    <!--                                <spring.profiles.active>acceptance</spring.profiles.active>-->
-                    <!--                            </systemPropertyVariables>-->
-                    <!--                            <includes>-->
-                    <!--                                <include>**/AcceptanceTestRunner.java</include>-->
-                    <!--                            </includes>-->
-                    <!--                        </configuration>-->
-                    <!--                    </execution>-->
+                    <execution>
+                        <id>acceptance-tests</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <!-- TODO Remove this -->
+                            <!--   <skip>true</skip>-->
+                            <argLine>
+                                <!-- Used to suppress warnings during test running -->
+                                -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
+                                <!-- Used to suppress warnings during test running -->
+                                -Xshare:off
+                                <!-- This comes from the JaCoCo plugin -->
+                                ${failsafeJacocoAgent}
+                            </argLine>
+                            <testFailureIgnore>false</testFailureIgnore>
+                            <systemPropertyVariables>
+                                <!-- This triggers the correct application-test.yaml -->
+                                <spring.profiles.active>acceptance</spring.profiles.active>
+                            </systemPropertyVariables>
+                            <includes>
+                                <include>**/AcceptanceTestRunner.java</include>
+                            </includes>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <!-- Used to integrate SonarQube analysis into the Maven build -->

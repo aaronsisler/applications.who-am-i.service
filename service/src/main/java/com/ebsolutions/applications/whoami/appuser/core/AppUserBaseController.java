@@ -1,6 +1,6 @@
 package com.ebsolutions.applications.whoami.appuser.core;
 
-import com.ebsolutions.applications.whoami.config.ApiPaths;
+import com.ebsolutions.applications.whoami.core.config.ApiPaths;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping(ApiPaths.APP_USERS_PATH)

@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.config;
+package com.ebsolutions.applications.whoami.core.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
