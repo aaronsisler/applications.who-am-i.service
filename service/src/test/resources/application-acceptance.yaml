@@ -1,10 +1,19 @@
+application:
+  persistence:
+    database: auth
+    schema: auth
+    username: testuser
+    password: testpass
+
 server:
   url: http://localhost
   port: 8080
+
 # Used to disable logging during test run
 logging:
   level:
-    root: OFF
+    #    root: OFF
+    root: INFO
     org:
       springframework:
         jdbc.core: DEBUG # Shows SQL statements
@@ -13,14 +22,7 @@ springdoc:
   api-docs:
     # Disable Swagger API docs generation during tests
     enabled: false
-
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/testdb
-    username: testuser
-    password: testpass
-    driver-class-name: org.postgresql.Driver
   sql:
     init:
-      #      mode: always # Run schema.sql on startup
-      platform: postgresql
+      mode: always # Run schema.sql on startup

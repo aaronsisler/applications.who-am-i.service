@@ -18,7 +18,7 @@ public class ErrorCodeMapperSteps extends UnitStepsContext {
 
   @Given("a string value {string} is provided")
   public void aStringValueIsProvided(String value) {
-    this.value = normalize(value);
+    this.value = normalizeTestFixture(value);
   }
 
   @When("the string value is mapped to an error code")

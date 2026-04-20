@@ -202,14 +202,14 @@
                         <!-- typeMappings links the contract (left side) to the right side -->
                         <typeMappings>
                             <!-- This Pascal format is the standard for baked in OpenAPI supported types -->
-                            <typeMapping>DateTime=LocalDateTime</typeMapping>
+                            <typeMapping>DateTime=Instant</typeMapping>
                             <!-- Kebab format is the format for custom mappings  -->
                             <typeMapping>local-date=LocalDate</typeMapping>
                         </typeMappings>
                         <!-- importMappings then links the typeMapping (left side) to a Java import (right side) -->
                         <importMappings>
                             <!-- Left side in importMappings maps to the right side in typeMappings -->
-                            <importMapping>LocalDateTime=java.time.LocalDateTime</importMapping>
+                            <importMapping>Instant=java.time.Instant</importMapping>
                             <importMapping>LocalDate=java.time.LocalDate</importMapping>
                         </importMappings>
                     </configuration>

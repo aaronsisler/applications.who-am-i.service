@@ -1,3 +1,8 @@
+application:
+  persistence:
+    database: auth
+    schema: auth
+
 management:
   endpoints:
     web:
@@ -10,9 +15,9 @@ management:
       enabled: true
 
 spring:
-  #  datasource:
-  #    platform: postgres
-  #    driver-class-name: org.postgresql.Driver
+  datasource:
+    platform: postgres
+    driver-class-name: org.postgresql.Driver
   #    sql:
   #      init:
   #        mode: always

@@ -189,7 +189,7 @@ public class GlobalControllerExceptionHandler {
   @ExceptionHandler(DataStoreException.class)
   public ResponseEntity<ErrorDto> handleDataStoreUnavailable(DataStoreException ex) {
     return ResponseEntity
-        .status(HttpStatus.SERVICE_UNAVAILABLE)
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
         .body(ErrorDto.builder()
             .errors(Collections.singletonList(
                 ErrorDetail.builder()

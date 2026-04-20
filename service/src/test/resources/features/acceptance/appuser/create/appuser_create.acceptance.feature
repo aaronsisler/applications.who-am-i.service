@@ -15,9 +15,9 @@ Feature: Create App User - Acceptance
 #      | emailAddress | johnny.appleseed@gmail.com |
 #      | firstName    | Johnny                     |
 #      | lastName     | Appleseed                  |
-#    And a client-facing ID should be returned
-#    And createdAt timestamp should be returned
-#    And updatedAt timestamp should be returned
+    And the create-user response should contain a valid client-facing ID
+    And the create-user response should contain a valid createdAt timestamp
+    And the create-user response should contain a valid updatedAt timestamp
 #    And the app user should be persisted in the data store
 #
 #  Scenario: Duplicate email returns 409

@@ -1,5 +1,12 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/auth?currentSchema=auth
+application:
+  persistence:
     username: auth_app_user
     password: CHANGE_ME
+    hostname: localhost
+    port: 5432
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${application.persistence.hostname}:${application.persistence.port}/${application.persistence.database}?currentSchema=${application.persistence.schema}
+    username: ${application.persistence.username}
+    password: ${application.persistence.password}
