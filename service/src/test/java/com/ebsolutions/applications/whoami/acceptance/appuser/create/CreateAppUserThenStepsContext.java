@@ -5,8 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.ebsolutions.applications.whoami.acceptance.AcceptanceStepsContext;
 import com.ebsolutions.applications.whoami.dto.AppUserDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
+import java.util.Map;
 
 public class CreateAppUserThenStepsContext extends AcceptanceStepsContext {
 
@@ -14,6 +17,31 @@ public class CreateAppUserThenStepsContext extends AcceptanceStepsContext {
   public void theCreateUserResponseStatusShouldBe(int statusCode) {
     assertThat(this.acceptanceScenarioContext.response.getStatusCode().value())
         .isEqualTo(statusCode);
+  }
+
+  @And("the create-user response body should contain:")
+  public void theCreateUserResponseBodyShouldContain(DataTable dataTable)
+      throws JsonProcessingException {
+    var responseBody = this.acceptanceScenarioContext.response.getBody();
+
+    assertThat(responseBody).isNotNull();
+
+    Map<String, Object> responseBodyMap =
+        this.objectMapper.readValue(responseBody, new TypeReference<>() {
+        });
+
+    dataTable.asMap().forEach((key, value) ->
+        assertThat(responseBodyMap.containsKey(key))
+            .withFailMessage("Expected response body to contain key '%s'", key)
+            .isTrue()
+    );
+
+    dataTable.asMap().forEach((key, value) ->
+        assertThat(responseBodyMap).hasFieldOrPropertyWithValue(key, value));
+
+    AppUserDto appUser = this.objectMapper.convertValue(responseBodyMap, AppUserDto.class);
+
+    assertThat(appUser).isNotNull();
   }
 
   @And("the create-user response should contain a valid client-facing ID")
@@ -52,4 +80,6 @@ public class CreateAppUserThenStepsContext extends AcceptanceStepsContext {
 
     assertThat(appUser.getUpdatedAt()).isNotNull();
   }
+
+
 }

@@ -11,10 +11,10 @@ Feature: Create App User - Acceptance
     And the create-user request has a content type of "application/json"
     When the client submits the create-user request
     Then the create-user response status should be 201
-#    And the response body should contain:
-#      | emailAddress | johnny.appleseed@gmail.com |
-#      | firstName    | Johnny                     |
-#      | lastName     | Appleseed                  |
+    And the create-user response body should contain:
+      | emailAddress | johnny.appleseed@gmail.com |
+      | firstName    | Johnny                     |
+      | lastName     | Appleseed                  |
     And the create-user response should contain a valid client-facing ID
     And the create-user response should contain a valid createdAt timestamp
     And the create-user response should contain a valid updatedAt timestamp
