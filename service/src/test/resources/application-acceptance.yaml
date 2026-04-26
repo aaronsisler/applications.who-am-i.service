@@ -5,25 +5,22 @@ application:
     username: testuser
     password: testpass
 
-server:
-  url: http://localhost
-  port: 8080
-
 # Used to disable logging during test run
 logging:
   level:
     root: OFF
-    #    root: INFO # Shows logs from application
+    # root: INFO # Shows logs from application
     org:
       springframework:
         jdbc.core: OFF
-      #        jdbc.core: DEBUG # Shows SQL statements
-      testcontainers: INFO
-springdoc:
-  api-docs:
-    # Disable Swagger API docs generation during tests
-    enabled: false
+      # jdbc.core: DEBUG # Shows SQL statements
+      testcontainers: OFF
+      # testcontainers: INFO
 spring:
   sql:
     init:
       mode: always # Run schema.sql on startup
+springdoc:
+  api-docs:
+    # Disable Swagger API docs generation during tests
+    enabled: false
