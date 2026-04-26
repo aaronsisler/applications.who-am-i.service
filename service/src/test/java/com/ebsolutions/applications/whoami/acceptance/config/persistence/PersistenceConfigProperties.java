@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.acceptance;
+package com.ebsolutions.applications.whoami.acceptance.config.persistence;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

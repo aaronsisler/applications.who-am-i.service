@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.acceptance;
+package com.ebsolutions.applications.whoami.acceptance.config.persistence;
 
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +16,13 @@ public class PersistenceConfig {
   private final PersistenceConfigProperties persistenceConfigProperties;
 
   @Bean
-  public PostgreSQLContainer<?> postgresContainer() {
+  @SuppressWarnings("rawtypes")
+  public PostgreSQLContainer postgresContainer() {
     PostgreSQLContainer<?> container =
         new PostgreSQLContainer<>("postgres:16-alpine")
             .withDatabaseName(persistenceConfigProperties.database())
             .withUsername(persistenceConfigProperties.username())
-            .withPassword(persistenceConfigProperties.password())
-            .withReuse(true);
+            .withPassword(persistenceConfigProperties.password());
 
     container.start();
     return container;

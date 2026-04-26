@@ -16,4 +16,8 @@
 
     <!-- This will suppress the @Given/When/Then that are too long -->
     <suppress checks="LineLength" files="Steps.java"/>
+
+    <!-- This will suppress when a variable is too far from it's usage in tests -->
+    <!-- This usually is because there is debugging, not actual code that will stay -->
+    <suppress checks="VariableDeclarationUsageDistance" files="StepsContext.java"/>
 </suppressions>

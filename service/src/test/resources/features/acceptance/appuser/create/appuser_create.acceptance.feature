@@ -18,16 +18,31 @@ Feature: Create App User - Acceptance
     And the create-user response should contain a valid client-facing ID
     And the create-user response should contain a valid createdAt timestamp
     And the create-user response should contain a valid updatedAt timestamp
-#    And the app user should be persisted in the data store
+
+  Scenario: 409 - Duplicate email
+    Given the client provides a create-user request body with the following fields:
+      | emailAddress | johnny.appleseed@gmail.com |
+      | firstName    | Johnny                     |
+      | lastName     | Appleseed                  |
+    When the client submits the create-user request
+    Then the create-user response status should be 201
+    And the client provides a create-user request body with the following fields:
+      | emailAddress | johnny.appleseed@gmail.com |
+      | firstName    | Johnny                     |
+      | lastName     | Appleseed                  |
+    When the client submits the create-user request
+    Then the create-user response status should be 409
+    And the create-user response should contain exactly 1 error
+    And the create-user response should contain an error with:
+      | field | <null>               |
+      | code  | EMAIL_ALREADY_EXISTS |
 #
-#  Scenario: Duplicate email returns 409
-#    Given an app user already exists with email "test@example.com"
-#    When the client submits a create-user request with email "test@example.com"
-#    Then the response status should be 409
-#    And the error message should contain "Email address already exists"
-#
-#  Scenario: Database unavailable returns 500
-#    Given the database is unavailable
-#    When the client submits a valid create-user request
-#    Then the response status should be 500
+  Scenario: 500 - Database unavailable
+    Given the client provides a create-user request body with the following fields:
+      | emailAddress | johnny.appleseed@gmail.com |
+      | firstName    | Johnny                     |
+      | lastName     | Appleseed                  |
+    And the database is unavailable
+    When the client submits the create-user request
+    Then the create-user response status should be 500
 #    And the error message should contain "App user cannot be saved"
