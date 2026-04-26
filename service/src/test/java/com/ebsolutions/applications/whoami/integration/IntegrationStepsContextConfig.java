@@ -9,13 +9,8 @@ import org.springframework.context.annotation.Bean;
 @TestConfiguration
 public class IntegrationStepsContextConfig {
 
-  //  @Bean
-  //  ObjectMapper objectMapper() {
-  //    return new ObjectMapper().findAndRegisterModules();
-  //  }
-
   @Bean
-  AppUserRepository appUserRepository() {
+  AppUserRepository createAppUserRepository() {
     return Mockito.mock(AppUserRepository.class);
   }
 }
