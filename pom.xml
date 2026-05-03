@@ -33,7 +33,6 @@
         <sonar.projectKey>aaronsisler_applications.who-am-i.service</sonar.projectKey>
 
         <!-- Versions: Plugins -->
-        <build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
         <checkstyle-maven-plugin.version>3.6.0</checkstyle-maven-plugin.version>
         <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
@@ -72,84 +71,6 @@
 
         <pluginManagement>
             <plugins>
-                <!-- Allows for a single version to be declared in parent pom -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>flatten-maven-plugin</artifactId>
-                    <version>${flatten-maven-plugin.version}</version>
-                </plugin>
-                <!-- Used to compile the sources of your project -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven-compiler-plugin.version}</version>
-                    <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
-                        <!-- Using to suppress MockBean warnings -->
-                        <showWarnings>false</showWarnings>
-                    </configuration>
-                </plugin>
-                <!-- Gives the actuator/info API build information -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${spring-boot-maven-plugin.version}</version>
-                    <configuration>
-                        <excludes>
-                            <exclude>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok</artifactId>
-                            </exclude>
-                        </excludes>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <!-- This is providing the build info for the actuator/info endpoint -->
-                                <goal>build-info</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <!-- Used to add the different test source and resource directories to the project -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>${build-helper-maven-plugin.version}</version>
-                </plugin>
-                <!-- Used for running JUnit tests that link to Cucumber feature files -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surefire-plugin.version}</version>
-                </plugin>
-                <!-- Provides the JaCoCo runtime agent to your tests and allows basic report creation -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${jacoco-maven-plugin.version}</version>
-                </plugin>
-                <!-- Used for running the Cucumber tests and finding feature files -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>${maven-failsafe-plugin.version}</version>
-                </plugin>
-                <!-- Used to integrate SonarQube analysis into the Maven build -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.sonarsource.scanner.maven</groupId>
-                    <artifactId>sonar-maven-plugin</artifactId>
-                    <version>${sonar-maven-plugin.version}</version>
-                </plugin>
                 <!-- Maintains strict Code Styles -->
                 <!-- Version: Explicit -->
                 <plugin>
@@ -175,6 +96,47 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <!-- Used to compile the sources of your project -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <!-- Using to suppress MockBean warnings -->
+                        <showWarnings>false</showWarnings>
+                    </configuration>
+                </plugin>
+                <!-- Used for running the Cucumber tests and finding feature files -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven-failsafe-plugin.version}</version>
+                </plugin>
+                <!-- Used for running JUnit tests that link to Cucumber feature files -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                </plugin>
+                <!-- Allows for a single version to be declared in parent pom -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>flatten-maven-plugin</artifactId>
+                    <version>${flatten-maven-plugin.version}</version>
+                </plugin>
+                <!-- Provides the JaCoCo runtime agent to your tests and allows basic report creation -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco-maven-plugin.version}</version>
                 </plugin>
                 <!-- Generates Java classes from OpenAPI contracts -->
                 <!-- Version: Explicit -->
@@ -240,6 +202,36 @@
                             <configuration>
                                 <inputSpec>${inbound-app-user-contract.path}</inputSpec>
                             </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- Used to integrate SonarQube analysis into the Maven build -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${sonar-maven-plugin.version}</version>
+                </plugin>
+                <!-- Gives the actuator/info API build information -->
+                <!-- Version: Explicit -->
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot-maven-plugin.version}</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                            </exclude>
+                        </excludes>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <!-- This is providing the build info for the actuator/info endpoint -->
+                                <goal>build-info</goal>
+                            </goals>
                         </execution>
                     </executions>
                 </plugin>

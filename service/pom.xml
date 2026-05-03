@@ -153,7 +153,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <!--            <scope>provided</scope>-->
         </dependency>
 
         <!-- Dependencies: Compile : End -->
@@ -173,7 +172,7 @@
         <!-- Dependencies: Test : Start -->
 
         <!-- Testing linkage between Cucumber and Java -->
-        <!-- Version: Dependency Management -->
+        <!-- Version: Dependency Management - Cucumber BOM -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
@@ -181,7 +180,7 @@
         </dependency>
 
         <!-- Testing linkage between Cucumber and JUnit -->
-        <!-- Version: Dependency Management -->
+        <!-- Version: Dependency Management - Cucumber BOM -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit-platform-engine</artifactId>
@@ -189,7 +188,7 @@
         </dependency>
 
         <!-- Testing linkage between Cucumber and Spring context -->
-        <!-- Version: Dependency Management -->
+        <!-- Version: Dependency Management - Cucumber BOM -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-spring</artifactId>
@@ -197,7 +196,7 @@
         </dependency>
 
         <!-- Needed for running tests in Junit -->
-        <!-- Version: Dependency Management -->
+        <!-- Version: Dependency Management - Junit BOM -->
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-suite</artifactId>
@@ -310,22 +309,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- By default, surefire is running so setting skipTests to true -->
-            <!-- We want to run tests during integration-test phase using failsafe plugin -->
-            <!-- Version: Parent POM - Plugin Management -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skipTests>true</skipTests>
-                    <argLine>
-                        <!-- Used to suppress warnings during test running -->
-                        -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
-                        <!-- Used to suppress warnings during test running -->
-                        -Xshare:off
-                    </argLine>
-                </configuration>
-            </plugin>
             <!-- Used to run agent that collects code coverage -->
             <!-- Version: Parent POM - Plugin Management -->
             <plugin>
@@ -350,40 +333,25 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Used to add the integration test source and resource directories to the project -->
+            <!-- Used for running class specific unit tests -->
             <!-- Version: Parent POM - Plugin Management -->
-            <!-- TODO Is this plugin needed? If so, why and which executions? -->
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>add-integration-test-source</id>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>add-test-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>src/test/integration/java</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>add-integration-test-resources</id>
-                        <phase>generate-test-resources</phase>
-                        <goals>
-                            <goal>add-test-resource</goal>
-                        </goals>
-                        <configuration>
-                            <resources>
-                                <resource>
-                                    <directory>src/test/integration/resources</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>
+                        <!-- Used to suppress warnings during test running -->
+                        -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
+                        <!-- Used to suppress warnings during test running -->
+                        -Xshare:off
+                        <!-- This comes from the JaCoCo plugin -->
+                        ${failsafeJacocoAgent}
+                    </argLine>
+                    <testFailureIgnore>false</testFailureIgnore>
+                    <includes>
+                        <include>**/UnitTestRunner</include>
+                    </includes>
+                </configuration>
             </plugin>
             <!-- Used for running the integration and acceptance tests -->
             <!-- Version: Parent POM - Plugin Management -->
@@ -391,34 +359,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <executions>
-                    <execution>
-                        <id>unit-tests</id>
-                        <!-- TODO Can this run with Surefire instead of Failsafe? -->
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                        <configuration>
-                            <argLine>
-                                <!-- Used to suppress warnings during test running -->
-                                -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
-                                <!-- Used to suppress warnings during test running -->
-                                -Xshare:off
-                                <!-- This comes from the JaCoCo plugin -->
-                                ${failsafeJacocoAgent}
-                            </argLine>
-                            <testFailureIgnore>false</testFailureIgnore>
-                            <systemPropertyVariables>
-                                <!-- This triggers the correct application-test.yaml -->
-                                <!-- TODO what should this be? -->
-                                <spring.profiles.active>integration</spring.profiles.active>
-                            </systemPropertyVariables>
-                            <includes>
-                                <include>**/UnitTestRunner</include>
-                            </includes>
-                        </configuration>
-                    </execution>
                     <execution>
                         <id>integration-tests</id>
                         <phase>integration-test</phase>
