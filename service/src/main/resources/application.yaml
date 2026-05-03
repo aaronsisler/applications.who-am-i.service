@@ -17,8 +17,7 @@ management:
 # Used to disable logging during test run
 logging:
   level:
-    root: OFF
-    # root: INFO # Shows logs from application
+    root: OFF # Shows logs from application
     org:
       springframework: OFF # Disable all Spring Framework logs
 
