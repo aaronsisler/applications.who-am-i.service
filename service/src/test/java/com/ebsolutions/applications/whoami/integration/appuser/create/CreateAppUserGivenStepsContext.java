@@ -11,7 +11,6 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import java.util.Map;
 import org.mockito.Mockito;
-import org.springframework.http.MediaType;
 
 public class CreateAppUserGivenStepsContext extends IntegrationStepsContext {
   @Before
@@ -23,7 +22,7 @@ public class CreateAppUserGivenStepsContext extends IntegrationStepsContext {
   @Given("the client provides a create-user request body with the following fields:")
   public void theClientProvidesACreateUserRequestBodyWithTheFollowingFields(DataTable dataTable) {
     dataTable.asMap().forEach((key, value) ->
-        integrationScenarioContext.requestPayload.put(key, normalize(value))
+        integrationScenarioContext.requestPayload.put(key, normalizeTestFixture(value))
     );
   }
 
@@ -35,11 +34,7 @@ public class CreateAppUserGivenStepsContext extends IntegrationStepsContext {
 
   @And("the create-user request has a content type of {string}")
   public void theCreateUserRequestHasAContentTypeOf(String mediaType) {
-    integrationScenarioContext.mediaType = switch (mediaType) {
-      case MediaType.APPLICATION_JSON_VALUE -> MediaType.APPLICATION_JSON;
-      case MediaType.TEXT_PLAIN_VALUE -> MediaType.TEXT_PLAIN;
-      default -> throw new IllegalArgumentException("Unsupported content type: " + mediaType);
-    };
+    integrationScenarioContext.mediaType = normalizeMediaType(mediaType);
   }
 
   @Given("a create-user request body with malformed JSON")

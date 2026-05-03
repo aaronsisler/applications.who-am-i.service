@@ -14,7 +14,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities.
 
-## [0.4.0] Integration Tests
+## [0.5.0] App User: Create - Acceptance Tests
+
+### Added
+
+- Added acceptance tests for App User creation
+
+### Changed
+
+- Refactor integration tests to follow a structured approach closer to the overall project structure
+- Refactored the POM files to follow a more structured approach to plugin management and dependencies
+
+## [0.4.0] App User: Create - Integration Tests
 
 ### Changed
 

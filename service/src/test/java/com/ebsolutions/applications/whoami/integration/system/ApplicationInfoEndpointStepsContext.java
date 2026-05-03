@@ -3,7 +3,7 @@ package com.ebsolutions.applications.whoami.integration.system;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-import com.ebsolutions.applications.whoami.config.ApiPaths;
+import com.ebsolutions.applications.whoami.core.config.ApiPaths;
 import com.ebsolutions.applications.whoami.dto.ApplicationInfo;
 import com.ebsolutions.applications.whoami.dto.BuildMetadata;
 import com.ebsolutions.applications.whoami.integration.IntegrationStepsContext;

@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.config;
+package com.ebsolutions.applications.whoami.core.config;
 
 public class ApiPaths {
   /**

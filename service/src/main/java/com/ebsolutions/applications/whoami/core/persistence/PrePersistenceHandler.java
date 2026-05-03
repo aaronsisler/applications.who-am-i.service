@@ -1,8 +1,8 @@
 package com.ebsolutions.applications.whoami.core.persistence;
 
-import com.ebsolutions.applications.whoami.core.generator.LocalDateTimeGenerator;
+import com.ebsolutions.applications.whoami.core.generator.InstantGenerator;
 import com.ebsolutions.applications.whoami.core.generator.UuidGenerator;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PrePersistenceHandler<T extends PersistedEntity> {
   private final UuidGenerator uuidGenerator;
-  private final LocalDateTimeGenerator localDateTimeGenerator;
+  private final InstantGenerator instantGenerator;
 
   public T onBeforePersist(@NonNull T entity) {
     // Ensure externalId is set
@@ -20,7 +20,7 @@ public class PrePersistenceHandler<T extends PersistedEntity> {
     }
 
     // Set timestamps
-    LocalDateTime now = localDateTimeGenerator.now();
+    Instant now = instantGenerator.now();
 
     if (entity.getCreatedAt() == null) {
       entity.setCreatedAt(now);

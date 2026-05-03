@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.config;
+package com.ebsolutions.applications.whoami.core.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

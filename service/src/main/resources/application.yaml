@@ -1,3 +1,9 @@
+application:
+  persistence:
+    database: auth
+    port: 5432
+    schema: auth
+
 management:
   endpoints:
     web:
@@ -8,15 +14,22 @@ management:
   info:
     env:
       enabled: true
+# Used to disable logging during test run
+logging:
+  level:
+    root: OFF # Shows logs from application
+    org:
+      springframework: OFF # Disable all Spring Framework logs
 
 spring:
   datasource:
-    platform: postgres
     driver-class-name: org.postgresql.Driver
-  sql:
-    init:
-      mode: always
-      platform: postgres
+    platform: postgres
+    url: jdbc:postgresql://${application.persistence.hostname}:${application.persistence.port}/${application.persistence.database}?currentSchema=${application.persistence.schema}
+    username: ${application.persistence.username}
+    password: ${application.persistence.password}
+  main:
+    banner-mode: off
   mvc:
     # Required for Spring MVC to throw NoHandlerFoundException for unmapped endpoints
     # This is caught in the GlobalExceptionHandler as a 404 error

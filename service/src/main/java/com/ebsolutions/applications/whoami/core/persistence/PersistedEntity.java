@@ -1,6 +1,6 @@
 package com.ebsolutions.applications.whoami.core.persistence;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 public interface PersistedEntity {
@@ -20,11 +20,11 @@ public interface PersistedEntity {
 
   void setExternalId(UUID externalId);
 
-  LocalDateTime getCreatedAt();
+  Instant getCreatedAt();
 
-  void setCreatedAt(LocalDateTime createdAt);
+  void setCreatedAt(Instant createdAt);
 
-  LocalDateTime getUpdatedAt();
+  Instant getUpdatedAt();
 
-  void setUpdatedAt(LocalDateTime updatedAt);
+  void setUpdatedAt(Instant updatedAt);
 }

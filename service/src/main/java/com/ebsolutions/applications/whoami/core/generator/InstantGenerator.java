@@ -1,16 +1,16 @@
 package com.ebsolutions.applications.whoami.core.generator;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LocalDateTimeGenerator {
+public class InstantGenerator {
   /**
    * Returns the current local date and time.
    *
-   * @return The current LocalDateTime.
+   * @return The current Instant.
    */
-  public LocalDateTime now() {
-    return LocalDateTime.now();
+  public Instant now() {
+    return Instant.now();
   }
 }

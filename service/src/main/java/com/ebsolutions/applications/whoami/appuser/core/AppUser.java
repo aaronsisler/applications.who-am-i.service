@@ -1,7 +1,7 @@
 package com.ebsolutions.applications.whoami.appuser.core;
 
 import com.ebsolutions.applications.whoami.core.persistence.PersistedEntity;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +26,6 @@ public class AppUser implements PersistedEntity {
   private String emailAddress;
   private String firstName;
   private String lastName;
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+  private Instant createdAt;
+  private Instant updatedAt;
 }
