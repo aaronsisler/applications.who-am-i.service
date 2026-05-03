@@ -11,6 +11,6 @@ public class TestFixtures {
   public static final String EMAIL_ADDRESS_FIELD_MAX_LENGTH_100_VALUE =
       "a".repeat(90) + "@example.com";
 
-  public static String EXPECTED_APPLICATION_HEALTH_STATUS_KEY = "status";
-  public static String EXPECTED_APPLICATION_HEALTH_STATUS_VALUE = "UP";
+  public static final String EXPECTED_APPLICATION_HEALTH_STATUS_KEY = "status";
+  public static final String EXPECTED_APPLICATION_HEALTH_STATUS_VALUE = "UP";
 }

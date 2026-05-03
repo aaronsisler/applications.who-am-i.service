@@ -33,9 +33,9 @@ public class CreateAppUserThenStepsContext extends AcceptanceStepsContext {
         });
 
     dataTable.asMap().forEach((key, value) ->
-        assertThat(responseBodyMap.containsKey(key))
+        assertThat(responseBodyMap)
             .withFailMessage("Expected response body to contain key '%s'", key)
-            .isTrue()
+            .containsKey(key)
     );
 
     dataTable.asMap().forEach((key, value) ->
