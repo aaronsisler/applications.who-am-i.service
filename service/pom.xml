@@ -9,12 +9,13 @@
     </parent>
 
     <artifactId>who-am-i-service</artifactId>
-    <version>${revision}</version>
     <name>Who Am I Service</name>
     <packaging>jar</packaging>
 
     <properties>
         <start-class>com.ebsolutions.applications.whoami.Application</start-class>
+
+        <argLine></argLine>
 
         <!-- Sonar Configurations -->
         <sonar.coverage.jacoco.xmlReportPaths>
@@ -262,6 +263,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
             </plugin>
+
             <!-- Used to compile the sources of your project -->
             <!-- Version: Parent POM - Plugin Management -->
             <plugin>
@@ -269,6 +271,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <annotationProcessorPaths>
+
                         <!-- Lombok must be prior to MapStruct -->
                         <!-- Used for POJO annotations within project -->
                         <!-- Version: Spring Parent -->
@@ -276,6 +279,7 @@
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                         </path>
+
                         <!-- MapStruct must be after Lombok -->
                         <!-- MapStruct annotation processor for compile time annotations -->
                         <!-- Version: Dependency Management -->
@@ -283,15 +287,18 @@
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
                         </path>
+
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+
             <!-- Gives the actuator/info API build information -->
             <!-- Version: Parent POM - Plugin Management -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
             <!-- Generates Java classes from OpenAPI contracts -->
             <!-- Version: Parent POM - Plugin Management -->
             <plugin>
@@ -309,6 +316,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <!-- Used to run agent that collects code coverage -->
             <!-- Version: Parent POM - Plugin Management -->
             <plugin>
@@ -321,7 +329,7 @@
                             <goal>prepare-agent</goal>
                         </goals>
                         <configuration>
-                            <propertyName>failsafeJacocoAgent</propertyName>
+                            <propertyName>argLine</propertyName>
                         </configuration>
                     </execution>
                     <execution>
@@ -333,26 +341,21 @@
                     </execution>
                 </executions>
             </plugin>
+
             <!-- Used for running class specific unit tests -->
             <!-- Version: Parent POM - Plugin Management -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <argLine>
-                        <!-- Used to suppress warnings during test running -->
-                        -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
-                        <!-- Used to suppress warnings during test running -->
-                        -Xshare:off
-                        <!-- This comes from the JaCoCo plugin -->
-                        ${failsafeJacocoAgent}
-                    </argLine>
+                    <argLine>${argLine}</argLine>
                     <testFailureIgnore>false</testFailureIgnore>
                     <includes>
-                        <include>**/UnitTestRunner</include>
+                        <include>**/UnitTestRunner.*</include>
                     </includes>
                 </configuration>
             </plugin>
+
             <!-- Used for running the integration and acceptance tests -->
             <!-- Version: Parent POM - Plugin Management -->
             <plugin>
@@ -367,21 +370,14 @@
                             <goal>verify</goal>
                         </goals>
                         <configuration>
-                            <argLine>
-                                <!-- Used to suppress warnings during test running -->
-                                -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
-                                <!-- Used to suppress warnings during test running -->
-                                -Xshare:off
-                                <!-- This comes from the JaCoCo plugin -->
-                                ${failsafeJacocoAgent}
-                            </argLine>
+                            <argLine>${argLine}</argLine>
                             <testFailureIgnore>false</testFailureIgnore>
                             <systemPropertyVariables>
                                 <!-- This triggers the correct application-test.yaml -->
                                 <spring.profiles.active>integration</spring.profiles.active>
                             </systemPropertyVariables>
                             <includes>
-                                <include>**/IntegrationTestRunner</include>
+                                <include>**/IntegrationTestRunner.*</include>
                             </includes>
                         </configuration>
                     </execution>
@@ -392,32 +388,28 @@
                             <goal>verify</goal>
                         </goals>
                         <configuration>
-                            <argLine>
-                                <!-- Used to suppress warnings during test running -->
-                                -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
-                                <!-- Used to suppress warnings during test running -->
-                                -Xshare:off
-                                <!-- This comes from the JaCoCo plugin -->
-                                ${failsafeJacocoAgent}
-                            </argLine>
+                            <argLine>${argLine}</argLine>
                             <testFailureIgnore>false</testFailureIgnore>
                             <systemPropertyVariables>
                                 <!-- This triggers the correct application-test.yaml -->
                                 <spring.profiles.active>acceptance</spring.profiles.active>
                             </systemPropertyVariables>
                             <includes>
-                                <include>**/AcceptanceTestRunner.java</include>
+                                <include>**/AcceptanceTestRunner.*</include>
                             </includes>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
             <!-- Used to integrate SonarQube analysis into the Maven build -->
             <!-- Version: Parent POM - Plugin Management -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
             </plugin>
+
         </plugins>
     </build>
+
 </project>

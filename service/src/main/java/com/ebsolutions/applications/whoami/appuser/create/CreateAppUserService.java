@@ -11,6 +11,7 @@ import com.ebsolutions.applications.whoami.dto.AppUserCreate;
 import com.ebsolutions.applications.whoami.dto.AppUserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.relational.core.conversion.DbActionExecutionException;
 import org.springframework.stereotype.Service;
@@ -28,11 +29,20 @@ public class CreateAppUserService {
     try {
       AppUser entity = mapper.toEntity(appUserCreate);
       AppUser preProcessedEntity = appUserPrePersistenceHandler.onBeforePersist(entity);
+      log.error("CREATE SERVICE HIT 1");
       AppUser saved = repository.save(preProcessedEntity);
+      log.error("CREATE SERVICE HIT 2");
 
       return mapper.toDto(saved);
     } catch (DbActionExecutionException ex) {
+      log.error("CREATE SERVICE HIT 2.5");
       throw translate(ex);
+    } catch (DataAccessException ex) {
+      log.error("CREATE SERVICE HIT 3.0");
+      throw new DataStoreException(
+          ErrorMessages.APP_USER_NOT_SAVED.message(),
+          ex
+      );
     }
   }
 

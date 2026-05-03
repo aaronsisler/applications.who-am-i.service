@@ -20,8 +20,7 @@ public class CreateAppUserController extends AppUserBaseController {
   private final CreateAppUserService createAppUserService;
 
   @PostMapping
-  public ResponseEntity<AppUserDto> postAppUser(
-      @Valid @RequestBody AppUserCreate appUserCreate) {
+  public ResponseEntity<AppUserDto> postAppUser(@Valid @RequestBody AppUserCreate appUserCreate) {
 
     AppUserDto appUserResponse = createAppUserService.createAppUser(appUserCreate);
 
