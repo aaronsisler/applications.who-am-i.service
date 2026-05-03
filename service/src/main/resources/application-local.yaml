@@ -1,9 +1,8 @@
 application:
   persistence:
-    username: auth_app_user
-    password: CHANGE_ME
     hostname: localhost
-    port: 5432
+    password: CHANGE_ME
+    username: auth_app_user
 
 logging:
   level:

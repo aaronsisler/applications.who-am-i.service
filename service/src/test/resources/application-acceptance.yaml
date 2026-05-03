@@ -1,9 +1,11 @@
 application:
   persistence:
-    database: auth
-    schema: auth
-    username: testuser
     password: testpass
+    username: testuser
+
+server:
+  url: http://localhost
+  port: 8080
 
 # Used to disable logging during test run
 logging:
