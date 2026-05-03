@@ -45,4 +45,6 @@ Feature: Create App User - Acceptance
     And the database is unavailable
     When the client submits the create-user request
     Then the create-user response status should be 500
-#    And the error message should contain "App user cannot be saved"
+    And the create-user response should contain an error with:
+      | field | <null>                |
+      | code  | INTERNAL_SERVER_ERROR |
