@@ -11,3 +11,7 @@ logging:
     org:
       springframework: OFF # Disable all Spring Framework logs
       # springframework: INFO # Disable all Spring Framework logs
+
+spring:
+  main:
+    banner-mode: on

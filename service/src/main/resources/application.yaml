@@ -29,8 +29,8 @@ spring:
     url: jdbc:postgresql://${application.persistence.hostname}:${application.persistence.port}/${application.persistence.database}?currentSchema=${application.persistence.schema}
     username: ${application.persistence.username}
     password: ${application.persistence.password}
-  #  main:
-  #    banner-mode: off
+  main:
+    banner-mode: off
   mvc:
     # Required for Spring MVC to throw NoHandlerFoundException for unmapped endpoints
     # This is caught in the GlobalExceptionHandler as a 404 error
