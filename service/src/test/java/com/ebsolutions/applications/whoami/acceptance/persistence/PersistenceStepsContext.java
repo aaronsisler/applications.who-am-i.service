@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.acceptance.common;
+package com.ebsolutions.applications.whoami.acceptance.persistence;
 
 import com.ebsolutions.applications.whoami.acceptance.AcceptanceStepsContext;
 import com.zaxxer.hikari.HikariDataSource;
@@ -16,5 +16,10 @@ public class PersistenceStepsContext extends AcceptanceStepsContext {
 
     HikariDataSource hikari = (HikariDataSource) dataSource;
     hikari.getHikariPoolMXBean().softEvictConnections();
+  }
+
+  @And("the database is available")
+  public void theDatabaseIsAvailable() {
+    persistenceContainer.start();
   }
 }

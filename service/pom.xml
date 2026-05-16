@@ -330,6 +330,12 @@
                         </goals>
                         <configuration>
                             <propertyName>argLine</propertyName>
+                            <includes>
+                                <include>com.ebsolutions.applications.whoami.*</include>
+                            </includes>
+                            <excludes>
+                                <exclude>com.ebsolutions.applications.whoami.*</exclude>
+                            </excludes>
                         </configuration>
                     </execution>
                     <execution>
@@ -348,11 +354,16 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
+                    <!--                    <skipTests>true</skipTests>-->
                     <argLine>${argLine}</argLine>
                     <testFailureIgnore>false</testFailureIgnore>
                     <includes>
                         <include>**/UnitTestRunner.*</include>
                     </includes>
+                    <systemPropertyVariables>
+                        <!-- This triggers the correct application-unit.yaml -->
+                        <spring.profiles.active>unit</spring.profiles.active>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
 
@@ -370,10 +381,11 @@
                             <goal>verify</goal>
                         </goals>
                         <configuration>
+                            <skipTests>true</skipTests>
                             <argLine>${argLine}</argLine>
                             <testFailureIgnore>false</testFailureIgnore>
                             <systemPropertyVariables>
-                                <!-- This triggers the correct application-test.yaml -->
+                                <!-- This triggers the correct application-integration.yaml -->
                                 <spring.profiles.active>integration</spring.profiles.active>
                             </systemPropertyVariables>
                             <includes>
@@ -388,10 +400,11 @@
                             <goal>verify</goal>
                         </goals>
                         <configuration>
+                            <skipTests>true</skipTests>
                             <argLine>${argLine}</argLine>
                             <testFailureIgnore>false</testFailureIgnore>
                             <systemPropertyVariables>
-                                <!-- This triggers the correct application-test.yaml -->
+                                <!-- This triggers the correct application-acceptance.yaml -->
                                 <spring.profiles.active>acceptance</spring.profiles.active>
                             </systemPropertyVariables>
                             <includes>

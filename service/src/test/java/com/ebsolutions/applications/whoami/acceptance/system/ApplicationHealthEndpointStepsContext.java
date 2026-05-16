@@ -3,7 +3,7 @@ package com.ebsolutions.applications.whoami.acceptance.system;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ebsolutions.applications.whoami.acceptance.AcceptanceStepsContext;
-import com.ebsolutions.applications.whoami.common.TestFixtures;
+import com.ebsolutions.applications.whoami.common.testfixture.ExpectedResponseValues;
 import com.ebsolutions.applications.whoami.core.config.ApiPaths;
 import io.cucumber.java.en.Given;
 import org.springframework.http.HttpStatus;
@@ -20,9 +20,13 @@ public class ApplicationHealthEndpointStepsContext extends AcceptanceStepsContex
         .retrieve()
         .toEntity(String.class);
 
-    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(response.getStatusCode())
+        .isEqualTo(HttpStatus.OK);
 
-    assertThat(response.getBody()).contains(TestFixtures.EXPECTED_APPLICATION_HEALTH_STATUS_KEY);
-    assertThat(response.getBody()).contains(TestFixtures.EXPECTED_APPLICATION_HEALTH_STATUS_VALUE);
+    assertThat(response.getBody())
+        .contains(ExpectedResponseValues.EXPECTED_APPLICATION_HEALTH_STATUS_KEY);
+
+    assertThat(response.getBody())
+        .contains(ExpectedResponseValues.EXPECTED_APPLICATION_HEALTH_STATUS_VALUE);
   }
 }

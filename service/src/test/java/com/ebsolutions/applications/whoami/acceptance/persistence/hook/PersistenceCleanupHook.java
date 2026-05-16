@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.acceptance.config.persistence.hook;
+package com.ebsolutions.applications.whoami.acceptance.persistence.hook;
 
 import io.cucumber.java.Before;
 import java.util.List;

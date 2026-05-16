@@ -1,0 +1,7 @@
+spring:
+  autoconfigure:
+    exclude:
+      # This is excluded to prevent autoconfiguration of JDBC repositories during tests
+      - org.springframework.boot.autoconfigure.data.jdbc.JdbcRepositoriesAutoConfiguration
+      # This is excluded to prevent autoconfiguration of DataSource during tests
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration

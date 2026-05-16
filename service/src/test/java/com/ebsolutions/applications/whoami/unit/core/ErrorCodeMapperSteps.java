@@ -2,14 +2,14 @@ package com.ebsolutions.applications.whoami.unit.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.ebsolutions.applications.whoami.common.BaseStepsContext;
 import com.ebsolutions.applications.whoami.core.ErrorCodeMapper;
 import com.ebsolutions.applications.whoami.dto.ErrorCode;
-import com.ebsolutions.applications.whoami.unit.UnitStepsContext;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class ErrorCodeMapperSteps extends UnitStepsContext {
+public class ErrorCodeMapperSteps extends BaseStepsContext {
 
   private final ErrorCodeMapper errorCodeMapper = new ErrorCodeMapper();
 

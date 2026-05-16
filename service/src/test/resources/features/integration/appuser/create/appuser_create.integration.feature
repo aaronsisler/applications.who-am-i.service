@@ -1,5 +1,14 @@
 Feature: Create App User - Integration
 
+  Background:
+    Given the application is running
+
+  Scenario: 200 - Each created app user receives a unique client-facing identifier
+    Given the client provides two unique create-user request bodies
+    And the data store is configured to save the new users
+    When the client submits both of the create-user requests
+    Then each create-user response should include unique client-facing identifiers
+
   Scenario Outline: 400 - Creating an app user with missing required fields
     Given the client provides a create-user request body with the following fields:
       | emailAddress | johnny.appleseed@gmail.com |
@@ -21,7 +30,6 @@ Feature: Create App User - Integration
       | firstName    |
       | lastName     |
 
-
   Scenario Outline: 400 - Creating an app user with a null required field
     Given the client provides a create-user request body with the following fields:
       | firstName    | <firstName>    |
@@ -41,7 +49,6 @@ Feature: Create App User - Integration
       | firstName    | <null>    | Appleseed | johnny.appleseed@gmail.com |
       | lastName     | Johnny    | <null>    | johnny.appleseed@gmail.com |
       | emailAddress | Johnny    | Appleseed | <null>                     |
-
 
   Scenario Outline: 400 - Creating an app user with invalid field length
     Given the client provides a create-user request body with the following fields:
@@ -97,7 +104,6 @@ Feature: Create App User - Integration
       | code | MALFORMED_JSON |
     And the data store was not called to save the new user
 
-
   Scenario: 415 - Creating an app user with unsupported content type
     Given the client provides a create-user request body with the following fields:
       | emailAddress | johnny.appleseed@gmail.com |
@@ -107,10 +113,3 @@ Feature: Create App User - Integration
     When the client submits the create-user request
     Then the create-user response status should be 415
     And the data store was not called to save the new user
-
-
-  Scenario: Each created app user receives a unique client-facing identifier
-    Given the client provides two unique create-user request bodies
-    And the data store is configured to save the new users
-    When the client submits both of the create-user requests
-    Then each create-user response should include unique client-facing identifiers

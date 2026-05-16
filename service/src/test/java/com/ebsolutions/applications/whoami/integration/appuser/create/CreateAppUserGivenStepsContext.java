@@ -34,7 +34,7 @@ public class CreateAppUserGivenStepsContext extends IntegrationStepsContext {
 
   @And("the create-user request has a content type of {string}")
   public void theCreateUserRequestHasAContentTypeOf(String mediaType) {
-    integrationScenarioContext.mediaType = normalizeMediaType(mediaType);
+    integrationScenarioContext.requestContentType = normalizeMediaType(mediaType);
   }
 
   @Given("a create-user request body with malformed JSON")

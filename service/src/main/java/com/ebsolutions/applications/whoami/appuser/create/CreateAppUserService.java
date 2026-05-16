@@ -9,11 +9,10 @@ import com.ebsolutions.applications.whoami.core.exception.DuplicateDataException
 import com.ebsolutions.applications.whoami.core.persistence.PrePersistenceHandler;
 import com.ebsolutions.applications.whoami.dto.AppUserCreate;
 import com.ebsolutions.applications.whoami.dto.AppUserDto;
+import java.sql.SQLTransientException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.data.relational.core.conversion.DbActionExecutionException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,25 +33,27 @@ public class CreateAppUserService {
       log.error("CREATE SERVICE HIT 2");
 
       return mapper.toDto(saved);
-    } catch (DbActionExecutionException ex) {
-      log.error("CREATE SERVICE HIT 2.5");
+    } catch (Exception ex) {
       throw translate(ex);
-    } catch (DataAccessException ex) {
-      log.error("CREATE SERVICE HIT 3.0");
-      throw new DataStoreException(
-          ErrorMessages.APP_USER_NOT_SAVED.message(),
-          ex
-      );
     }
   }
 
-  private RuntimeException translate(DbActionExecutionException ex) {
+  private RuntimeException translate(Exception ex) {
     if (ex.getCause() instanceof DuplicateKeyException) {
       return new DuplicateDataException(
           ErrorMessages.EMAIL_ALREADY_EXISTS.message(),
           ex
       );
     }
+
+    if (ex.getCause() instanceof SQLTransientException) {
+      return new DataStoreException(ErrorMessages.UNEXPECTED_SERVER_ERROR.message(), ex);
+    }
+
+    if (ex.getCause() instanceof RuntimeException) {
+      return new DataStoreException(ErrorMessages.UNEXPECTED_SERVER_ERROR.message(), ex);
+    }
+
     return new DataStoreException(ErrorMessages.APP_USER_NOT_SAVED.message(), ex);
   }
 }

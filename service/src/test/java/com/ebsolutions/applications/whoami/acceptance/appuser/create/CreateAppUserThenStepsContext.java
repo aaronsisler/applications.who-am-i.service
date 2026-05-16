@@ -9,22 +9,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Then;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CreateAppUserThenStepsContext extends AcceptanceStepsContext {
 
-  @Then("the create-user response status should be {int}")
-  public void theCreateUserResponseStatusShouldBe(int statusCode) {
-    assertThat(this.acceptanceScenarioContext.response.getStatusCode().value())
-        .isEqualTo(statusCode);
-  }
-
   @And("the create-user response body should contain:")
   public void theCreateUserResponseBodyShouldContain(DataTable dataTable)
       throws JsonProcessingException {
-    var responseBody = this.acceptanceScenarioContext.response.getBody();
+
+    var responseBody = this.scenarioContext.response.body();
 
     assertThat(responseBody).isNotNull();
 
@@ -49,7 +43,8 @@ public class CreateAppUserThenStepsContext extends AcceptanceStepsContext {
   @And("the create-user response should contain a valid client-facing ID")
   public void theCreateUserResponseShouldContainAValidClientFacingID()
       throws JsonProcessingException {
-    var responseBody = this.acceptanceScenarioContext.response.getBody();
+
+    var responseBody = this.scenarioContext.response.body();
 
     assertThat(responseBody).isNotNull();
 
@@ -61,7 +56,8 @@ public class CreateAppUserThenStepsContext extends AcceptanceStepsContext {
   @And("the create-user response should contain a valid createdAt timestamp")
   public void theCreateUserResponseShouldContainAValidCreatedAtTimestamp()
       throws JsonProcessingException {
-    var responseBody = this.acceptanceScenarioContext.response.getBody();
+
+    var responseBody = this.scenarioContext.response.body();
 
     assertThat(responseBody).isNotNull();
 
@@ -74,7 +70,8 @@ public class CreateAppUserThenStepsContext extends AcceptanceStepsContext {
   @And("the create-user response should contain a valid updatedAt timestamp")
   public void theCreateUserResponseShouldContainAValidUpdatedAtTimestamp()
       throws JsonProcessingException {
-    var responseBody = this.acceptanceScenarioContext.response.getBody();
+
+    var responseBody = this.scenarioContext.response.body();
 
     assertThat(responseBody).isNotNull();
 
@@ -86,10 +83,11 @@ public class CreateAppUserThenStepsContext extends AcceptanceStepsContext {
   @And("the create-user response should contain exactly {int} error")
   public void theCreateUserResponseShouldContainExactlyError(int errorCount)
       throws JsonProcessingException {
-    assertThat(acceptanceScenarioContext.response).isNotNull();
+
+    assertThat(this.scenarioContext.response).isNotNull();
 
     ErrorDto errorDto = objectMapper
-        .readValue(acceptanceScenarioContext.response.getBody(), ErrorDto.class);
+        .readValue(this.scenarioContext.response.body(), ErrorDto.class);
 
     assertThat(errorDto.getErrors()).hasSize(errorCount);
   }
@@ -106,7 +104,7 @@ public class CreateAppUserThenStepsContext extends AcceptanceStepsContext {
         );
 
     ErrorDto errorDto = objectMapper
-        .readValue(acceptanceScenarioContext.response.getBody(), ErrorDto.class);
+        .readValue(this.scenarioContext.response.body(), ErrorDto.class);
 
     assertThat(errorDto).isNotNull();
     assertThat(errorDto.getErrors()).isNotEmpty();
