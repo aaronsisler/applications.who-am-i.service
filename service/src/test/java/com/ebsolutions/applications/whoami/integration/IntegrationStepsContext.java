@@ -1,24 +1,22 @@
 package com.ebsolutions.applications.whoami.integration;
 
-import com.ebsolutions.applications.whoami.appuser.core.AppUserRepository;
-import com.ebsolutions.applications.whoami.common.BaseStepsContext;
+import com.ebsolutions.applications.whoami.common.HttpStepsContext;
+import com.ebsolutions.applications.whoami.integration.config.rest.RestApiClientConfig;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.context.annotation.Profile;
 
-//@SpringBootTest
+@Profile("integration")
 @AutoConfigureMockMvc
-//@CucumberContextConfiguration
-@Import(IntegrationStepsContextConfig.class)
-public class IntegrationStepsContext extends BaseStepsContext {
+@CucumberContextConfiguration
+@SpringBootTest
+@Import({IntegrationStepsContextConfig.class, RestApiClientConfig.class})
+public class IntegrationStepsContext extends HttpStepsContext {
 
   @Autowired
   protected IntegrationScenarioContext integrationScenarioContext;
 
-  @Autowired
-  protected MockMvc mockMvc;
-
-  @Autowired
-  protected AppUserRepository appUserRepository;
 }

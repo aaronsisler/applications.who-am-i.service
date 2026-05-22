@@ -1,4 +1,4 @@
-Feature: Application Info - Integration
+Feature: Non Functional: Application Info - Integration
 
   Scenario: Application status and build information is made available through default endpoints
     Given the application is running

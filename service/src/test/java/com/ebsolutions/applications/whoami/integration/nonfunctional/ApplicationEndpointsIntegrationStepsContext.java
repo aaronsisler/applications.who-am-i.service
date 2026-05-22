@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.integration.system;
+package com.ebsolutions.applications.whoami.integration.nonfunctional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,31 +10,42 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class ApplicationSystemEndpointsIntegrationStepsContext extends IntegrationStepsContext {
+public class ApplicationEndpointsIntegrationStepsContext extends IntegrationStepsContext {
 
   @When("the client makes a {string} request to {string}")
-  public void theClientMakesAHttpMethodRequestToEndpoint(String httpMethod, String endpoint)
-      throws Exception {
+  public void theClientMakesAHttpMethodRequestToEndpointWithId(String httpMethod,
+                                                               String endpoint) {
 
-    MockHttpServletRequestBuilder requestBuilder = switch (httpMethod.toUpperCase()) {
-      case "GET" -> MockMvcRequestBuilders.get(endpoint);
-      case "POST" -> MockMvcRequestBuilders.post(endpoint);
-      case "PUT" -> MockMvcRequestBuilders.put(endpoint);
-      case "DELETE" -> MockMvcRequestBuilders.delete(endpoint);
-      case "PATCH" -> MockMvcRequestBuilders.patch(endpoint);
+    if (httpMethod.equalsIgnoreCase("GET")) {
+      ScenarioResponse response = this.restApiClient.get(endpoint);
+
+      this.scenarioContext.response = new ScenarioResponse(
+          response.statusCode(),
+          response.body(),
+          null
+      );
+    }
+
+    throw new IllegalArgumentException("Unsupported HTTP method: " + httpMethod);
+  }
+
+  @When("the client makes a {string} request to {string} with id {string}")
+  public void theClientMakesAHttpMethodRequestToEndpointWithId(String httpMethod,
+                                                               String endpoint,
+                                                               String id) {
+
+    ScenarioResponse response = switch (httpMethod.toUpperCase()) {
+      case "GET" -> this.restApiClient.get(endpoint, id);
+      case "POST" -> this.restApiClient.post(endpoint, null, null);
+      case "PUT" -> this.restApiClient.put(endpoint, id, null, null);
+      case "DELETE" -> this.restApiClient.delete(endpoint, id);
       default -> throw new IllegalArgumentException("Unsupported HTTP method: " + httpMethod);
     };
 
-    MockHttpServletResponse mockHttpServletResponse = mockMvc
-        .perform(requestBuilder).andReturn().getResponse();
-
     this.scenarioContext.response = new ScenarioResponse(
-        mockHttpServletResponse.getStatus(),
-        mockHttpServletResponse.getContentAsString(),
+        response.statusCode(),
+        response.body(),
         null
     );
   }

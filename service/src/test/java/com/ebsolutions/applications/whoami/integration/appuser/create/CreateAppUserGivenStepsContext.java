@@ -4,20 +4,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import com.ebsolutions.applications.whoami.integration.IntegrationStepsContext;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.datatable.DataTable;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import java.util.Map;
-import org.mockito.Mockito;
 
 public class CreateAppUserGivenStepsContext extends IntegrationStepsContext {
-  @Before
-  public void beforeScenario() {
-    integrationScenarioContext.reset();
-    Mockito.reset(appUserRepository);
-  }
 
   @Given("the client provides a create-user request body with the following fields:")
   public void theClientProvidesACreateUserRequestBodyWithTheFollowingFields(DataTable dataTable) {
@@ -43,7 +35,8 @@ public class CreateAppUserGivenStepsContext extends IntegrationStepsContext {
   }
 
   @Given("the client provides two unique create-user request bodies")
-  public void theClientProvidesTwoUniqueCreateUserRequestBodies() throws JsonProcessingException {
+  public void theClientProvidesTwoUniqueCreateUserRequestBodies() {
+
     Map<String, Object> firstRequestBodyContent = Map.of(
         "emailAddress", "johnny.appleseed@gmail.com",
         "firstName", "Johnny",
@@ -54,16 +47,16 @@ public class CreateAppUserGivenStepsContext extends IntegrationStepsContext {
         "firstName", "Not Johnny",
         "lastName", "Appleseed");
 
-    integrationScenarioContext.listOfRequestContents
-        .add(objectMapper.writeValueAsString(firstRequestBodyContent));
+    integrationScenarioContext.listOfRequestContents.add(firstRequestBodyContent);
+    integrationScenarioContext.listOfRequestContents.add(secondRequestBodyContent);
 
-    integrationScenarioContext.listOfRequestContents
-        .add(objectMapper.writeValueAsString(secondRequestBodyContent));
   }
 
   @And("the data store is configured to save the new users")
   public void theDataStoreIsConfiguredToSaveTheNewUsers() {
+
     when(appUserRepository.save(any()))
         .thenAnswer(invocation -> invocation.getArgument(0));
+
   }
 }

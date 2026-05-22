@@ -12,8 +12,10 @@ import org.springframework.context.annotation.Bean;
  */
 @TestConfiguration
 public class ApplicationContextConfig {
+
   @Bean
-  protected AppUserRepository appUserRepository() {
+  public AppUserRepository appUserRepository() {
     return Mockito.mock(AppUserRepository.class);
   }
+
 }

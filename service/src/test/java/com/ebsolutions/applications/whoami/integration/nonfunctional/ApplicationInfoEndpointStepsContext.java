@@ -1,7 +1,6 @@
-package com.ebsolutions.applications.whoami.integration.system;
+package com.ebsolutions.applications.whoami.integration.nonfunctional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import com.ebsolutions.applications.whoami.core.config.ApiPaths;
 import com.ebsolutions.applications.whoami.dto.ApplicationInfo;
@@ -10,29 +9,23 @@ import com.ebsolutions.applications.whoami.integration.IntegrationStepsContext;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import java.io.UnsupportedEncodingException;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.http.HttpStatus;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.web.servlet.MvcResult;
 
 public class ApplicationInfoEndpointStepsContext extends IntegrationStepsContext {
-  protected MvcResult result;
 
   @When("the info endpoint is invoked")
-  public void theInfoEndpointIsInvoked() throws Exception {
-    result = mockMvc.perform(get(ApiPaths.APPLICATION_INFO_PATH)).andReturn();
+  public void theInfoEndpointIsInvoked() {
+    this.scenarioContext.response = this.restApiClient.get(ApiPaths.APPLICATION_INFO_PATH);
   }
 
   @Then("the correct info response is returned")
-  public void theCorrectInfoResponseIsReturned()
-      throws UnsupportedEncodingException, JsonProcessingException {
-    MockHttpServletResponse mockHttpServletResponse = result.getResponse();
+  public void theCorrectInfoResponseIsReturned() throws JsonProcessingException {
 
-    Assertions.assertEquals(HttpStatus.OK.value(), mockHttpServletResponse.getStatus());
+    Assertions.assertEquals(HttpStatus.OK.value(), this.scenarioContext.response.statusCode());
 
-    String content = mockHttpServletResponse.getContentAsString();
-    ApplicationInfo applicationInfo = objectMapper.readValue(content, ApplicationInfo.class);
+    ApplicationInfo applicationInfo = objectMapper
+        .readValue(this.scenarioContext.response.body(), ApplicationInfo.class);
 
     assertThat(applicationInfo).isNotNull();
     assertThat(applicationInfo.getBuild()).isNotNull();

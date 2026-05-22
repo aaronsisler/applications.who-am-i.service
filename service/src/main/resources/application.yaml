@@ -14,12 +14,6 @@ management:
   info:
     env:
       enabled: true
-# Used to disable logging during test run
-logging:
-  level:
-    root: OFF # Shows logs from application
-    org:
-      springframework: OFF # Disable all Spring Framework logs
 
 spring:
   datasource:

@@ -1,29 +1,19 @@
 package com.ebsolutions.applications.whoami.acceptance.appuser.create;
 
 import com.ebsolutions.applications.whoami.acceptance.AcceptanceStepsContext;
-import com.ebsolutions.applications.whoami.common.testfixture.ScenarioResponse;
 import com.ebsolutions.applications.whoami.core.config.ApiPaths;
 import io.cucumber.java.en.When;
-import java.nio.charset.StandardCharsets;
 
 public class CreateAppUserWhenStepsContext extends AcceptanceStepsContext {
 
   @When("the client submits the create-user request")
   public void theClientSubmitsTheCreateUserRequest() {
 
-    this.scenarioContext.response = restClient
-        .post()
-        .uri(ApiPaths.APP_USERS_PATH)
-        .contentType(this.scenarioContext.requestContentType)
-        .body(this.scenarioContext.requestPayload)
-        .exchange((request, response) -> {
-          String body = new String(response.getBody().readAllBytes(), StandardCharsets.UTF_8);
-
-          return new ScenarioResponse(
-              response.getStatusCode().value(),
-              body,
-              response.getHeaders().toSingleValueMap()
-          );
-        });
+    this.scenarioContext.response = restApiClient
+        .post(
+            ApiPaths.APP_USERS_PATH,
+            this.scenarioContext.requestContentType,
+            this.scenarioContext.requestPayload
+        );
   }
 }
