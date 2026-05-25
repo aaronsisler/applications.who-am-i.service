@@ -2,15 +2,13 @@ package com.ebsolutions.applications.whoami.acceptance;
 
 import com.ebsolutions.applications.whoami.acceptance.config.persistence.PersistenceConfig;
 import com.ebsolutions.applications.whoami.acceptance.config.rest.AcceptanceRestApiClientConfig;
-import io.cucumber.spring.CucumberContextConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
+import com.ebsolutions.applications.whoami.common.CommonCucumberTest;
 import org.springframework.context.annotation.Import;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @Import({
     AcceptanceRestApiClientConfig.class,
     PersistenceConfig.class
 })
-@CucumberContextConfiguration
+@CommonCucumberTest
 public class AcceptanceCucumberConfig {
 }

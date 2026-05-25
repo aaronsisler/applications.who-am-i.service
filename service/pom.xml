@@ -382,7 +382,7 @@
                             <goal>verify</goal>
                         </goals>
                         <configuration>
-                            <skipTests>true</skipTests>
+                            <!--                            <skipTests>true</skipTests>-->
                             <argLine>${argLine}</argLine>
                             <testFailureIgnore>false</testFailureIgnore>
                             <systemPropertyVariables>

@@ -1,9 +1,7 @@
 package com.ebsolutions.applications.whoami.unit;
 
-import io.cucumber.spring.CucumberContextConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
+import com.ebsolutions.applications.whoami.common.CommonCucumberTest;
 
-@CucumberContextConfiguration
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@CommonCucumberTest
 public class UnitCucumberConfig {
 }
