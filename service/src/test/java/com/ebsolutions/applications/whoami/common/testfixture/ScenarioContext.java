@@ -1,6 +1,5 @@
-package com.ebsolutions.applications.whoami.common;
+package com.ebsolutions.applications.whoami.common.testfixture;
 
-import com.ebsolutions.applications.whoami.common.testfixture.ScenarioResponse;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.MediaType;
@@ -8,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ScenarioContext {
+
   public MediaType requestContentType;
 
   public ScenarioResponse response;
@@ -19,4 +19,5 @@ public class ScenarioContext {
     response = null;
     requestPayload.clear();
   }
+
 }

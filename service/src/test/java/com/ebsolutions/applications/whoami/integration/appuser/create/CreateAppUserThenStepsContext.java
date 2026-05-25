@@ -6,10 +6,14 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import com.ebsolutions.applications.whoami.appuser.core.AppUser;
+import com.ebsolutions.applications.whoami.appuser.core.AppUserRepository;
+import com.ebsolutions.applications.whoami.common.CommonContext;
+import com.ebsolutions.applications.whoami.common.testfixture.ScenarioContext;
 import com.ebsolutions.applications.whoami.common.testfixture.ScenarioResponse;
 import com.ebsolutions.applications.whoami.dto.ErrorDto;
-import com.ebsolutions.applications.whoami.integration.IntegrationStepsContext;
+import com.ebsolutions.applications.whoami.integration.IntegrationScenarioContext;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
@@ -17,9 +21,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
+public class CreateAppUserThenStepsContext extends CommonContext {
 
-public class CreateAppUserThenStepsContext extends IntegrationStepsContext {
+  private final AppUserRepository appUserRepository;
+  private final IntegrationScenarioContext integrationScenarioContext;
+  private final ObjectMapper objectMapper;
+  private final ScenarioContext scenarioContext;
 
   @And("the create-user response error message should contain {string}")
   public void theCreateUserResponseErrorMessageShouldContain(String errorMessage) {

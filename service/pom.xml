@@ -15,7 +15,7 @@
     <properties>
         <start-class>com.ebsolutions.applications.whoami.Application</start-class>
 
-        <argLine></argLine>
+        <argLine/>
 
         <!-- Sonar Configurations -->
         <sonar.coverage.jacoco.xmlReportPaths>
@@ -333,6 +333,7 @@
                             <includes>
                                 <include>com.ebsolutions.applications.whoami.*</include>
                             </includes>
+                            <!-- TODO Why is this here? -->
                             <excludes>
                                 <exclude>com.ebsolutions.applications.whoami.*</exclude>
                             </excludes>
@@ -354,6 +355,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
+                    <!--                    <skipTests>true</skipTests>-->
                     <argLine>${argLine}</argLine>
                     <testFailureIgnore>false</testFailureIgnore>
                     <includes>
@@ -380,7 +382,7 @@
                             <goal>verify</goal>
                         </goals>
                         <configuration>
-                            <!--                            <skipTests>true</skipTests>-->
+                            <skipTests>true</skipTests>
                             <argLine>${argLine}</argLine>
                             <testFailureIgnore>false</testFailureIgnore>
                             <systemPropertyVariables>

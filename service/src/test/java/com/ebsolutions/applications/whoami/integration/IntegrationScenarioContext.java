@@ -1,6 +1,6 @@
 package com.ebsolutions.applications.whoami.integration;
 
-import com.ebsolutions.applications.whoami.common.ScenarioContext;
+import com.ebsolutions.applications.whoami.common.testfixture.ScenarioContext;
 import com.ebsolutions.applications.whoami.common.testfixture.ScenarioResponse;
 import java.util.ArrayList;
 import java.util.List;

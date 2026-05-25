@@ -1,15 +1,12 @@
-package com.ebsolutions.applications.whoami.acceptance;
+package com.ebsolutions.applications.whoami.acceptance.config.rest;
 
-import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.client.RestClient;
 
 @TestConfiguration
-public class AcceptanceStepsContextConfig {
-
+public class RestClientConfig {
   @Bean
   public RestClient createRestClient(@Value("${server.url}") String serverUrl,
                                      @Value("${server.port}") String serverPort) {
@@ -18,10 +15,4 @@ public class AcceptanceStepsContextConfig {
         .baseUrl(String.format("%s:%s", serverUrl, serverPort))
         .build();
   }
-
-  @Bean
-  public JdbcTemplate createJdbcTemplate(DataSource dataSource) {
-    return new JdbcTemplate(dataSource);
-  }
 }
-

@@ -2,17 +2,24 @@ package com.ebsolutions.applications.whoami.acceptance.appuser.create;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.ebsolutions.applications.whoami.acceptance.AcceptanceStepsContext;
+import com.ebsolutions.applications.whoami.common.CommonContext;
+import com.ebsolutions.applications.whoami.common.testfixture.ScenarioContext;
 import com.ebsolutions.applications.whoami.dto.AppUserDto;
 import com.ebsolutions.applications.whoami.dto.ErrorDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
-public class CreateAppUserThenStepsContext extends AcceptanceStepsContext {
+@RequiredArgsConstructor
+public class CreateAppUserThenStepsContext extends CommonContext {
+
+  private final ObjectMapper objectMapper;
+  private final ScenarioContext scenarioContext;
 
   @And("the create-user response body should contain:")
   public void theCreateUserResponseBodyShouldContain(DataTable dataTable)

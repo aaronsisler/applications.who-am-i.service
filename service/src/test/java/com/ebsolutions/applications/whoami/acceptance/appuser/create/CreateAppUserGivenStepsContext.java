@@ -1,12 +1,19 @@
 package com.ebsolutions.applications.whoami.acceptance.appuser.create;
 
-import com.ebsolutions.applications.whoami.acceptance.AcceptanceStepsContext;
+import com.ebsolutions.applications.whoami.common.CommonContext;
+import com.ebsolutions.applications.whoami.common.testfixture.ScenarioContext;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import lombok.RequiredArgsConstructor;
 
-public class CreateAppUserGivenStepsContext extends AcceptanceStepsContext {
+
+@RequiredArgsConstructor
+public class CreateAppUserGivenStepsContext extends CommonContext {
+
+  private final ScenarioContext scenarioContext;
+
   @Before
   public void beforeScenario() {
     this.scenarioContext.reset();

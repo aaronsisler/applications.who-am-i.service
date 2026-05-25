@@ -2,17 +2,26 @@ package com.ebsolutions.applications.whoami.integration.nonfunctional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.ebsolutions.applications.whoami.common.CommonContext;
+import com.ebsolutions.applications.whoami.common.http.RestApiClient;
+import com.ebsolutions.applications.whoami.common.testfixture.ScenarioContext;
 import com.ebsolutions.applications.whoami.core.config.ApiPaths;
 import com.ebsolutions.applications.whoami.dto.ApplicationInfo;
 import com.ebsolutions.applications.whoami.dto.BuildMetadata;
-import com.ebsolutions.applications.whoami.integration.IntegrationStepsContext;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.http.HttpStatus;
 
-public class ApplicationInfoEndpointStepsContext extends IntegrationStepsContext {
+@RequiredArgsConstructor
+public class ApplicationInfoEndpointStepsContext extends CommonContext {
+
+  private final ObjectMapper objectMapper;
+  private final RestApiClient restApiClient;
+  private final ScenarioContext scenarioContext;
 
   @When("the info endpoint is invoked")
   public void theInfoEndpointIsInvoked() {

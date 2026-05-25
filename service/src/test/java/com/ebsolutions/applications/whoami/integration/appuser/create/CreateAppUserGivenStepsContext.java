@@ -3,13 +3,20 @@ package com.ebsolutions.applications.whoami.integration.appuser.create;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import com.ebsolutions.applications.whoami.integration.IntegrationStepsContext;
+import com.ebsolutions.applications.whoami.appuser.core.AppUserRepository;
+import com.ebsolutions.applications.whoami.common.CommonContext;
+import com.ebsolutions.applications.whoami.integration.IntegrationScenarioContext;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
-public class CreateAppUserGivenStepsContext extends IntegrationStepsContext {
+@RequiredArgsConstructor
+public class CreateAppUserGivenStepsContext extends CommonContext {
+
+  private final IntegrationScenarioContext integrationScenarioContext;
+  private final AppUserRepository appUserRepository;
 
   @Given("the client provides a create-user request body with the following fields:")
   public void theClientProvidesACreateUserRequestBodyWithTheFollowingFields(DataTable dataTable) {

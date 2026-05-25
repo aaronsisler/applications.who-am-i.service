@@ -1,21 +1,17 @@
 package com.ebsolutions.applications.whoami.acceptance.persistence;
 
-import com.ebsolutions.applications.whoami.acceptance.AcceptanceStepsContext;
-import com.zaxxer.hikari.HikariDataSource;
+import com.ebsolutions.applications.whoami.acceptance.config.persistence.PersistenceContainer;
+import com.ebsolutions.applications.whoami.common.CommonContext;
 import io.cucumber.java.en.And;
-import javax.sql.DataSource;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 
-public class PersistenceStepsContext extends AcceptanceStepsContext {
-  @Autowired
-  private DataSource dataSource;
+@RequiredArgsConstructor
+public class PersistenceStepsContext extends CommonContext {
+  private final PersistenceContainer persistenceContainer;
 
   @And("the database is unavailable")
   public void theDatabaseIsUnavailable() {
     persistenceContainer.stop();
-
-    HikariDataSource hikari = (HikariDataSource) dataSource;
-    hikari.getHikariPoolMXBean().softEvictConnections();
   }
 
   @And("the database is available")

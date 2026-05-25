@@ -1,16 +1,21 @@
 package com.ebsolutions.applications.whoami.common.nonfunctional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 
-import com.ebsolutions.applications.whoami.common.HttpStepsContext;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+import com.ebsolutions.applications.whoami.common.CommonContext;
+import com.ebsolutions.applications.whoami.common.http.RestApiClient;
 import com.ebsolutions.applications.whoami.common.testfixture.ExpectedResponseValues;
 import com.ebsolutions.applications.whoami.common.testfixture.ScenarioResponse;
 import com.ebsolutions.applications.whoami.core.config.ApiPaths;
 import io.cucumber.java.en.Given;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+@RequiredArgsConstructor
+public class ApplicationRunningStepsContext extends CommonContext {
 
-public class ApplicationRunningStepsContext extends HttpStepsContext {
+  private final RestApiClient restApiClient;
 
   @Given("the application is running")
   public void theApplicationIsRunning() {
@@ -25,5 +30,7 @@ public class ApplicationRunningStepsContext extends HttpStepsContext {
 
     assertThat(response.body())
         .contains(ExpectedResponseValues.EXPECTED_APPLICATION_HEALTH_STATUS_VALUE);
+
   }
+
 }

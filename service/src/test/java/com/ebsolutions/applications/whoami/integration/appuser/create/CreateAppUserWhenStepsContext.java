@@ -1,10 +1,20 @@
 package com.ebsolutions.applications.whoami.integration.appuser.create;
 
+import com.ebsolutions.applications.whoami.common.CommonContext;
+import com.ebsolutions.applications.whoami.common.http.RestApiClient;
+import com.ebsolutions.applications.whoami.common.testfixture.ScenarioContext;
 import com.ebsolutions.applications.whoami.core.config.ApiPaths;
-import com.ebsolutions.applications.whoami.integration.IntegrationStepsContext;
+import com.ebsolutions.applications.whoami.integration.IntegrationScenarioContext;
 import io.cucumber.java.en.When;
+import lombok.RequiredArgsConstructor;
 
-public class CreateAppUserWhenStepsContext extends IntegrationStepsContext {
+@RequiredArgsConstructor
+public class CreateAppUserWhenStepsContext extends CommonContext {
+
+  private final IntegrationScenarioContext integrationScenarioContext;
+  private final RestApiClient restApiClient;
+  private final ScenarioContext scenarioContext;
+
   @When("the client submits the create-user request")
   public void theClientSubmitsTheCreateUserRequest() {
 

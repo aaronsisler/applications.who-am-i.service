@@ -5,10 +5,12 @@ import com.ebsolutions.applications.whoami.integration.http.MockMvcClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.test.web.servlet.MockMvc;
 
 @TestConfiguration
-public class RestApiClientConfig {
+@Profile("integration")
+public class IntegrationRestApiClientConfig {
 
   @Bean
   public RestApiClient restApiClient(MockMvc mockMvc, ObjectMapper objectMapper) {

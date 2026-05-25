@@ -2,18 +2,18 @@ package com.ebsolutions.applications.whoami.unit.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.ebsolutions.applications.whoami.common.ApplicationStepsContext;
+import com.ebsolutions.applications.whoami.common.CommonContext;
 import com.ebsolutions.applications.whoami.core.ErrorCodeMapper;
 import com.ebsolutions.applications.whoami.dto.ErrorCode;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 
-public class ErrorCodeMapperSteps extends ApplicationStepsContext {
+@RequiredArgsConstructor
+public class ErrorCodeMapperSteps extends CommonContext {
 
-  @Autowired
-  private ErrorCodeMapper errorCodeMapper;
+  private final ErrorCodeMapper errorCodeMapper;
 
   private String value;
   private ErrorCode errorCode;
