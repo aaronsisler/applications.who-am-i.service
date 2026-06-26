@@ -207,7 +207,7 @@ public class GlobalControllerExceptionHandler {
    */
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorDto> handleGeneric(Exception ex) {
-    log.error("Unexpected server error:", ex);
+    //    log.error("Unexpected server error:", ex);
     return ResponseEntity
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
         .body(ErrorDto.builder()

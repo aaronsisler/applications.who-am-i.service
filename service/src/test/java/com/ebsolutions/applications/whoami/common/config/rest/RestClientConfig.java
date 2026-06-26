@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.acceptance.config.rest;
+package com.ebsolutions.applications.whoami.common.config.rest;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.TestConfiguration;

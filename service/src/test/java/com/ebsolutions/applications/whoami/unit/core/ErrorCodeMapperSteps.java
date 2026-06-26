@@ -15,21 +15,27 @@ public class ErrorCodeMapperSteps extends CommonContext {
 
   private final ErrorCodeMapper errorCodeMapper;
 
-  private String value;
   private ErrorCode errorCode;
+  private String value;
 
   @Given("a string value {string} is provided")
   public void aStringValueIsProvided(String value) {
+
     this.value = normalizeTestFixture(value);
+
   }
 
   @When("the string value is mapped to an error code")
   public void theStringValueIsMappedToAnErrorCode() {
+
     errorCode = errorCodeMapper.map(value);
+
   }
 
   @Then("the resulting error code should be {string}")
   public void theResultingErrorCodeShouldBe(String errorCode) {
+
     assertEquals(ErrorCode.valueOf(errorCode), this.errorCode);
+
   }
 }

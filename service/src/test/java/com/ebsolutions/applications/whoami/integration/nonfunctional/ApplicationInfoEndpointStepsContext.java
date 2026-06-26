@@ -25,7 +25,9 @@ public class ApplicationInfoEndpointStepsContext extends CommonContext {
 
   @When("the info endpoint is invoked")
   public void theInfoEndpointIsInvoked() {
+
     this.scenarioContext.response = this.restApiClient.get(ApiPaths.APPLICATION_INFO_PATH);
+
   }
 
   @Then("the correct info response is returned")
@@ -50,5 +52,6 @@ public class ApplicationInfoEndpointStepsContext extends CommonContext {
     assertThat(buildMetadata.getVersion())
         .as("Version should follow strict numeric X.Y.Z format")
         .matches("^\\d+\\.\\d+\\.\\d+$");
+
   }
 }

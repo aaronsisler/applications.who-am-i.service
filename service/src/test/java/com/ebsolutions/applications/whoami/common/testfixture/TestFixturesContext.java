@@ -12,6 +12,7 @@ public interface TestFixturesContext {
           ValidationTestValues.TEXT_FIELD_MAX_LENGTH_45_VALUE;
       case PlaceholderTokens.EMAIL_ADDRESS_FIELD_MAX_LENGTH_100_IDENTIFIER ->
           ValidationTestValues.EMAIL_ADDRESS_FIELD_MAX_LENGTH_100_VALUE;
+      case PlaceholderTokens.NOT_APPLICABLE_IDENTIFIER -> ValidationTestValues.NOT_APPLICABLE_VALUE;
       default -> value;
     };
   }

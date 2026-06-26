@@ -6,10 +6,10 @@ Feature: Error Code Mapper - Unit
     Then the resulting error code should be "<errorCode>"
 
     Examples:
-      | input  | errorCode             |
-      | <null> | INTERNAL_SERVER_ERROR |
-#      | <blank>  | INTERNAL_SERVER_ERROR |
-#      | NotNull  | NOT_NULL              |
-#      | NotBlank | NOT_BLANK             |
-#      | Size     | SIZE                  |
-#      | Email    | EMAIL_FORMAT_INVALID  |
+      | input    | errorCode             |
+      | <null>   | INTERNAL_SERVER_ERROR |
+      | <blank>  | INTERNAL_SERVER_ERROR |
+      | NotNull  | NOT_NULL              |
+      | NotBlank | NOT_BLANK             |
+      | Size     | SIZE                  |
+      | Email    | EMAIL_FORMAT_INVALID  |

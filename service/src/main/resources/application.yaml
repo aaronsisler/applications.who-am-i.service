@@ -11,6 +11,8 @@ management:
         include:
           - health
           - info
+  health:
+    enabled: true
   info:
     env:
       enabled: true
@@ -33,3 +35,9 @@ spring:
       # Required for Spring MVC to throw NoHandlerFoundException for unmapped endpoints
       # This is caught in the GlobalExceptionHandler as a 404 error
       add-mappings: false
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true

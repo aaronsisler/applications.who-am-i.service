@@ -1,6 +1,5 @@
-package com.ebsolutions.applications.whoami.acceptance.http;
+package com.ebsolutions.applications.whoami.common.http;
 
-import com.ebsolutions.applications.whoami.common.http.RestApiClient;
 import com.ebsolutions.applications.whoami.common.testfixture.ScenarioResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -145,6 +144,5 @@ public class SpringRestClient implements RestApiClient {
       throw new RuntimeException(errorMessage, e);
     }
   }
-
 
 }

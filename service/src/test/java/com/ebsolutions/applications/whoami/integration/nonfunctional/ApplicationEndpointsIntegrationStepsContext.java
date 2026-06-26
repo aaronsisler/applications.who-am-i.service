@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ebsolutions.applications.whoami.common.CommonContext;
 import com.ebsolutions.applications.whoami.common.http.RestApiClient;
+import com.ebsolutions.applications.whoami.common.testfixture.PlaceholderTokens;
 import com.ebsolutions.applications.whoami.common.testfixture.ScenarioContext;
-import com.ebsolutions.applications.whoami.common.testfixture.ScenarioResponse;
 import com.ebsolutions.applications.whoami.dto.ErrorCode;
 import com.ebsolutions.applications.whoami.dto.ErrorDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,44 +23,37 @@ public class ApplicationEndpointsIntegrationStepsContext extends CommonContext {
   private final ScenarioContext scenarioContext;
 
   @When("the client makes a {string} request to {string}")
-  public void theClientMakesAHttpMethodRequestToEndpointWithId(String httpMethod,
-                                                               String endpoint) {
+  public void theClientMakesAHttpMethodRequestToEndpoint(String httpMethod, String endpoint) {
 
-    if (httpMethod.equalsIgnoreCase("GET")) {
-      ScenarioResponse response = this.restApiClient.get(endpoint);
-
-      this.scenarioContext.response = new ScenarioResponse(
-          response.statusCode(),
-          response.body(),
-          null
-      );
+    switch (httpMethod) {
+      case "POST" -> this.scenarioContext.response =
+          this.restApiClient
+              .post(
+                  endpoint,
+                  this.scenarioContext.requestContentType,
+                  this.scenarioContext.requestPayload);
+      case "GET" -> this.scenarioContext.response = this.restApiClient.get(endpoint);
+      default -> throw new IllegalArgumentException("Unsupported HTTP method: " + httpMethod);
     }
 
-    throw new IllegalArgumentException("Unsupported HTTP method: " + httpMethod);
+    System.out.printf(
+        "SET context=%s thread=%s endpoint=%s status=%d%n",
+        System.identityHashCode(this.scenarioContext),
+        Thread.currentThread().getName(),
+        endpoint,
+        this.scenarioContext.response.statusCode());
+
   }
 
-  @When("the client makes a {string} request to {string} with id {string}")
-  public void theClientMakesAHttpMethodRequestToEndpointWithId(String httpMethod,
-                                                               String endpoint,
-                                                               String id) {
+  @Then("the response status code should be {int}")
+  public void theResponseStatusCodeShouldBe(int responseStatusCode) {
 
-    ScenarioResponse response = switch (httpMethod.toUpperCase()) {
-      case "GET" -> this.restApiClient.get(endpoint, id);
-      case "POST" -> this.restApiClient.post(endpoint, null, null);
-      case "PUT" -> this.restApiClient.put(endpoint, id, null, null);
-      case "DELETE" -> this.restApiClient.delete(endpoint, id);
-      default -> throw new IllegalArgumentException("Unsupported HTTP method: " + httpMethod);
-    };
-
-    this.scenarioContext.response = new ScenarioResponse(
-        response.statusCode(),
-        response.body(),
-        null
+    System.out.printf(
+        "ASSERT SCENARIO_CONTEXT=%s THREAD=%s STATUS=%d%n",
+        System.identityHashCode(this.scenarioContext),
+        Thread.currentThread().getName(),
+        this.scenarioContext.response.statusCode()
     );
-  }
-
-  @Then("the response status should be {int}")
-  public void theResponseStatusShouldBe(int responseStatusCode) {
 
     assertThat(this.scenarioContext.response.statusCode()).isEqualTo(responseStatusCode);
 
@@ -69,6 +62,10 @@ public class ApplicationEndpointsIntegrationStepsContext extends CommonContext {
   @And("the response body should include an error code {string}")
   public void theResponseBodyShouldIncludeAnErrorCode(String rawErrorCode)
       throws JsonProcessingException {
+
+    if (PlaceholderTokens.NOT_APPLICABLE_IDENTIFIER.equals(rawErrorCode)) {
+      return;
+    }
 
     ErrorDto errorDto = objectMapper
         .readValue(this.scenarioContext.response.body(), ErrorDto.class);
@@ -80,4 +77,5 @@ public class ApplicationEndpointsIntegrationStepsContext extends CommonContext {
 
     assertThat(errorDto.getErrors().getFirst().getCode()).isEqualTo(errorCode);
   }
+
 }

@@ -12,4 +12,4 @@ logging:
 
 spring:
   main:
-    banner-mode: on
+    banner-mode: log
