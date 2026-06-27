@@ -4,7 +4,7 @@ import java.time.Instant;
 import org.springframework.stereotype.Component;
 
 @Component
-public class InstantGenerator {
+public final class InstantGenerator {
   /**
    * Returns the current local date and time.
    *

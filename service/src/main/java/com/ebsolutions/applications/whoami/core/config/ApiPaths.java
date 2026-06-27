@@ -1,6 +1,6 @@
 package com.ebsolutions.applications.whoami.core.config;
 
-public class ApiPaths {
+public final class ApiPaths {
   /**
    * Base path for all API endpoints related
    * to app users {@link com.ebsolutions.applications.whoami.appuser.core.AppUserBaseController}
@@ -40,8 +40,9 @@ public class ApiPaths {
   public static final String APPLICATION_HEALTH_PATH = APPLICATION_BASE_PATH + "/health";
 
   /**
-   * This class should not be instantiated
+   * This class cannot be instantiated
    */
-  private ApiPaths() {
+  private ApiPaths() throws UnsupportedOperationException {
+    throw new UnsupportedOperationException("Utility class");
   }
 }

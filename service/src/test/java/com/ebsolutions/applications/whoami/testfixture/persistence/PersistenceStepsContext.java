@@ -1,7 +1,7 @@
 package com.ebsolutions.applications.whoami.testfixture.persistence;
 
-import com.ebsolutions.applications.whoami.testfixture.CommonContext;
-import com.ebsolutions.applications.whoami.testfixture.config.persistence.PersistenceContainer;
+import com.ebsolutions.applications.whoami.config.persistence.PersistenceContainer;
+import com.ebsolutions.applications.whoami.testfixture.context.CommonContext;
 import io.cucumber.java.en.And;
 import lombok.RequiredArgsConstructor;
 

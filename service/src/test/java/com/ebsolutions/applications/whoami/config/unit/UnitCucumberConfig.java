@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.testfixture.unit;
+package com.ebsolutions.applications.whoami.config.unit;
 
 import com.ebsolutions.applications.whoami.testfixture.CommonCucumberTest;
 

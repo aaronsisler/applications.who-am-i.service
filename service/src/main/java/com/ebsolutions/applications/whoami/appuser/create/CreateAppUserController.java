@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-public class CreateAppUserController extends AppUserBaseController {
+public final class CreateAppUserController extends AppUserBaseController {
   private final CreateAppUserService createAppUserService;
 
   @PostMapping

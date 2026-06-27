@@ -1,7 +1,7 @@
-package com.ebsolutions.applications.whoami.testfixture.integration;
+package com.ebsolutions.applications.whoami.config.integration;
 
-import com.ebsolutions.applications.whoami.testfixture.config.rest.RestApiClientConfig;
-import com.ebsolutions.applications.whoami.testfixture.config.rest.RestClientConfig;
+import com.ebsolutions.applications.whoami.config.rest.RestApiClientConfig;
+import com.ebsolutions.applications.whoami.config.rest.RestClientConfig;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;

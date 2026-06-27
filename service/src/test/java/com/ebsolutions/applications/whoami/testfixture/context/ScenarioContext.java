@@ -1,5 +1,6 @@
-package com.ebsolutions.applications.whoami.testfixture;
+package com.ebsolutions.applications.whoami.testfixture.context;
 
+import com.ebsolutions.applications.whoami.testfixture.ScenarioResponse;
 import io.cucumber.spring.ScenarioScope;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ScenarioScope
-public class ScenarioContext {
+public final class ScenarioContext {
 
   public MediaType requestContentType;
   public ScenarioResponse response;

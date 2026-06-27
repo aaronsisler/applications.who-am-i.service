@@ -3,7 +3,7 @@ package com.ebsolutions.applications.whoami.core;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.ebsolutions.applications.whoami.dto.ErrorCode;
-import com.ebsolutions.applications.whoami.testfixture.CommonContext;
+import com.ebsolutions.applications.whoami.testfixture.context.CommonContext;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

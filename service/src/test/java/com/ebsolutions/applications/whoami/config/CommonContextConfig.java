@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.testfixture;
+package com.ebsolutions.applications.whoami.config;
 
 import com.ebsolutions.applications.whoami.appuser.core.AppUserRepository;
 import org.mockito.Mockito;

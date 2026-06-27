@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class PrePersistenceHandler<T extends PersistedEntity> {
+public final class PrePersistenceHandler<T extends PersistedModel> {
   private final UuidGenerator uuidGenerator;
   private final InstantGenerator instantGenerator;
 

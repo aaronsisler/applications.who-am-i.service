@@ -1,5 +1,6 @@
-package com.ebsolutions.applications.whoami.testfixture;
+package com.ebsolutions.applications.whoami.testfixture.context;
 
+import com.ebsolutions.applications.whoami.config.CommonContextConfig;
 import org.springframework.context.annotation.Import;
 
 @Import({

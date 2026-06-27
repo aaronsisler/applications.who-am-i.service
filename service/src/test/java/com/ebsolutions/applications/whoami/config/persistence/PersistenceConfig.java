@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.testfixture.config.persistence;
+package com.ebsolutions.applications.whoami.config.persistence;
 
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;

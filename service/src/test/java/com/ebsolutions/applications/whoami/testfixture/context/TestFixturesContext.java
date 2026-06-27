@@ -1,5 +1,7 @@
-package com.ebsolutions.applications.whoami.testfixture;
+package com.ebsolutions.applications.whoami.testfixture.context;
 
+import com.ebsolutions.applications.whoami.testfixture.PlaceholderTokens;
+import com.ebsolutions.applications.whoami.testfixture.ValidationTestValues;
 import org.apache.commons.lang3.StringUtils;
 
 public interface TestFixturesContext {

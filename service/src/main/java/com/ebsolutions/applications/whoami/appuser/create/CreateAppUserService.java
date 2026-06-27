@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class CreateAppUserService {
+public final class CreateAppUserService {
   private final AppUserRepository repository;
   private final AppUserMapper mapper;
   private final PrePersistenceHandler<AppUser> appUserPrePersistenceHandler;

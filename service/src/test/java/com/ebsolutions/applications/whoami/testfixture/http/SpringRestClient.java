@@ -9,7 +9,7 @@ import org.springframework.web.client.RestClient;
 
 
 @RequiredArgsConstructor
-public class SpringRestClient implements RestApiClient {
+public final class SpringRestClient implements RestApiClient {
 
   private final RestClient restClient;
 

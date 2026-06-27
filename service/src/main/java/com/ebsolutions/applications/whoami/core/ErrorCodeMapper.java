@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.FieldError;
 
 @Component
-public class ErrorCodeMapper {
+public final class ErrorCodeMapper {
   /**
    * Maps Spring validation codes to {@link ErrorCode} enum.
    *

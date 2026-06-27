@@ -1,6 +1,7 @@
 package com.ebsolutions.applications.whoami.appuser.core;
 
-import com.ebsolutions.applications.whoami.core.persistence.PersistedEntity;
+import com.ebsolutions.applications.whoami.core.persistence.DatabaseTableNames;
+import com.ebsolutions.applications.whoami.core.persistence.PersistedModel;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -18,8 +19,8 @@ import org.springframework.data.relational.core.mapping.Table;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Table("app_user")
-public class AppUser implements PersistedEntity {
+@Table(DatabaseTableNames.APP_USER)
+public final class AppUser implements PersistedModel {
   @Id
   private Long internalId;
   private UUID externalId;

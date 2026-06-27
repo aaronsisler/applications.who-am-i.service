@@ -3,7 +3,7 @@ package com.ebsolutions.applications.whoami.core.persistence;
 import java.time.Instant;
 import java.util.UUID;
 
-public interface PersistedEntity {
+public interface PersistedModel {
   /**
    * The internal ID is a database-generated identifier that is not exposed to clients.
    * It is used for internal references and should not be used in client-facing APIs.

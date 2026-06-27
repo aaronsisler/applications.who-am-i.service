@@ -1,6 +1,6 @@
 package com.ebsolutions.applications.whoami.core.exception;
 
-public class DataStoreException extends RuntimeException {
+public final class DataStoreException extends RuntimeException {
   public DataStoreException(String message, Throwable cause) {
     super(message, cause);
   }

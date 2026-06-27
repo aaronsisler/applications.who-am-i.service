@@ -30,7 +30,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @Slf4j
 @RestControllerAdvice
 @RequiredArgsConstructor
-public class GlobalControllerExceptionHandler {
+public final class GlobalControllerExceptionHandler {
 
   private final ErrorCodeMapper errorCodeMapper;
 

@@ -3,12 +3,12 @@ package com.ebsolutions.applications.whoami.core.config;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-@Component
+@Configuration
 public class CorsConfig implements CorsConfigurationSource {
   @SuppressWarnings("java:S1313") // Ignoring IP addresses from common locations
   private static final List<String> ALLOWED_ORIGINS =

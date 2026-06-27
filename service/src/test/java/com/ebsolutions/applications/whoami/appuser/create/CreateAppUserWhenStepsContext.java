@@ -1,8 +1,8 @@
 package com.ebsolutions.applications.whoami.appuser.create;
 
 import com.ebsolutions.applications.whoami.core.config.ApiPaths;
-import com.ebsolutions.applications.whoami.testfixture.CommonContext;
-import com.ebsolutions.applications.whoami.testfixture.ScenarioContext;
+import com.ebsolutions.applications.whoami.testfixture.context.CommonContext;
+import com.ebsolutions.applications.whoami.testfixture.context.ScenarioContext;
 import com.ebsolutions.applications.whoami.testfixture.http.RestApiClient;
 import com.ebsolutions.applications.whoami.testfixture.integration.IntegrationScenarioContext;
 import io.cucumber.java.en.When;

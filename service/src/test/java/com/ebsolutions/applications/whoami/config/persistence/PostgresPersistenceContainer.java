@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.testfixture.config.persistence;
+package com.ebsolutions.applications.whoami.config.persistence;
 
 import lombok.RequiredArgsConstructor;
 import org.testcontainers.containers.PostgreSQLContainer;

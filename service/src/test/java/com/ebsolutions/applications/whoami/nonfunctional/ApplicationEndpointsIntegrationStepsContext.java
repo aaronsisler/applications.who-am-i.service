@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ebsolutions.applications.whoami.dto.ErrorCode;
 import com.ebsolutions.applications.whoami.dto.ErrorDto;
-import com.ebsolutions.applications.whoami.testfixture.CommonContext;
 import com.ebsolutions.applications.whoami.testfixture.PlaceholderTokens;
-import com.ebsolutions.applications.whoami.testfixture.ScenarioContext;
+import com.ebsolutions.applications.whoami.testfixture.context.CommonContext;
+import com.ebsolutions.applications.whoami.testfixture.context.ScenarioContext;
 import com.ebsolutions.applications.whoami.testfixture.http.RestApiClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

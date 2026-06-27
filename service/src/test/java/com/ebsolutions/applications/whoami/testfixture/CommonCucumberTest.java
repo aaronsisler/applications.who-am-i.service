@@ -1,7 +1,7 @@
 package com.ebsolutions.applications.whoami.testfixture;
 
-import com.ebsolutions.applications.whoami.testfixture.config.rest.RestApiClientConfig;
-import com.ebsolutions.applications.whoami.testfixture.config.rest.RestClientConfig;
+import com.ebsolutions.applications.whoami.config.rest.RestApiClientConfig;
+import com.ebsolutions.applications.whoami.config.rest.RestClientConfig;
 import io.cucumber.spring.CucumberContextConfiguration;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;

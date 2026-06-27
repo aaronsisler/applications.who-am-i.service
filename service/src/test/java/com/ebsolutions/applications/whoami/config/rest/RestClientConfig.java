@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.testfixture.config.rest;
+package com.ebsolutions.applications.whoami.config.rest;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.TestConfiguration;
