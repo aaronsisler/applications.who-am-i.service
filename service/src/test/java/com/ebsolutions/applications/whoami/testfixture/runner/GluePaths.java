@@ -1,6 +1,6 @@
-package com.ebsolutions.applications.whoami.runner;
+package com.ebsolutions.applications.whoami.testfixture.runner;
 
-import static com.ebsolutions.applications.whoami.runner.Packages.BASE_PACKAGE;
+import static com.ebsolutions.applications.whoami.testfixture.runner.Packages.BASE_PACKAGE;
 
 public final class GluePaths {
 

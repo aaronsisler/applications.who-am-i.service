@@ -1,7 +1,6 @@
 package com.ebsolutions.applications.whoami.testfixture.context;
 
-import com.ebsolutions.applications.whoami.testfixture.PlaceholderTokens;
-import com.ebsolutions.applications.whoami.testfixture.ValidationTestValues;
+import com.ebsolutions.applications.whoami.testfixture.data.ValidationTestValues;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
 

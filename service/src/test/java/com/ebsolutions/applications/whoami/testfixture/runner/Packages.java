@@ -1,10 +1,10 @@
-package com.ebsolutions.applications.whoami.runner;
+package com.ebsolutions.applications.whoami.testfixture.runner;
 
-import static com.ebsolutions.applications.whoami.runner.PackageNames.BASE_PACKAGE_NAME;
-import static com.ebsolutions.applications.whoami.runner.PackageNames.CORE_PACKAGE_NAME;
-import static com.ebsolutions.applications.whoami.runner.PackageNames.INTEGRATION_CONFIG_PACKAGE_NAME;
-import static com.ebsolutions.applications.whoami.runner.PackageNames.NONFUNCTIONAL_PACKAGE_NAME;
-import static com.ebsolutions.applications.whoami.runner.PackageNames.TEST_FIXTURE_PACKAGE_NAME;
+import static com.ebsolutions.applications.whoami.testfixture.runner.PackageNames.BASE_PACKAGE_NAME;
+import static com.ebsolutions.applications.whoami.testfixture.runner.PackageNames.CORE_PACKAGE_NAME;
+import static com.ebsolutions.applications.whoami.testfixture.runner.PackageNames.INTEGRATION_CONFIG_PACKAGE_NAME;
+import static com.ebsolutions.applications.whoami.testfixture.runner.PackageNames.NONFUNCTIONAL_PACKAGE_NAME;
+import static com.ebsolutions.applications.whoami.testfixture.runner.PackageNames.TEST_FIXTURE_PACKAGE_NAME;
 
 public final class Packages {
 

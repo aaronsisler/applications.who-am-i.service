@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.testfixture;
+package com.ebsolutions.applications.whoami.testfixture.http;
 
 import jakarta.validation.constraints.Size;
 import java.util.Map;

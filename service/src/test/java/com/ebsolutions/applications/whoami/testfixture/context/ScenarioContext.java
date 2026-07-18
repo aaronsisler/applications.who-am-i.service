@@ -1,6 +1,6 @@
 package com.ebsolutions.applications.whoami.testfixture.context;
 
-import com.ebsolutions.applications.whoami.testfixture.ScenarioResponse;
+import com.ebsolutions.applications.whoami.testfixture.http.ScenarioResponse;
 import io.cucumber.spring.ScenarioScope;
 import java.util.HashMap;
 import java.util.Map;

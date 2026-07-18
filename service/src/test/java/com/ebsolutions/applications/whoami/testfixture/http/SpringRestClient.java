@@ -1,6 +1,5 @@
 package com.ebsolutions.applications.whoami.testfixture.http;
 
-import com.ebsolutions.applications.whoami.testfixture.ScenarioResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;

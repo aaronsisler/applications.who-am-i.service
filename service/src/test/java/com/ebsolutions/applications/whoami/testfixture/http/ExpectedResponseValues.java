@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.testfixture;
+package com.ebsolutions.applications.whoami.testfixture.http;
 
 public class ExpectedResponseValues {
 

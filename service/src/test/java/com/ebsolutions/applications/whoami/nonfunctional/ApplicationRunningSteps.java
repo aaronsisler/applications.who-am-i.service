@@ -4,10 +4,10 @@ package com.ebsolutions.applications.whoami.nonfunctional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.ebsolutions.applications.whoami.core.config.ApiPaths;
-import com.ebsolutions.applications.whoami.testfixture.ExpectedResponseValues;
-import com.ebsolutions.applications.whoami.testfixture.ScenarioResponse;
 import com.ebsolutions.applications.whoami.testfixture.context.BaseSteps;
+import com.ebsolutions.applications.whoami.testfixture.http.ExpectedResponseValues;
 import com.ebsolutions.applications.whoami.testfixture.http.RestApiClient;
+import com.ebsolutions.applications.whoami.testfixture.http.ScenarioResponse;
 import io.cucumber.java.en.Given;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

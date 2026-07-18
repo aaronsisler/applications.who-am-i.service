@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.runner;
+package com.ebsolutions.applications.whoami.testfixture.runner;
 
 public final class PackageNames {
   public static final String BASE_PACKAGE_NAME = "com.ebsolutions.applications.whoami";
