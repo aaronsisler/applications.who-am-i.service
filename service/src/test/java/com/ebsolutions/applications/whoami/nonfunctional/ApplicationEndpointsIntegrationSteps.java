@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.ebsolutions.applications.whoami.dto.ErrorCode;
 import com.ebsolutions.applications.whoami.dto.ErrorDto;
 import com.ebsolutions.applications.whoami.testfixture.PlaceholderTokens;
-import com.ebsolutions.applications.whoami.testfixture.context.CommonContext;
+import com.ebsolutions.applications.whoami.testfixture.context.BaseSteps;
 import com.ebsolutions.applications.whoami.testfixture.context.ScenarioContext;
 import com.ebsolutions.applications.whoami.testfixture.http.RestApiClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,7 +16,7 @@ import io.cucumber.java.en.When;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ApplicationEndpointsIntegrationStepsContext extends CommonContext {
+public class ApplicationEndpointsIntegrationSteps extends BaseSteps {
 
   private final ObjectMapper objectMapper;
   private final RestApiClient restApiClient;

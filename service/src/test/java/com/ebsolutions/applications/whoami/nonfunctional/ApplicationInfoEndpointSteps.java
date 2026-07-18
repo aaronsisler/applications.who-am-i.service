@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.ebsolutions.applications.whoami.core.config.ApiPaths;
 import com.ebsolutions.applications.whoami.dto.ApplicationInfo;
 import com.ebsolutions.applications.whoami.dto.BuildMetadata;
-import com.ebsolutions.applications.whoami.testfixture.context.CommonContext;
+import com.ebsolutions.applications.whoami.testfixture.context.BaseSteps;
 import com.ebsolutions.applications.whoami.testfixture.context.ScenarioContext;
 import com.ebsolutions.applications.whoami.testfixture.http.RestApiClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Assertions;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public class ApplicationInfoEndpointStepsContext extends CommonContext {
+public class ApplicationInfoEndpointSteps extends BaseSteps {
 
   private final ObjectMapper objectMapper;
   private final RestApiClient restApiClient;

@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.config.rest;
+package com.ebsolutions.applications.whoami.config.http;
 
 import com.ebsolutions.applications.whoami.testfixture.http.RestApiClient;
 import com.ebsolutions.applications.whoami.testfixture.http.SpringRestClient;

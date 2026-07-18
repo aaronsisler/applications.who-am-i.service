@@ -1,24 +1,24 @@
 package com.ebsolutions.applications.whoami.config.integration;
 
-import com.ebsolutions.applications.whoami.config.rest.RestApiClientConfig;
-import com.ebsolutions.applications.whoami.config.rest.RestClientConfig;
-import io.cucumber.spring.CucumberContextConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
+import com.ebsolutions.applications.whoami.appuser.core.AppUserRepository;
+import com.ebsolutions.applications.whoami.config.http.RestApiClientConfig;
+import com.ebsolutions.applications.whoami.config.http.RestClientConfig;
+import com.ebsolutions.applications.whoami.testfixture.CommonCucumberTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @Profile("integration")
-@CucumberContextConfiguration
-@SpringBootTest(
-    webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT
-)
+@CommonCucumberTest
 @Import({
+    RestApiClientConfig.class,
     RestClientConfig.class,
-    RestApiClientConfig.class
-})
-@ComponentScan(basePackages = {
-    "com.ebsolutions.applications.whoami.common.testfixture"
 })
 public class IntegrationCucumberConfig {
+  @MockitoBean
+  public AppUserRepository appUserRepository;
+
+  public IntegrationCucumberConfig() {
+    System.out.println(">>> IntegrationCucumberConfig created");
+  }
 }

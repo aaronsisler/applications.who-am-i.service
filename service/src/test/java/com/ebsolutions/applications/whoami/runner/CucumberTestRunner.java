@@ -11,14 +11,10 @@ import org.junit.platform.suite.api.Suite;
 
 @Suite
 @IncludeEngines("cucumber")
-@SelectPackages("features/unit")
-@ConfigurationParameter(
-    key = GLUE_PROPERTY_NAME,
-    value = "com.ebsolutions.applications.whoami.unit"
-        + ",com.ebsolutions.applications.whoami.common"
-)
+@SelectPackages("features/integration")
+@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = GluePaths.BASE_GLUE)
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty")
 //@ConfigurationParameter(key = FILTER_TAGS_PROPERTY_NAME, value = "@Only")
 @ConfigurationParameter(key = FILTER_TAGS_PROPERTY_NAME, value = "not @Ignore")
-public class UnitTestRunner {
+public class CucumberTestRunner {
 }

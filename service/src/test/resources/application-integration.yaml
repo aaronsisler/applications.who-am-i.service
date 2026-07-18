@@ -9,6 +9,8 @@ spring:
       - org.springframework.boot.autoconfigure.data.jdbc.JdbcRepositoriesAutoConfiguration
       # This is excluded to prevent autoconfiguration of DataSource during tests
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  test:
+    print-condition-evaluation-report: false
 
 springdoc:
   api-docs:

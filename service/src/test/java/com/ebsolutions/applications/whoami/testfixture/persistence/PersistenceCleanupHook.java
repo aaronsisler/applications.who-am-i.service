@@ -1,6 +1,5 @@
-package com.ebsolutions.applications.whoami.testfixture.persistence.hook;
+package com.ebsolutions.applications.whoami.testfixture.persistence;
 
-import io.cucumber.java.Before;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,7 +9,7 @@ public class PersistenceCleanupHook {
   private final JdbcTemplate jdbcTemplate;
   private final List<String> tablesToTruncate = List.of("app_user");
 
-  @Before
+  //  @Before
   public void truncateDatabase() {
     jdbcTemplate.execute(generateTruncateQuery());
   }

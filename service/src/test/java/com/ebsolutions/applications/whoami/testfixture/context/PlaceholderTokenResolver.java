@@ -3,10 +3,19 @@ package com.ebsolutions.applications.whoami.testfixture.context;
 import com.ebsolutions.applications.whoami.testfixture.PlaceholderTokens;
 import com.ebsolutions.applications.whoami.testfixture.ValidationTestValues;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.MediaType;
 
-public interface TestFixturesContext {
+public interface PlaceholderTokenResolver {
 
-  default String normalizeTestFixture(String value) {
+  default MediaType resolveMediaType(String value) {
+    return switch (value) {
+      case MediaType.APPLICATION_JSON_VALUE -> MediaType.APPLICATION_JSON;
+      case MediaType.TEXT_PLAIN_VALUE -> MediaType.TEXT_PLAIN;
+      default -> throw new IllegalArgumentException("Unsupported media type: " + value);
+    };
+  }
+
+  default String resolvePlaceholderToken(String value) {
     return switch (value) {
       case PlaceholderTokens.BLANK_STRING_IDENTIFIER -> StringUtils.EMPTY;
       case PlaceholderTokens.NULL_STRING_IDENTIFIER -> null;

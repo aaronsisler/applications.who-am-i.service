@@ -3,14 +3,14 @@ package com.ebsolutions.applications.whoami.core;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.ebsolutions.applications.whoami.dto.ErrorCode;
-import com.ebsolutions.applications.whoami.testfixture.context.CommonContext;
+import com.ebsolutions.applications.whoami.testfixture.context.BaseSteps;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ErrorCodeMapperSteps extends CommonContext {
+public class ErrorCodeMapperSteps extends BaseSteps {
 
   private final ErrorCodeMapper errorCodeMapper;
 
@@ -20,7 +20,7 @@ public class ErrorCodeMapperSteps extends CommonContext {
   @Given("a string value {string} is provided")
   public void aStringValueIsProvided(String value) {
 
-    this.value = normalizeTestFixture(value);
+    this.value = resolvePlaceholderToken(value);
 
   }
 

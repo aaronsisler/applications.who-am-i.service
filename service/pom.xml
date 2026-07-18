@@ -306,6 +306,7 @@
                             <goal>verify</goal>
                         </goals>
                         <configuration>
+                            <!--                            <skipTests>true</skipTests>-->
                             <argLine>${argLine}</argLine>
                             <testFailureIgnore>false</testFailureIgnore>
                             <systemPropertyVariables>
@@ -313,7 +314,7 @@
                                 <spring.profiles.active>integration</spring.profiles.active>
                             </systemPropertyVariables>
                             <includes>
-                                <include>**/IntegrationTestRunner.*</include>
+                                <include>**/CucumberTestRunner.*</include>
                             </includes>
                         </configuration>
                     </execution>
@@ -355,10 +356,6 @@
                             <includes>
                                 <include>com.ebsolutions.applications.whoami.*</include>
                             </includes>
-                            <!-- TODO Why is this here? -->
-                            <excludes>
-                                <exclude>com.ebsolutions.applications.whoami.*</exclude>
-                            </excludes>
                         </configuration>
                     </execution>
                     <execution>

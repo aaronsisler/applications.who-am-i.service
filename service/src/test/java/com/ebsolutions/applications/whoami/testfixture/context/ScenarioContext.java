@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ScenarioScope
-public final class ScenarioContext {
+public class ScenarioContext {
 
   public MediaType requestContentType;
   public ScenarioResponse response;

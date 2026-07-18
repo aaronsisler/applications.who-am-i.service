@@ -1,12 +1,12 @@
 package com.ebsolutions.applications.whoami.testfixture.persistence;
 
 import com.ebsolutions.applications.whoami.config.persistence.PersistenceContainer;
-import com.ebsolutions.applications.whoami.testfixture.context.CommonContext;
+import com.ebsolutions.applications.whoami.testfixture.context.BaseSteps;
 import io.cucumber.java.en.And;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class PersistenceStepsContext extends CommonContext {
+public class PersistenceSteps extends BaseSteps {
   private final PersistenceContainer persistenceContainer;
 
   @And("the database is unavailable")

@@ -6,14 +6,14 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import com.ebsolutions.applications.whoami.core.config.ApiPaths;
 import com.ebsolutions.applications.whoami.testfixture.ExpectedResponseValues;
 import com.ebsolutions.applications.whoami.testfixture.ScenarioResponse;
-import com.ebsolutions.applications.whoami.testfixture.context.CommonContext;
+import com.ebsolutions.applications.whoami.testfixture.context.BaseSteps;
 import com.ebsolutions.applications.whoami.testfixture.http.RestApiClient;
 import io.cucumber.java.en.Given;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public class ApplicationRunningStepsContext extends CommonContext {
+public class ApplicationRunningSteps extends BaseSteps {
 
   private final RestApiClient restApiClient;
 

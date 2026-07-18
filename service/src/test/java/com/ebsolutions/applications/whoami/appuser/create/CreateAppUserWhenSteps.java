@@ -1,17 +1,15 @@
 package com.ebsolutions.applications.whoami.appuser.create;
 
 import com.ebsolutions.applications.whoami.core.config.ApiPaths;
-import com.ebsolutions.applications.whoami.testfixture.context.CommonContext;
+import com.ebsolutions.applications.whoami.testfixture.context.BaseSteps;
 import com.ebsolutions.applications.whoami.testfixture.context.ScenarioContext;
 import com.ebsolutions.applications.whoami.testfixture.http.RestApiClient;
-import com.ebsolutions.applications.whoami.testfixture.integration.IntegrationScenarioContext;
 import io.cucumber.java.en.When;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class CreateAppUserWhenStepsContext extends CommonContext {
+public class CreateAppUserWhenSteps extends BaseSteps {
 
-  private final IntegrationScenarioContext integrationScenarioContext;
   private final RestApiClient restApiClient;
   private final ScenarioContext scenarioContext;
 
@@ -27,17 +25,4 @@ public class CreateAppUserWhenStepsContext extends CommonContext {
         );
   }
 
-  @When("the client submits both of the create-user requests")
-  public void theClientSubmitsBothOfTheCreateUserRequests() {
-
-    integrationScenarioContext.listOfRequestContents.forEach(requestContent -> {
-      this.scenarioContext.response =
-          this.restApiClient.post(
-              ApiPaths.APP_USERS_PATH,
-              this.scenarioContext.requestContentType,
-              requestContent
-          );
-    });
-
-  }
 }
