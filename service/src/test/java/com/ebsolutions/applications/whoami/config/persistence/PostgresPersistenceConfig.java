@@ -1,5 +1,7 @@
 package com.ebsolutions.applications.whoami.config.persistence;
 
+import com.ebsolutions.applications.whoami.testfixture.persistence.PersistenceContainer;
+import com.ebsolutions.applications.whoami.testfixture.persistence.PostgresPersistenceContainer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.TestConfiguration;

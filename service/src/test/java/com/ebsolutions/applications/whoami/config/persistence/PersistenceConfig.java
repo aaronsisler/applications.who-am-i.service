@@ -1,5 +1,6 @@
 package com.ebsolutions.applications.whoami.config.persistence;
 
+import com.ebsolutions.applications.whoami.testfixture.persistence.PersistenceContainer;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.jdbc.DataSourceBuilder;

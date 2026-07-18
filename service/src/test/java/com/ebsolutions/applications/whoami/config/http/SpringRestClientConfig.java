@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestClient;
 
 @TestConfiguration
-public class RestApiClientConfig {
+public class SpringRestClientConfig {
 
   @Bean
   public RestApiClient restApiClient(RestClient restClient) {
