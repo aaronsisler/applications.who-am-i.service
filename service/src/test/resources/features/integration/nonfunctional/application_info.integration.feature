@@ -1,6 +1,5 @@
 Feature: Non Functional: Application Info - Integration
 
-#  @Ignore
   Scenario: Application status and build information is made available through default endpoints
     Given the application is running
     When the info endpoint is invoked

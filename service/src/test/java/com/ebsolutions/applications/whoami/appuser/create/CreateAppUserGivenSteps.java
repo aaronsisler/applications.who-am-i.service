@@ -7,7 +7,6 @@ import com.ebsolutions.applications.whoami.appuser.core.AppUserRepository;
 import com.ebsolutions.applications.whoami.testfixture.context.BaseSteps;
 import com.ebsolutions.applications.whoami.testfixture.context.ScenarioContext;
 import io.cucumber.datatable.DataTable;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +17,6 @@ public class CreateAppUserGivenSteps extends BaseSteps {
 
   private final ScenarioContext scenarioContext;
   private final AppUserRepository appUserRepository;
-
-  @Before
-  public void beforeScenario() {
-    this.scenarioContext.reset();
-  }
 
   @Given("the client provides a create-user request body with the following fields:")
   public void theClientProvidesACreateUserRequestBodyWithTheFollowingFields(DataTable dataTable) {
@@ -43,5 +37,10 @@ public class CreateAppUserGivenSteps extends BaseSteps {
     when(appUserRepository.save(any()))
         .thenAnswer(invocation -> invocation.getArgument(0));
 
+  }
+
+  @Given("a create-user request body with malformed JSON")
+  public void aCreateUserRequestBodyWithMalformedJSON() {
+    this.scenarioContext.rawRequestBody = "{invalid-json:";
   }
 }

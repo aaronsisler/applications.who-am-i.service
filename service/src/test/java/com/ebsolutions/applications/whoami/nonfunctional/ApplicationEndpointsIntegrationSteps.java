@@ -36,24 +36,10 @@ public class ApplicationEndpointsIntegrationSteps extends BaseSteps {
       default -> throw new IllegalArgumentException("Unsupported HTTP method: " + httpMethod);
     }
 
-    System.out.printf(
-        "SET context=%s thread=%s endpoint=%s status=%d%n",
-        System.identityHashCode(this.scenarioContext),
-        Thread.currentThread().getName(),
-        endpoint,
-        this.scenarioContext.response.statusCode());
-
   }
 
   @Then("the response status code should be {int}")
   public void theResponseStatusCodeShouldBe(int responseStatusCode) {
-
-    System.out.printf(
-        "ASSERT SCENARIO_CONTEXT=%s THREAD=%s STATUS=%d%n",
-        System.identityHashCode(this.scenarioContext),
-        Thread.currentThread().getName(),
-        this.scenarioContext.response.statusCode()
-    );
 
     assertThat(this.scenarioContext.response.statusCode()).isEqualTo(responseStatusCode);
 

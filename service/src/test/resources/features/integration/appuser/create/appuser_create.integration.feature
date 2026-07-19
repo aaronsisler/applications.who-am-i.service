@@ -10,7 +10,6 @@ Feature: Create App User - Integration
     When the client submits both of the create-user requests
     Then each create-user response should include unique client-facing identifiers
 
-  @Ignore
   Scenario Outline: 400 - Creating an app user with missing required fields
     Given the client provides a create-user request body with the following fields:
       | emailAddress | johnny.appleseed@gmail.com |
@@ -32,7 +31,6 @@ Feature: Create App User - Integration
       | firstName    |
       | lastName     |
 
-  @Ignore
   Scenario Outline: 400 - Creating an app user with a null required field
     Given the client provides a create-user request body with the following fields:
       | firstName    | <firstName>    |
@@ -53,7 +51,6 @@ Feature: Create App User - Integration
       | lastName     | Johnny    | <null>    | johnny.appleseed@gmail.com |
       | emailAddress | Johnny    | Appleseed | <null>                     |
 
-  @Ignore
   Scenario Outline: 400 - Creating an app user with invalid field length
     Given the client provides a create-user request body with the following fields:
       | firstName    | <firstName>    |
@@ -77,7 +74,6 @@ Feature: Create App User - Integration
       | 1          | lastName     | Johnny                 | <textFieldMaxLength45> | johnny.appleseed@gmail.com      |
       | 2          | emailAddress | Johnny                 | Appleseed              | <emailAddressFieldMaxLength100> |
 
-  @Ignore
   Scenario Outline: 400 - Creating an app user with invalid email length
     Given the client provides a create-user request body with the following fields:
       | firstName    | <firstName>    |
@@ -99,8 +95,6 @@ Feature: Create App User - Integration
       | errorCount | field        | firstName | lastName  | emailAddress                    |
       | 2          | emailAddress | Johnny    | Appleseed | <emailAddressFieldMaxLength100> |
 
-
-  @Ignore
   Scenario: 400 - Creating an app user with malformed JSON
     Given a create-user request body with malformed JSON
     And the create-user request has a content type of "application/json"
@@ -111,7 +105,6 @@ Feature: Create App User - Integration
       | code | MALFORMED_JSON |
     And the data store was not called to save the new user
 
-  @Ignore
   Scenario: 415 - Creating an app user with unsupported content type
     Given the client provides a create-user request body with the following fields:
       | emailAddress | johnny.appleseed@gmail.com |

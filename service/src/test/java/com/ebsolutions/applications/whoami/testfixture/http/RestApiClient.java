@@ -17,6 +17,12 @@ public interface RestApiClient {
       Map<String, Object> requestBody
   );
 
+  ScenarioResponse post(
+      String route,
+      MediaType contentType,
+      String rawRequestBody
+  );
+
   ScenarioResponse put(
       String route,
       String id,

@@ -1,5 +1,6 @@
 package com.ebsolutions.applications.whoami.testfixture.http;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.web.client.RestClient;
 public final class SpringRestClient implements RestApiClient {
 
   private final RestClient restClient;
+  private final ObjectMapper objectMapper;
 
   @Override
   public ScenarioResponse delete(String route, String id) {
@@ -92,7 +94,36 @@ public final class SpringRestClient implements RestApiClient {
           .post()
           .uri(route)
           .contentType(contentType)
-          .body(requestBody)
+          .body(objectMapper.writeValueAsString(requestBody))
+          .exchange(
+              (request, response) -> {
+                String responseBody =
+                    new String(response.getBody().readAllBytes(), StandardCharsets.UTF_8);
+
+                return new ScenarioResponse(
+                    response.getStatusCode().value(),
+                    responseBody,
+                    response.getHeaders().toSingleValueMap()
+                );
+
+              });
+    } catch (Exception e) {
+      throw new RuntimeException("Failed to perform POST request to " + route, e);
+    }
+  }
+
+  @Override
+  public ScenarioResponse post(
+      String route,
+      MediaType contentType,
+      String rawRequestBody
+  ) {
+    try {
+      return restClient
+          .post()
+          .uri(route)
+          .contentType(contentType)
+          .body(rawRequestBody)
           .exchange(
               (request, response) -> {
                 String responseBody =
@@ -123,7 +154,7 @@ public final class SpringRestClient implements RestApiClient {
           .put()
           .uri(uri)
           .contentType(contentType)
-          .body(requestBody)
+          .body(objectMapper.writeValueAsString(requestBody))
           .exchange(
               (request, response) -> {
                 String responseBody =
