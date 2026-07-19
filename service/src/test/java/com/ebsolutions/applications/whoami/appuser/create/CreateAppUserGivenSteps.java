@@ -24,11 +24,14 @@ public class CreateAppUserGivenSteps extends BaseSteps {
     dataTable.asMap().forEach((key, value) ->
         this.scenarioContext.requestPayload.put(key, resolvePlaceholderToken(value))
     );
+
   }
 
   @And("the create-user request has a content type of {string}")
   public void theCreateUserRequestHasAContentTypeOf(String mediaType) {
+
     this.scenarioContext.requestContentType = resolveMediaType(mediaType);
+
   }
 
   @And("the data store is configured to save the new users")
@@ -41,6 +44,15 @@ public class CreateAppUserGivenSteps extends BaseSteps {
 
   @Given("a create-user request body with malformed JSON")
   public void aCreateUserRequestBodyWithMalformedJSON() {
+
     this.scenarioContext.rawRequestBody = "{invalid-json:";
+
+  }
+
+  @And("the client provides the create-user request without the {string} field")
+  public void theClientProvidesTheCreateUserRequestWithoutTheField(String missingField) {
+
+    this.scenarioContext.requestPayload.remove(missingField);
+
   }
 }

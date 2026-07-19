@@ -14,6 +14,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 
 @RequiredArgsConstructor
 public class ApplicationEndpointsIntegrationSteps extends BaseSteps {
@@ -25,16 +26,11 @@ public class ApplicationEndpointsIntegrationSteps extends BaseSteps {
   @When("the client makes a {string} request to {string}")
   public void theClientMakesAHttpMethodRequestToEndpoint(String httpMethod, String endpoint) {
 
-    switch (httpMethod) {
-      case "POST" -> this.scenarioContext.response =
-          this.restApiClient
-              .post(
-                  endpoint,
-                  this.scenarioContext.requestContentType,
-                  this.scenarioContext.requestPayload);
-      case "GET" -> this.scenarioContext.response = this.restApiClient.get(endpoint);
-      default -> throw new IllegalArgumentException("Unsupported HTTP method: " + httpMethod);
+    if (!HttpMethod.GET.matches(httpMethod)) {
+      throw new IllegalArgumentException("Unsupported HTTP method: " + httpMethod);
     }
+
+    this.scenarioContext.response = this.restApiClient.get(endpoint);
 
   }
 
