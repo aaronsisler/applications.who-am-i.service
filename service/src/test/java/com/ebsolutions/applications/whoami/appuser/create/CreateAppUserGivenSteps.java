@@ -34,8 +34,8 @@ public class CreateAppUserGivenSteps extends BaseSteps {
 
   }
 
-  @And("the data store is configured to save the new users")
-  public void theDataStoreIsConfiguredToSaveTheNewUsers() {
+  @And("the data store is configured to save the new user")
+  public void theDataStoreIsConfiguredToSaveTheNewUser() {
 
     when(appUserRepository.save(any()))
         .thenAnswer(invocation -> invocation.getArgument(0));

@@ -3,12 +3,26 @@ Feature: Create App User - Integration
   Background:
     Given the application is running
 
-  @Ignore
+#  @Ignore
+  @Only
   Scenario: 200 - Each created app user receives a unique client-facing identifier
-    Given the client provides two unique create-user request bodies
-    And the data store is configured to save the new users
-    When the client submits both of the create-user requests
-    Then each create-user response should include unique client-facing identifiers
+    Given the client provides a create-user request body with the following fields:
+      | emailAddress | johnny.appleseed123@gmail.com |
+      | firstName    | Johnny123                     |
+      | lastName     | Appleseed                     |
+    And the create-user request has a content type of "application/json"
+    And the data store is configured to save the new user
+    When the client submits the create-user request
+    Then the create-user response status should be 201
+    And the client provides a create-user request body with the following fields:
+      | emailAddress | johnny.appleseed456@gmail.com |
+      | firstName    | Johnny456                     |
+      | lastName     | Appleseed                     |
+    And the create-user request has a content type of "application/json"
+    And the data store is configured to save the new user
+    When the client submits the create-user request
+    Then the create-user response status should be 201
+    And each create-user response should include unique client-facing identifiers
 
   Scenario Outline: 400 - Creating an app user with missing required fields
     Given the client provides a create-user request body with the following fields:

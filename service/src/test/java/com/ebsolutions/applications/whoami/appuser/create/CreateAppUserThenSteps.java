@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import java.util.HashMap;
@@ -158,4 +159,9 @@ public class CreateAppUserThenSteps extends BaseSteps {
 
   }
 
+  @And("each create-user response should include unique client-facing identifiers")
+  public void eachCreateUserResponseShouldIncludeUniqueClientFacingIdentifiers() {
+    // Write code here that turns the phrase above into concrete actions
+    throw new PendingException();
+  }
 }
