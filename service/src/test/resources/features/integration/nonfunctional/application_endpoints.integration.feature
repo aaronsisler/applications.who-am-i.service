@@ -5,8 +5,8 @@ Feature: Non Functional: Application Endpoints - Integration
 
   Background:
     Given the application is running
+# @Ignore
 
-#  @Ignore
   Scenario Outline: 404 - Using an incorrect path should fail
     When the client makes a "<httpMethod>" request to "<endpoint>"
     Then the response status code should be <responseStatusCode>
@@ -15,8 +15,8 @@ Feature: Non Functional: Application Endpoints - Integration
     Examples:
       | httpMethod | endpoint | responseStatusCode |
       | GET        | /taco    | 404                |
+# @Ignore
 
-#  @Ignore
   Scenario Outline: 500 - Any unexpected error should return a 500 status code
     When the client makes a "<httpMethod>" request to "<endpoint>"
     Then the response status code should be <responseStatusCode>

@@ -1,8 +1,0 @@
-<configuration>
-
-    <!-- Reduces log verbosity during tests by setting specific loggers to WARN level, -->
-    <!-- while keeping the root logger at INFO level.  -->
-    <logger name="org.springframework.test.context.support.AnnotationConfigContextLoaderUtils" level="WARN"/>
-    <logger name="org.springframework.boot.test.context.SpringBootTestContextBootstrapper" level="WARN"/>
-
-</configuration>

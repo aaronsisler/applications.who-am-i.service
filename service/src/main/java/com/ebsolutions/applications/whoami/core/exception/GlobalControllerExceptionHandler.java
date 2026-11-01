@@ -22,10 +22,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
- * Global handler for all exceptions thrown in controllers.
- * Handles validation, HTTP errors, and service-level exceptions,
- * converting them into structured {@link ErrorDto} responses
- * suitable for clients.
+ * Global handler for all exceptions thrown in controllers. Handles validation, HTTP errors, and
+ * service-level exceptions, converting them into structured {@link ErrorDto} responses suitable for
+ * clients.
  */
 @Slf4j
 @RestControllerAdvice
@@ -44,15 +43,10 @@ public class GlobalControllerExceptionHandler {
    */
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorDto> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-    List<ErrorDetail> errors = ex.getBindingResult()
-        .getFieldErrors()
-        .stream()
-        .map(this::mapFieldError)
-        .toList();
+    List<ErrorDetail> errors =
+        ex.getBindingResult().getFieldErrors().stream().map(this::mapFieldError).toList();
 
-    return ResponseEntity
-        .badRequest()
-        .body(ErrorDto.builder().errors(errors).build());
+    return ResponseEntity.badRequest().body(ErrorDto.builder().errors(errors).build());
   }
 
   /**
@@ -63,19 +57,23 @@ public class GlobalControllerExceptionHandler {
    */
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<ErrorDto> handleConstraintViolation(ConstraintViolationException ex) {
-    List<ErrorDetail> errors = ex.getConstraintViolations()
-        .stream()
-        .map(v -> ErrorDetail.builder()
-            .field(v.getPropertyPath().toString())
-            .code(errorCodeMapper.map(
-                v.getConstraintDescriptor().getAnnotation().annotationType().getSimpleName()))
-            .message(v.getMessage())
-            .build())
-        .toList();
+    List<ErrorDetail> errors =
+        ex.getConstraintViolations().stream()
+            .map(
+                v ->
+                    ErrorDetail.builder()
+                        .field(v.getPropertyPath().toString())
+                        .code(
+                            errorCodeMapper.map(
+                                v.getConstraintDescriptor()
+                                    .getAnnotation()
+                                    .annotationType()
+                                    .getSimpleName()))
+                        .message(v.getMessage())
+                        .build())
+            .toList();
 
-    return ResponseEntity
-        .badRequest()
-        .body(ErrorDto.builder().errors(errors).build());
+    return ResponseEntity.badRequest().body(ErrorDto.builder().errors(errors).build());
   }
 
   /**
@@ -85,15 +83,16 @@ public class GlobalControllerExceptionHandler {
    */
   @ExceptionHandler(HttpMessageNotReadableException.class)
   public ResponseEntity<ErrorDto> handleMessageNotReadable() {
-    return ResponseEntity
-        .badRequest()
-        .body(ErrorDto.builder()
-            .errors(Collections.singletonList(
-                ErrorDetail.builder()
-                    .code(ErrorCode.MALFORMED_JSON)
-                    .message(ErrorMessages.MESSAGE_NOT_READABLE.message())
-                    .build()))
-            .build());
+    return ResponseEntity.badRequest()
+        .body(
+            ErrorDto.builder()
+                .errors(
+                    Collections.singletonList(
+                        ErrorDetail.builder()
+                            .code(ErrorCode.MALFORMED_JSON)
+                            .message(ErrorMessages.MESSAGE_NOT_READABLE.message())
+                            .build()))
+                .build());
   }
 
   /* ================= 404 – URL or PATH NOT FOUND ================= */
@@ -106,15 +105,16 @@ public class GlobalControllerExceptionHandler {
   @ExceptionHandler(NoHandlerFoundException.class)
   public ResponseEntity<ErrorDto> handleNoHandlerFound() {
 
-    return ResponseEntity
-        .status(HttpStatus.NOT_FOUND)
-        .body(ErrorDto.builder()
-            .errors(Collections.singletonList(
-                ErrorDetail.builder()
-                    .code(ErrorCode.NOT_FOUND)
-                    .message(ErrorMessages.HTTP_METHOD_NOT_ALLOWED.message())
-                    .build()))
-            .build());
+    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        .body(
+            ErrorDto.builder()
+                .errors(
+                    Collections.singletonList(
+                        ErrorDetail.builder()
+                            .code(ErrorCode.NOT_FOUND)
+                            .message(ErrorMessages.HTTP_METHOD_NOT_ALLOWED.message())
+                            .build()))
+                .build());
   }
 
   /* ================= 405 – METHOD NOT ALLOWED ================= */
@@ -126,15 +126,16 @@ public class GlobalControllerExceptionHandler {
    */
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
   public ResponseEntity<ErrorDto> handleMethodNotSupported() {
-    return ResponseEntity
-        .status(HttpStatus.METHOD_NOT_ALLOWED)
-        .body(ErrorDto.builder()
-            .errors(Collections.singletonList(
-                ErrorDetail.builder()
-                    .code(ErrorCode.METHOD_NOT_ALLOWED)
-                    .message(ErrorMessages.HTTP_METHOD_NOT_ALLOWED.message())
-                    .build()))
-            .build());
+    return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
+        .body(
+            ErrorDto.builder()
+                .errors(
+                    Collections.singletonList(
+                        ErrorDetail.builder()
+                            .code(ErrorCode.METHOD_NOT_ALLOWED)
+                            .message(ErrorMessages.HTTP_METHOD_NOT_ALLOWED.message())
+                            .build()))
+                .build());
   }
 
   /* ================= 409 – CONFLICT ================= */
@@ -147,15 +148,16 @@ public class GlobalControllerExceptionHandler {
    */
   @ExceptionHandler(DuplicateDataException.class)
   public ResponseEntity<ErrorDto> handleDuplicateData(DuplicateDataException ex) {
-    return ResponseEntity
-        .status(HttpStatus.CONFLICT)
-        .body(ErrorDto.builder()
-            .errors(Collections.singletonList(
-                ErrorDetail.builder()
-                    .code(ErrorCode.EMAIL_ALREADY_EXISTS)
-                    .message(ex.getMessage())
-                    .build()))
-            .build());
+    return ResponseEntity.status(HttpStatus.CONFLICT)
+        .body(
+            ErrorDto.builder()
+                .errors(
+                    Collections.singletonList(
+                        ErrorDetail.builder()
+                            .code(ErrorCode.EMAIL_ALREADY_EXISTS)
+                            .message(ex.getMessage())
+                            .build()))
+                .build());
   }
 
   /* ================= 415 – UNSUPPORTED MEDIA TYPE ================= */
@@ -167,15 +169,16 @@ public class GlobalControllerExceptionHandler {
    */
   @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
   public ResponseEntity<ErrorDto> handleUnsupportedMedia() {
-    return ResponseEntity
-        .status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-        .body(ErrorDto.builder()
-            .errors(Collections.singletonList(
-                ErrorDetail.builder()
-                    .code(ErrorCode.UNSUPPORTED_MEDIA_TYPE)
-                    .message(ErrorMessages.UNSUPPORTED_CONTENT_TYPE.message())
-                    .build()))
-            .build());
+    return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+        .body(
+            ErrorDto.builder()
+                .errors(
+                    Collections.singletonList(
+                        ErrorDetail.builder()
+                            .code(ErrorCode.UNSUPPORTED_MEDIA_TYPE)
+                            .message(ErrorMessages.UNSUPPORTED_CONTENT_TYPE.message())
+                            .build()))
+                .build());
   }
 
   /* ================= 500 – INTERNAL_SERVER_ERROR ================= */
@@ -188,15 +191,16 @@ public class GlobalControllerExceptionHandler {
    */
   @ExceptionHandler(DataStoreException.class)
   public ResponseEntity<ErrorDto> handleDataStoreUnavailable(DataStoreException ex) {
-    return ResponseEntity
-        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .body(ErrorDto.builder()
-            .errors(Collections.singletonList(
-                ErrorDetail.builder()
-                    .code(ErrorCode.INTERNAL_SERVER_ERROR)
-                    .message(ex.getMessage())
-                    .build()))
-            .build());
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(
+            ErrorDto.builder()
+                .errors(
+                    Collections.singletonList(
+                        ErrorDetail.builder()
+                            .code(ErrorCode.INTERNAL_SERVER_ERROR)
+                            .message(ex.getMessage())
+                            .build()))
+                .build());
   }
 
   /**
@@ -208,15 +212,16 @@ public class GlobalControllerExceptionHandler {
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorDto> handleGeneric(Exception ex) {
     //    log.error("Unexpected server error:", ex);
-    return ResponseEntity
-        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .body(ErrorDto.builder()
-            .errors(Collections.singletonList(
-                ErrorDetail.builder()
-                    .code(ErrorCode.INTERNAL_SERVER_ERROR)
-                    .message(ErrorMessages.UNEXPECTED_SERVER_ERROR.message())
-                    .build()))
-            .build());
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(
+            ErrorDto.builder()
+                .errors(
+                    Collections.singletonList(
+                        ErrorDetail.builder()
+                            .code(ErrorCode.INTERNAL_SERVER_ERROR)
+                            .message(ErrorMessages.UNEXPECTED_SERVER_ERROR.message())
+                            .build()))
+                .build());
   }
 
   /* ==================== Helper Methods ==================== */

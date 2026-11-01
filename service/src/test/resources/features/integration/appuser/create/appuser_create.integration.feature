@@ -99,7 +99,6 @@ Feature: Create App User - Integration
       | errorCount | field        | firstName | lastName  | emailAddress                    |
       | 2          | emailAddress | Johnny    | Appleseed | <emailAddressFieldMaxLength100> |
 
-
   @Ignore
   Scenario: 400 - Creating an app user with malformed JSON
     Given a create-user request body with malformed JSON

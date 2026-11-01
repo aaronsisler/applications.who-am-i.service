@@ -19,8 +19,7 @@ public class CorsConfig implements CorsConfigurationSource {
           // Gym
           "96.10.245.210",
           // Tavern
-          "107.12.84.23"
-      );
+          "107.12.84.23");
 
   @Override
   public CorsConfiguration getCorsConfiguration(@NonNull HttpServletRequest request) {

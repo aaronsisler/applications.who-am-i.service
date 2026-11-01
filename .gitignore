@@ -1,17 +1,15 @@
-# IDE files
-.idea/
-.vscode/
+# IntelliJ: ignore everything except the shared project settings
+.idea/*
+!.idea/externalDependencies.xml
+!.idea/codeStyles/
 *.iml
 
+# Other IDE's files
+.vscode/
 
 # Compiled and build files
 build/
 target/
 
-
-# System files
+# MacOS System files
 .DS_Store
-
-# Docker Files
-docker/
-shared-local-instance.db

@@ -2,25 +2,25 @@ Feature: Create App User - Acceptance
 
   Background:
     Given the application is running
+# Scenario: 201 -> 409 - Duplicate email
+# Given the client provides a create-user request body with the following fields:
+# | emailAddress | johnny.appleseed@gmail.com |
+# | firstName    | Johnny                     |
+# | lastName     | Appleseed                  |
+# When the client submits the create-user request
+# Then the create-user response status should be 201
+# And the client provides a create-user request body with the following fields:
+# | emailAddress | johnny.appleseed@gmail.com |
+# | firstName    | Johnny                     |
+# | lastName     | Appleseed                  |
+# When the client submits the create-user request
+# Then the create-user response status should be 409
+# And the create-user response should contain exactly 1 error
+# And the create-user response should contain an error with:
+# | field | <null>               |
+# | code  | EMAIL_ALREADY_EXISTS |
+# 
 
-#  Scenario: 201 -> 409 - Duplicate email
-#    Given the client provides a create-user request body with the following fields:
-#      | emailAddress | johnny.appleseed@gmail.com |
-#      | firstName    | Johnny                     |
-#      | lastName     | Appleseed                  |
-#    When the client submits the create-user request
-#    Then the create-user response status should be 201
-#    And the client provides a create-user request body with the following fields:
-#      | emailAddress | johnny.appleseed@gmail.com |
-#      | firstName    | Johnny                     |
-#      | lastName     | Appleseed                  |
-#    When the client submits the create-user request
-#    Then the create-user response status should be 409
-#    And the create-user response should contain exactly 1 error
-#    And the create-user response should contain an error with:
-#      | field | <null>               |
-#      | code  | EMAIL_ALREADY_EXISTS |
-#
   Scenario: 500 -> 201 - Service can recover when database unavailable
     Given the client provides a create-user request body with the following fields:
       | emailAddress | johnny.appleseed@gmail.com |

@@ -5,9 +5,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping(ApiPaths.SYSTEM_TEST_PATH)
 public abstract class SystemTestBaseController {
-  /**
-   * This abstract class should not be instantiated
-   */
-  protected SystemTestBaseController() {
-  }
+  /** This abstract class should not be instantiated */
+  protected SystemTestBaseController() {}
 }

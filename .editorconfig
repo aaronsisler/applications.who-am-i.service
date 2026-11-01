@@ -1,0 +1,27 @@
+# Git reads the file from top to bottom
+# The last matching pattern wins
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+# If indent_size is changed, the yaml/yml/feature needs to be added
+indent_size = 2
+
+[*.java]
+max_line_length = 100
+# IntelliJ-only key: matches google-java-format's +4 continuation indent while typing
+ij_continuation_indent_size = 4
+
+[*.md]
+# Two trailing spaces are a line break in Markdown
+trim_trailing_whitespace = false
+
+[*.sql]
+# Applied Flyway migrations must never change, not even whitespace
+trim_trailing_whitespace = false
+insert_final_newline = false

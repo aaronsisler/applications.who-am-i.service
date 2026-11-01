@@ -14,6 +14,5 @@ public class ExceptionTestController extends SystemTestBaseController {
     System.out.println("Exception endpoint hit on thread " + Thread.currentThread().getName());
 
     throw new Exception("This is a test exception for testing global exception handling.");
-
   }
 }

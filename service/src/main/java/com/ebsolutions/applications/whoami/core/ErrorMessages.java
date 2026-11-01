@@ -1,7 +1,6 @@
 package com.ebsolutions.applications.whoami.core;
 
 public enum ErrorMessages {
-
   APP_USER_NOT_SAVED("App user cannot be saved"),
   EMAIL_ALREADY_EXISTS("Email address already exists"),
   HTTP_METHOD_NOT_ALLOWED("HTTP method not allowed"),
