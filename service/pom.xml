@@ -14,19 +14,22 @@
   <properties>
     <start-class>com.ebsolutions.applications.whoami.Application</start-class>
 
+    <!-- Base package for generated code -->
+    <generated-base.package>com.ebsolutions.applications.whoami</generated-base.package>
+
     <!-- Contract Paths -->
     <!--suppress UnresolvedMavenProperty -->
-    <inbound-contracts.path>${project.parent.basedir}/contracts/inbound</inbound-contracts.path>
-    <inbound-common-contract.path>${inbound-contracts.path}/common.yaml</inbound-common-contract.path>
+    <inbound-contracts.path>${project.basedir}/src/main/resources/contracts/inbound</inbound-contracts.path>
     <inbound-actuator-contract.path>${inbound-contracts.path}/actuator.yaml</inbound-actuator-contract.path>
     <inbound-app-user-contract.path>${inbound-contracts.path}/app-user.yaml</inbound-app-user-contract.path>
 
     <!-- Execution IDs of the OpenAPI Generator plugin -->
-    <common-dto-id.executions>dto-common</common-dto-id.executions>
-    <actuator-dto-id.executions>dto-actuator</actuator-dto-id.executions>
-    <app-user-dto-id.executions>dto-app-user</app-user-dto-id.executions>
+    <actuator-interface.execution-id>actuator-interface-id</actuator-interface.execution-id>
+    <app-user-interface.execution-id>app-user-interface-id</app-user-interface.execution-id>
 
     <!-- Versions: Dependencies: Service -->
+    <java-uuid-generator.version>5.2.0</java-uuid-generator.version>
+    <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
     <mapstruct.version>1.6.3</mapstruct.version>
     <springdoc-openapi-starter-webmvc-ui.version>3.1.1</springdoc-openapi-starter-webmvc-ui.version>
 
@@ -82,6 +85,14 @@
   <dependencies>
     <!-- Dependencies: Compile : Start -->
 
+    <!-- Used for generation of UUIDv7 -->
+    <!-- Version: Explicit -->
+    <dependency>
+      <groupId>com.fasterxml.uuid</groupId>
+      <artifactId>java-uuid-generator</artifactId>
+      <version>${java-uuid-generator.version}</version>
+    </dependency>
+
     <!-- Used for mapping between OpenAPI DTO and database entity -->
     <!-- Version: Explicit -->
     <dependency>
@@ -96,14 +107,6 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
     </dependency>
-
-    <!-- Used for the validation annotations -->
-    <!-- Version: Explicit -->
-    <!--        <dependency>-->
-    <!--            <groupId>org.openapitools</groupId>-->
-    <!--            <artifactId>jackson-databind-nullable</artifactId>-->
-    <!--            <version>${jackson-databind-nullable.version}</version>-->
-    <!--        </dependency>-->
 
     <!-- Used for Swagger UI and Open API annotations -->
     <!-- Version: Explicit -->
@@ -246,6 +249,35 @@
         <artifactId>spotless-maven-plugin</artifactId>
       </plugin>
 
+      <!-- Adds MapStruct to the annotation processors the parent declares (Lombok).
+     The binding lets MapStruct see what Lombok generates. -->
+      <!-- Version: Spring Parent -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <annotationProcessorPaths combine.children="append">
+            <path>
+              <groupId>org.mapstruct</groupId>
+              <artifactId>mapstruct-processor</artifactId>
+              <version>${mapstruct.version}</version>
+            </path>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok-mapstruct-binding</artifactId>
+              <version>${lombok-mapstruct-binding.version}</version>
+            </path>
+          </annotationProcessorPaths>
+          <!-- MapStruct defaults for every mapper: plain @Mapper is enough (see ADR 0015) -->
+          <compilerArgs combine.children="append">
+            <arg>-Amapstruct.defaultComponentModel=spring</arg>
+            <arg>-Amapstruct.defaultInjectionStrategy=constructor</arg>
+            <arg>-Amapstruct.unmappedTargetPolicy=ERROR</arg>
+            <arg>-Amapstruct.unmappedSourcePolicy=ERROR</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+
       <!-- Generates Java classes from OpenAPI contracts -->
       <!-- Version: Parent POM - Plugin Management -->
       <plugin>
@@ -253,13 +285,28 @@
         <artifactId>openapi-generator-maven-plugin</artifactId>
         <executions>
           <execution>
-            <id>${common-dto-id.executions}</id>
+            <id>${app-user-interface.execution-id}</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${inbound-app-user-contract.path}</inputSpec>
+              <apiPackage>${generated-base.package}.appuser.adapter.in.web.generated</apiPackage>
+              <modelPackage>${generated-base.package}.appuser.adapter.in.web.generated.model</modelPackage>
+            </configuration>
           </execution>
           <execution>
-            <id>${actuator-dto-id.executions}</id>
-          </execution>
-          <execution>
-            <id>${app-user-dto-id.executions}</id>
+            <id>${actuator-interface.execution-id}</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${inbound-actuator-contract.path}</inputSpec>
+              <output>${project.build.directory}/generated-test-sources/openapi-actuator</output>
+              <addCompileSourceRoot>false</addCompileSourceRoot>
+              <addTestCompileSourceRoot>true</addTestCompileSourceRoot>
+              <modelPackage>actuator.model</modelPackage>
+            </configuration>
           </execution>
         </executions>
       </plugin>

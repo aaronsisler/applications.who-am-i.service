@@ -47,3 +47,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Info Actuator
 - Check Style
 - Integration test for health and info
+

@@ -7,3 +7,4 @@
 - [ ] API collection (Bruno) is updated and committed to api-client repository
 - [ ] Update the [change log](./CHANGELOG.md)
 - [ ] Bump the version of the app in the pom
+

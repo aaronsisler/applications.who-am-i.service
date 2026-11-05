@@ -12,6 +12,11 @@ indent_style = space
 # If indent_size is changed, the yaml/yml/feature needs to be added
 indent_size = 2
 
+[*.{yaml,yml}]
+# IntelliJ-only: spaces inside [ ] and { } in YAML
+ij_yaml_spaces_within_brackets = true
+ij_yaml_spaces_within_braces = true
+
 [*.java]
 max_line_length = 100
 # IntelliJ-only key: matches google-java-format's +4 continuation indent while typing

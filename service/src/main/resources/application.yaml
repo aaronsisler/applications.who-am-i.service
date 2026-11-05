@@ -41,3 +41,10 @@ springdoc:
     enabled: true
   swagger-ui:
     enabled: true
+    # The contract is the promise to clients; the generated spec is for comparison
+    urls:
+      - name: "App User API (contract)"
+        url: "/contracts/inbound/app-user.yaml"
+      - name: "Service (generated from code)"
+        url: "/v3/api-docs"
+#    urls-primary-name: "App User API (contract)"

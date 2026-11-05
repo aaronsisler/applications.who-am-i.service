@@ -1,0 +1,221 @@
+openapi: "3.0.3"
+info:
+  title: "App User API"
+  description: "Manage the users of the application."
+  version: "1.0.0"
+tags:
+  - name: AppUsers
+paths:
+  /app-users:
+    get:
+      tags: [ AppUsers ]
+      operationId: searchAppUsers
+      summary: "List app users, optionally filtered"
+      description: "Without filters, returns all app users one page at a time. No matches is an empty page, not a 404."
+      parameters:
+        - name: emailAddress
+          in: query
+          description: "Exact email address, case-insensitive"
+          schema:
+            type: string
+            example: "johnny.appleseed@example.com"
+        - name: name
+          in: query
+          description: "Part of the first or last name, case-insensitive"
+          schema:
+            type: string
+            minLength: 2
+            example: "apple"
+        - name: page
+          in: query
+          description: "Zero-based page number"
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            default: 0
+        - name: size
+          in: query
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: sort
+          in: query
+          description: "Sort order; a leading minus means descending"
+          schema:
+            type: string
+            enum: [ "lastName", "-lastName", "createdAt", "-createdAt" ]
+            default: "lastName"
+      responses:
+        "200":
+          description: "One page of app users"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppUserPage"
+        "400":
+          $ref: "./common/problems.yaml#/components/responses/InvalidRequest"
+    post:
+      tags: [ AppUsers ]
+      operationId: createAppUser
+      summary: "Create an app user"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAppUserRequest"
+      responses:
+        "201":
+          description: "The app user was created"
+          headers:
+            Location:
+              description: "Where the new app user can be fetched"
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppUserResponse"
+        "400":
+          $ref: "./common/problems.yaml#/components/responses/InvalidRequest"
+        "409":
+          $ref: "#/components/responses/EmailAddressTaken"
+  /app-users/{appUserId}:
+    parameters:
+      - $ref: "#/components/parameters/AppUserId"
+    get:
+      tags: [ AppUsers ]
+      operationId: getAppUser
+      summary: "Fetch one app user"
+      responses:
+        "200":
+          description: "The app user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppUserResponse"
+        "404":
+          $ref: "./common/problems.yaml#/components/responses/NotFound"
+    put:
+      tags: [ AppUsers ]
+      operationId: updateAppUser
+      summary: "Replace an app user's details"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAppUserRequest"
+      responses:
+        "200":
+          description: "The updated app user"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppUserResponse"
+        "400":
+          $ref: "./common/problems.yaml#/components/responses/InvalidRequest"
+        "404":
+          $ref: "./common/problems.yaml#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/EmailAddressTaken"
+    delete:
+      tags: [ AppUsers ]
+      operationId: deleteAppUser
+      summary: "Delete an app user"
+      responses:
+        "204":
+          description: "The app user was deleted"
+        "404":
+          $ref: "./common/problems.yaml#/components/responses/NotFound"
+components:
+  parameters:
+    AppUserId:
+      name: appUserId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    EmailAddressTaken:
+      description: "Another app user already has this email address (code EMAIL_ADDRESS_TAKEN)"
+      content:
+        application/problem+json:
+          schema:
+            $ref: "./common/problems.yaml#/components/schemas/Problem"
+  schemas:
+    CreateAppUserRequest:
+      type: object
+      description: "Payload for creating an app user"
+      required: [ emailAddress, firstName, lastName ]
+      properties:
+        emailAddress:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+          example: "johnny.appleseed@example.com"
+        firstName:
+          type: string
+          minLength: 1
+          maxLength: 45
+          example: "Johnny"
+        lastName:
+          type: string
+          minLength: 1
+          maxLength: 45
+          example: "Appleseed"
+    UpdateAppUserRequest:
+      type: object
+      description: "Payload for replacing an app user's details. All fields are required."
+      required: [ emailAddress, firstName, lastName ]
+      properties:
+        emailAddress:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 100
+          example: "johnny.appleseed@example.com"
+        firstName:
+          type: string
+          minLength: 1
+          maxLength: 45
+          example: "Johnny"
+        lastName:
+          type: string
+          minLength: 1
+          maxLength: 45
+          example: "Appleseed"
+    AppUserResponse:
+      description: "An app user, as returned to clients"
+      allOf:
+        - $ref: "./common/resources.yaml#/components/schemas/AuditedResource"
+        - type: object
+          required: [ emailAddress, firstName, lastName ]
+          properties:
+            emailAddress:
+              type: string
+              format: email
+              example: "johnny.appleseed@example.com"
+            firstName:
+              type: string
+              example: "Johnny"
+            lastName:
+              type: string
+              example: "Appleseed"
+    AppUserPage:
+      type: object
+      description: "One page of app users"
+      required: [ items, page ]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/AppUserResponse"
+        page:
+          $ref: "./common/resources.yaml#/components/schemas/PageMetadata"
