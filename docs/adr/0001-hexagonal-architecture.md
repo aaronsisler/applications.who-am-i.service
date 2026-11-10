@@ -2,6 +2,7 @@
 
 - **Status:** Accepted
 - **Date:** 2026-11-03
+- **Amended:** 2026-11-10 (domain objects as records, where Lombok and mapping belong)
 
 ## Context
 
@@ -26,11 +27,32 @@ Each module is a hexagon (ports and adapters):
 Adapters depend on ports, never on service implementations. Inbound and outbound adapters never
 depend on each other. These rules are enforced by ArchUnit (see the architecture features).
 
+### Domain objects
+
+- Domain objects, value objects, commands and read models are **Java records**. Their compact
+  constructors enforce invariants, so an invalid object cannot exist.
+- **No Lombok in the domain or application layers.** Setters would let any code change state
+  without going through the rules, and records already provide constructors, accessors, `equals`
+  and `toString`.
+- Domain objects carry **no persistence concerns**: no mapping annotations, no database-only keys,
+  no audit timestamps (see 0010 and 0014).
+- Lombok is acceptable in adapters and is used on the generated API models (`@lombok.Builder`).
+
+### Mapping
+
+Each adapter translates between its outside shape and the core's shapes; the shapes never meet:
+
+|   Adapter   |          From           |             To             |           How           |
+|-------------|-------------------------|----------------------------|-------------------------|
+| Web (in)    | generated request model | command                    | MapStruct (0015)        |
+| Web (out)   | read model              | generated response model   | MapStruct (0015)        |
+| Persistence | database row            | domain object / read model | `JdbcClient` row mapper |
+
 ## Consequences
 
 - Business rules can be tested without Spring, and adapters can be swapped (we replaced JPA with
   JDBC by changing only the persistence adapters).
-- More types than a layered CRUD app: a request DTO, a command, a domain object and a stored row
+- More types than a layered CRUD app: a request model, a command, a domain object and a stored row
   can all describe the same thing. This duplication is deliberate: each changes for a different
   reason (see 0006).
 - Transactions are applied in `config` with a decorator around each use case, so the application
@@ -40,5 +62,8 @@ depend on each other. These rules are enforced by ArchUnit (see the architecture
 
 - **Classic layered architecture (controller, service, repository):** less code, but services
   depend directly on Spring and persistence types, and tests need the framework.
+- **One class for entity, domain object and API shape** (as in the first version of this service):
+  less mapping, but persistence annotations, database keys and mutable setters leak into the
+  business rules.
 - **No separation for simple CRUD:** fine for throwaway code; this service is expected to grow.
 

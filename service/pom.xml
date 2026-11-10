@@ -18,7 +18,8 @@
     <generated-base.package>com.ebsolutions.applications.whoami</generated-base.package>
 
     <!-- Contract Paths -->
-    <!--suppress UnresolvedMavenProperty -->
+    <!-- Shared schemas live in ${inbound-contracts.path}/common and are pulled in by $ref,
+         so they need no execution of their own -->
     <inbound-contracts.path>${project.basedir}/src/main/resources/contracts/inbound</inbound-contracts.path>
     <inbound-actuator-contract.path>${inbound-contracts.path}/actuator.yaml</inbound-actuator-contract.path>
     <inbound-app-user-contract.path>${inbound-contracts.path}/app-user.yaml</inbound-app-user-contract.path>
@@ -34,58 +35,14 @@
     <springdoc-openapi-starter-webmvc-ui.version>3.1.1</springdoc-openapi-starter-webmvc-ui.version>
 
     <!-- Versions: Dependencies: Testing -->
-    <archunit.version>1.5.1</archunit.version>
-    <cucumber-bom.version>8.0.4</cucumber-bom.version>
-    <spring-modulith-bom.version>2.1.2</spring-modulith-bom.version>
-    <!-- Overrides Boot's managed JUnit (6.0.3) to match Cucumber 8's engine -->
-    <!--        <junit-jupiter.version>6.1.3</junit-jupiter.version>-->
+    <!-- archunit, cucumber-bom, spring-modulith-bom and the junit-jupiter override
+         are defined once in the parent -->
   </properties>
-
-  <dependencyManagement>
-    <dependencies>
-      <!-- Dependency Management: BOMs : Start -->
-
-      <!-- Enforces package interface boundaries -->
-      <!-- Version: Explicit -->
-      <dependency>
-        <groupId>org.springframework.modulith</groupId>
-        <artifactId>spring-modulith-bom</artifactId>
-        <version>${spring-modulith-bom.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-
-      <!-- Used for Cucumber BDD testing libs-->
-      <!-- Version: Explicit -->
-      <dependency>
-        <groupId>io.cucumber</groupId>
-        <artifactId>cucumber-bom</artifactId>
-        <version>${cucumber-bom.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-
-      <!-- Dependency Management: BOMs : End -->
-
-      <!-- Dependency Management: Individual : Start -->
-
-      <!-- MapStruct annotation processor for compile time annotations -->
-      <!-- Version: Explicit -->
-      <dependency>
-        <groupId>org.mapstruct</groupId>
-        <artifactId>mapstruct-processor</artifactId>
-        <version>${mapstruct.version}</version>
-      </dependency>
-
-      <!-- Dependency Management: Individual : End -->
-
-    </dependencies>
-  </dependencyManagement>
 
   <dependencies>
     <!-- Dependencies: Compile : Start -->
 
-    <!-- Used for generation of UUIDv7 -->
+    <!-- Used for generation of UUIDv7 (see ADR 0014) -->
     <!-- Version: Explicit -->
     <dependency>
       <groupId>com.fasterxml.uuid</groupId>
@@ -93,7 +50,7 @@
       <version>${java-uuid-generator.version}</version>
     </dependency>
 
-    <!-- Used for mapping between OpenAPI DTO and database entity -->
+    <!-- Used for mapping between generated API models, commands and read models (see ADR 0015) -->
     <!-- Version: Explicit -->
     <dependency>
       <groupId>org.mapstruct</groupId>
@@ -108,7 +65,7 @@
       <artifactId>lombok</artifactId>
     </dependency>
 
-    <!-- Used for Swagger UI and Open API annotations -->
+    <!-- Used for Swagger UI -->
     <!-- Version: Explicit -->
     <dependency>
       <groupId>org.springdoc</groupId>
@@ -123,11 +80,39 @@
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
 
-    <!-- Used for database framework -->
+    <!-- Database access with JdbcClient and explicit SQL (see ADR 0005) -->
     <!-- Version: Spring Parent -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jdbc</artifactId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
+    </dependency>
+
+    <!-- Schema migrations in src/main/resources/db/migration -->
+    <!-- Version: Spring Parent -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-flyway</artifactId>
+    </dependency>
+
+    <!-- Flyway support for PostgreSQL -->
+    <!-- Version: Spring Parent -->
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-database-postgresql</artifactId>
+    </dependency>
+
+    <!-- Enforces module boundaries and provides module events (see ADR 0002) -->
+    <!-- Version: Dependency Management - Spring Modulith BOM -->
+    <dependency>
+      <groupId>org.springframework.modulith</groupId>
+      <artifactId>spring-modulith-starter-core</artifactId>
+    </dependency>
+
+    <!-- Stores event publications until their listeners complete -->
+    <!-- Version: Dependency Management - Spring Modulith BOM -->
+    <dependency>
+      <groupId>org.springframework.modulith</groupId>
+      <artifactId>spring-modulith-starter-jdbc</artifactId>
     </dependency>
 
     <!-- Used for validation annotations in Controller, etc. -->
@@ -137,11 +122,11 @@
       <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
 
-    <!-- Contains Spring Boot Starter and Tomcat web server -->
+    <!-- Contains Spring MVC and the Tomcat web server (Boot 4 name of spring-boot-starter-web) -->
     <!-- Version: Spring Parent -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
+      <artifactId>spring-boot-starter-webmvc</artifactId>
     </dependency>
 
     <!-- Dependencies: Compile : End -->
@@ -149,7 +134,7 @@
     <!-- Dependencies: Runtime : Start -->
 
     <!-- Required for driver class: org.postgresql.Driver -->
-    <!-- Version: Installed on runtime machine -->
+    <!-- Version: Spring Parent -->
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
@@ -185,14 +170,14 @@
     </dependency>
 
     <!-- Needed for running tests in JUnit -->
-    <!-- Version: Dependency Management - JUnit BOM -->
+    <!-- Version: Spring Parent (junit-jupiter.version override in the parent) -->
     <dependency>
       <groupId>org.junit.platform</groupId>
       <artifactId>junit-platform-suite</artifactId>
       <scope>test</scope>
     </dependency>
 
-    <!-- Explicitly add Mockito core (no inline agent needed) -->
+    <!-- Explicit so its jar path can be passed to Surefire as a Java agent (see build) -->
     <!-- Version: Spring Parent -->
     <dependency>
       <groupId>org.mockito</groupId>
@@ -200,19 +185,13 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Testing framework for starting Spring context and MockMVC -->
+    <!-- Testing framework for starting Spring context, MockMvc and @WebMvcTest -->
+    <!-- Includes spring-boot-starter-test -->
     <!-- Version: Spring Parent -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
+      <artifactId>spring-boot-starter-webmvc-test</artifactId>
       <scope>test</scope>
-      <exclusions>
-        <!-- Exclude mockito-inline to avoid self-attaching agent warning -->
-        <exclusion>
-          <groupId>org.mockito</groupId>
-          <artifactId>mockito-inline</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <!-- Used for Docker container during Acceptance tests -->
@@ -223,16 +202,43 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- Connects Testcontainers to Spring Boot (@ServiceConnection) -->
+    <!-- Version: Spring Parent -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-testcontainers</artifactId>
       <scope>test</scope>
     </dependency>
 
+    <!-- @ApplicationModuleTest: tests one module on its own -->
+    <!-- Version: Dependency Management - Spring Modulith BOM -->
+    <dependency>
+      <groupId>org.springframework.modulith</groupId>
+      <artifactId>spring-modulith-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Module documentation in target/spring-modulith-docs -->
+    <!-- Version: Dependency Management - Spring Modulith BOM -->
+    <dependency>
+      <groupId>org.springframework.modulith</groupId>
+      <artifactId>spring-modulith-docs</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Waiting for asynchronous event listeners -->
+    <!-- Version: Spring Parent -->
+    <dependency>
+      <groupId>org.awaitility</groupId>
+      <artifactId>awaitility</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Architecture rules inside each module -->
+    <!-- Version: Parent POM - Dependency Management -->
     <dependency>
       <groupId>com.tngtech.archunit</groupId>
       <artifactId>archunit</artifactId>
-      <version>${archunit.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -242,15 +248,10 @@
 
   <build>
     <plugins>
-      <!-- Maintains strict Code Styles -->
-      <!-- Version: Parent POM - Plugin Management -->
-      <plugin>
-        <groupId>com.diffplug.spotless</groupId>
-        <artifactId>spotless-maven-plugin</artifactId>
-      </plugin>
+      <!-- Spotless and flatten need no entries here: the parent's <plugins> runs them in every module -->
 
       <!-- Adds MapStruct to the annotation processors the parent declares (Lombok).
-     The binding lets MapStruct see what Lombok generates. -->
+           The binding lets MapStruct see what Lombok generates. -->
       <!-- Version: Spring Parent -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -279,11 +280,14 @@
       </plugin>
 
       <!-- Generates Java classes from OpenAPI contracts -->
+      <!-- Shared settings come from the parent; each execution only names its contract and packages -->
       <!-- Version: Parent POM - Plugin Management -->
       <plugin>
         <groupId>org.openapitools</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
         <executions>
+          <!-- App user API: also generates PageMetadata, Problem and Violation,
+               because app-user.yaml references them in common/ -->
           <execution>
             <id>${app-user-interface.execution-id}</id>
             <goals>
@@ -295,6 +299,8 @@
               <modelPackage>${generated-base.package}.appuser.adapter.in.web.generated.model</modelPackage>
             </configuration>
           </execution>
+
+          <!-- Test-only: Actuator is implemented by Spring, so its models never go into the jar -->
           <execution>
             <id>${actuator-interface.execution-id}</id>
             <goals>
@@ -305,10 +311,36 @@
               <output>${project.build.directory}/generated-test-sources/openapi-actuator</output>
               <addCompileSourceRoot>false</addCompileSourceRoot>
               <addTestCompileSourceRoot>true</addTestCompileSourceRoot>
-              <modelPackage>actuator.model</modelPackage>
+              <modelPackage>${generated-base.package}.actuator.model</modelPackage>
             </configuration>
           </execution>
         </executions>
+      </plugin>
+
+      <!-- Exposes mockito-core's jar path as the property org.mockito:mockito-core:jar -->
+      <!-- Version: Spring Parent -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>mockito-agent-path</id>
+            <goals>
+              <goal>properties</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Loads Mockito as a Java agent instead of letting it self-attach,
+           which recent JDKs warn about and will eventually block -->
+      <!-- Version: Spring Parent -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <argLine>-javaagent:${org.mockito:mockito-core:jar}</argLine>
+        </configuration>
       </plugin>
 
       <!-- Gives the actuator/info API build information -->

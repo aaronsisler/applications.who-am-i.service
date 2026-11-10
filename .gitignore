@@ -10,6 +10,7 @@
 # Compiled and build files
 build/
 target/
+.flattened-pom.xml
 
 # MacOS System files
 .DS_Store

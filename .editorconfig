@@ -19,8 +19,14 @@ ij_yaml_spaces_within_braces = true
 
 [*.java]
 max_line_length = 100
-# IntelliJ-only key: matches google-java-format's +4 continuation indent while typing
+# IntelliJ-only: matches google-java-format's +4 continuation indent while typing
 ij_continuation_indent_size = 4
+# IntelliJ-only: google-java-format's import layout, so IntelliJ never reorders differently:
+# static imports first, a blank line, then every other import in one alphabetical block
+ij_java_imports_layout = $*,|,*
+# IntelliJ-only: never collapse imports into wildcards (google-java-format forbids them)
+ij_java_class_count_to_use_import_on_demand = 999
+ij_java_names_count_to_use_import_on_demand = 999
 
 [*.md]
 # Two trailing spaces are a line break in Markdown

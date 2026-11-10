@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.core.config;
+package com.ebsolutions.applications.whoami.web.contracts;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;

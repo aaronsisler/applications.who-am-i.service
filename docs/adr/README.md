@@ -18,15 +18,22 @@ decision someone will later ask "why?" about.
 | 0007 | [Errors as Problem Details](0007-errors-as-problem-details.md)                             | Accepted |
 | 0008 | [Enums at API boundaries](0008-enums-at-api-boundaries.md)                                 | Accepted |
 | 0009 | [Resources and collections](0009-resources-and-collections.md)                             | Accepted |
-| 0010 | [Timestamps and time types](0010-timestamps-and-time-types.md)                             | Proposed |
+| 0010 | [Timestamps and time types](0010-timestamps-and-time-types.md)                             | Accepted |
 | 0011 | [Formatting enforced by the build](0011-formatting-enforced-by-the-build.md)               | Accepted |
 | 0012 | [IDE formatting through Spotless Applier](0012-ide-formatting-with-spotless-applier.md)    | Accepted |
 | 0013 | [Dependency versions follow their owners](0013-dependency-versions-follow-their-owners.md) | Accepted |
 | 0014 | [Time-ordered UUIDs as identifiers](0014-time-ordered-uuids-as-identifiers.md)             | Accepted |
 | 0015 | [MapStruct for adapter mapping](0015-mapstruct-for-adapter-mapping.md)                     | Accepted |
+| 0016 | [Versioning and releases](0016-versioning-and-releases.md)                                 | Accepted |
+| 0017 | [Parent and module poms](0017-parent-and-module-poms.md)                                   | Accepted |
+| 0018 | [Cross-origin requests (CORS)](0018-cors.md)                                               | Accepted |
 
 ## Writing a new record
 
 Copy the structure of any existing record, give it the next number, and add it to the index.
-A record is never edited to reverse a decision: write a new one that supersedes it, and set the
-old one's status to "Superseded by NNNN".
+
+- **Amend** a record when you add detail that doesn't contradict its decision: update it and add an
+  "Amended" line with the date and what changed.
+- **Supersede** a record when you reverse or replace its decision: write a new record and set the
+  old one's status to "Superseded by NNNN".
+

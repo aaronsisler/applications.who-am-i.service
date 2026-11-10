@@ -1,0 +1,58 @@
+# .github/workflows/release.yaml
+name: "Release"
+
+on:
+  push:
+    branches: [ "main" ]
+
+# One release at a time, so two quick merges can't compute the same version
+concurrency:
+  group: "release"
+  cancel-in-progress: false
+
+permissions:
+  contents: write   # needed to push tags and create releases
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0   # full history, so earlier tags are visible
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "temurin"
+          java-version: "25"
+          cache: "maven"
+
+      - name: "Work out the next version"
+        id: version
+        run: |
+          LATEST=$(git describe --tags --abbrev=0 --match 'v*' 2>/dev/null || echo "v0.0.0")
+          IFS=. read -r MAJOR MINOR PATCH <<< "${LATEST#v}"
+          MESSAGE=$(git log -1 --pretty=%B)
+          if grep -q '#major' <<< "$MESSAGE"; then
+            MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0
+          elif grep -q '#minor' <<< "$MESSAGE"; then
+            MINOR=$((MINOR + 1)); PATCH=0
+          else
+            PATCH=$((PATCH + 1))
+          fi
+          echo "version=$MAJOR.$MINOR.$PATCH" >> "$GITHUB_OUTPUT"
+
+      - name: "Build and test"
+        run: mvn -B verify -Drevision=${{ steps.version.outputs.version }}
+
+      - name: "Tag and create the GitHub release"
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="v${{ steps.version.outputs.version }}"
+          git tag "$VERSION"
+          git push origin "$VERSION"
+          gh release create "$VERSION" --generate-notes
+
+      - name: "Deploy"
+        run: echo "Your existing deployment step, using service/target/*.jar"

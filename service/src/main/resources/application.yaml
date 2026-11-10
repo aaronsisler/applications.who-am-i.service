@@ -1,9 +1,10 @@
 application:
+  cors:
+    allowed-origins: [ "http://localhost:3000","http://localhost:4200" ]
   persistence:
     database: auth
     port: 5432
     schema: auth
-
 management:
   endpoints:
     web:

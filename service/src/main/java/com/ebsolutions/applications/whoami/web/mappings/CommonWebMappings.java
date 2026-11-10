@@ -1,4 +1,4 @@
-package com.ebsolutions.applications.whoami.web;
+package com.ebsolutions.applications.whoami.web.mappings;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;

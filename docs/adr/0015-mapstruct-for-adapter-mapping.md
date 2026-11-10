@@ -2,6 +2,7 @@
 
 - **Status:** Accepted
 - **Date:** 2026-11-03
+- **Amended:** 2026-11-10 (where shared conversions live)
 
 ## Context
 
@@ -26,8 +27,18 @@ properties, so a new request field can be dropped without anyone noticing.
 - Mappers are annotated with a plain `@Mapper`. A mapper may relax a policy only with an explicit
   `@Mapping(target = ..., ignore = true)` or `@BeanMapping(ignoreUnmappedSourceProperties = ...)`,
   which documents the exception where it happens.
-- Conversions that never map by name (value objects, `Instant` to `OffsetDateTime`) are written
-  once as `default` methods, in an interface that mappers extend.
+- **Conversions shared by every module** (`Instant` ↔ `OffsetDateTime`) are `default` methods in
+  `CommonWebMappings`, in the `web` module's `mapping` package, its only named interface (0002).
+  Mappers extend it:
+
+  ```java
+  @Mapper
+  interface AppUserWebMapper extends CommonWebMappings {
+    CreateAppUserCommand toCommand(CreateAppUserRequest request);
+  }
+  ```
+- **Module-specific conversions** (value objects such as `EmailAddress`) are `default` methods in
+  that module's own mapper.
 - **MapStruct is used only in adapters.** The persistence adapter maps rows by hand with
   `JdbcClient` row mappers, which MapStruct cannot help with. The domain and application layers
   never use it; `org.mapstruct` is on ArchUnit's list of forbidden packages for those layers.
@@ -49,5 +60,7 @@ properties, so a new request field can be dropped without anyone noticing.
   same-type arguments can be swapped and builders can leave fields unset without a compile error.
 - **A shared `@MapperConfig` referenced by every mapper:** keeps the policies visible in code, but
   every mapper must remember `config = ...`; forgetting it silently falls back to lenient defaults.
+- **An abstract base mapper carrying the settings:** not possible; MapStruct reads `@Mapper`
+  settings only from the mapper itself. Inheritance works for `default` conversion methods only.
 - **MapStruct's default policies:** less friction, but dropped source fields go unnoticed.
 
