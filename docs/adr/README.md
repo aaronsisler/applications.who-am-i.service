@@ -27,6 +27,7 @@ decision someone will later ask "why?" about.
 | 0016 | [Versioning and releases](0016-versioning-and-releases.md)                                 | Accepted |
 | 0017 | [Parent and module poms](0017-parent-and-module-poms.md)                                   | Accepted |
 | 0018 | [Cross-origin requests (CORS)](0018-cors.md)                                               | Accepted |
+| 0019 | [Instructions for AI agents](0019-instructions-for-ai-agents.md)                           | Accepted |
 
 ## Writing a new record
 
@@ -36,4 +37,6 @@ Copy the structure of any existing record, give it the next number, and add it t
   "Amended" line with the date and what changed.
 - **Supersede** a record when you reverse or replace its decision: write a new record and set the
   old one's status to "Superseded by NNNN".
+- **If the decision changes how code is written,** update the matching file in `.claude/rules/`
+  in the same pull request (see 0019).
 
