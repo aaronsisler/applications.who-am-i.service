@@ -99,6 +99,32 @@
           </configuration>
         </plugin>
 
+        <!-- Fails the build early when the Maven or Java version is outside the supported range -->
+        <!-- Version: Spring Parent -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>enforce-build-environment</id>
+              <goals>
+                <goal>enforce</goal>
+              </goals>
+              <configuration>
+                <rules>
+                  <requireMavenVersion>
+                    <!-- Maven 3.9 or newer, but not Maven 4 until we've tested it -->
+                    <version>[3.9,4)</version>
+                  </requireMavenVersion>
+                  <requireJavaVersion>
+                    <version>[25,)</version>
+                  </requireJavaVersion>
+                </rules>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
         <!-- Maintains strict Code Styles; the build is the source of truth (see ADR 0011) -->
         <!-- Version: Explicit -->
         <plugin>
@@ -258,6 +284,13 @@
     </pluginManagement>
 
     <plugins>
+      <!-- Checks the build environment in the root and every module -->
+      <!-- Version: Plugin Management -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+      </plugin>
+
       <!-- Runs in every module so each published pom has its real version -->
       <!-- Version: Plugin Management -->
       <plugin>
