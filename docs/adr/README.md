@@ -28,6 +28,7 @@ decision someone will later ask "why?" about.
 | 0017 | [Parent and module poms](0017-parent-and-module-poms.md)                                   | Accepted |
 | 0018 | [Cross-origin requests (CORS)](0018-cors.md)                                               | Accepted |
 | 0019 | [Instructions for AI agents](0019-instructions-for-ai-agents.md)                           | Accepted |
+| 0020 | [Amazon Corretto as the JDK](0020-use-amazon-corretto-as-the-jdk.md)                       | Accepted |
 
 ## Writing a new record
 
