@@ -1,50 +1,73 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+> **After v0.5.0, release notes are published as
+> [GitHub Releases](https://github.com/aaronsisler/applications.who-am-i.service/releases).**
+> Every merge to `main` is released automatically, and its release notes are generated from the
+> pull request title. See [Versioning and releases](./CONTRIBUTING.md#versioning-and-releases).
+>
+> The entries below are kept as history from before releases were automated.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this
+project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Legend
+## [0.5.0] - 2026-05-03
 
-- `Added` for new features.
-- `Changed` for changes in existing functionality.
-- `Deprecated` for soon-to-be removed features.
-- `Removed` for now removed features.
-- `Fixed` for any bug fixes.
-- `Security` in case of vulnerabilities.
-
-## [0.5.0] App User: Create - Acceptance Tests
+App User: Create – acceptance tests
 
 ### Added
 
-- Added acceptance tests for App User creation
+- Acceptance tests for App User creation
 
 ### Changed
 
-- Refactor integration tests to follow a structured approach closer to the overall project structure
-- Refactored the POM files to follow a more structured approach to plugin management and dependencies
+- Integration tests restructured to mirror the overall project structure
+- POM files restructured: plugin versions and configuration in the parent's `pluginManagement`,
+  dependencies in the service module
 
-## [0.4.0] App User: Create - Integration Tests
+## [0.4.0] - 2026-02-28
+
+App User: Create – integration tests
 
 ### Changed
 
-- Refactor integration tests to follow a more structured approach
-- Updating the test cases for user creation to ensure better coverage and reliability
+- Integration tests restructured
+- User creation test cases extended for better coverage and reliability
 
-## [0.3.0] App User: Create
+## [0.3.0] - 2026-01-15
+
+App User: Create
 
 ### Added
 
 - Create User functionality
 - Negative tests for Create User
 
-## [0.2.0] Base Repo
+## [0.2.0] - 2025-11-15
+
+Code quality
 
 ### Added
 
-- Health Actuator
-- Info Actuator
-- Check Style
-- Integration test for health and info
+- Sonar analysis and JaCoCo code coverage in the build and pipeline
+
+### Changed
+
+- Sonar configuration moved from `sonar-project.properties` into the POM files
+
+## [0.1.0] - 2025-11-09
+
+Base repository
+
+### Added
+
+- Health actuator endpoint
+- Info actuator endpoint
+- Checkstyle
+- Integration tests for the health and info endpoints
+
+[0.5.0]: https://github.com/aaronsisler/applications.who-am-i.service/compare/v0.4.0...v0.5.0
+[0.4.0]: https://github.com/aaronsisler/applications.who-am-i.service/compare/v0.3.0...v0.4.0
+[0.3.0]: https://github.com/aaronsisler/applications.who-am-i.service/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/aaronsisler/applications.who-am-i.service/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/aaronsisler/applications.who-am-i.service/releases/tag/v0.1.0
 
