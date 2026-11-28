@@ -3,7 +3,7 @@ name: "Release"
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main-xyz" ]
 
 # One release at a time, so two quick merges can't compute the same version
 concurrency:
