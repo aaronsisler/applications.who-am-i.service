@@ -26,6 +26,9 @@ spring:
     url: jdbc:postgresql://${application.persistence.hostname}:${application.persistence.port}/${application.persistence.database}?currentSchema=${application.persistence.schema}
     username: ${application.persistence.username}
     password: ${application.persistence.password}
+  flyway:
+    # Flyway creates this schema if missing and keeps its history table in it
+    schemas: ${application.persistence.schema}
   main:
     banner-mode: off
   mvc:

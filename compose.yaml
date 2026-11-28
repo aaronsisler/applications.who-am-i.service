@@ -1,0 +1,23 @@
+# Local Postgres for the "local" profile: `podman compose up -d`
+# Credentials match service/src/main/resources/application-local.yaml.
+# POSTGRES_* only apply to an empty volume; `podman compose down -v` to start over.
+services:
+  postgres:
+    image: docker.io/library/postgres:18
+    container_name: who-am-i-postgres
+    environment:
+      POSTGRES_DB: auth
+      POSTGRES_USER: auth_app_user
+      POSTGRES_PASSWORD: CHANGE_ME
+    ports:
+      - "5432:5432"
+    volumes:
+      # Postgres 18 keeps data under /var/lib/postgresql/18/docker; mount the parent, not .../data
+      - postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U auth_app_user -d auth" ]
+      interval: 5s
+      retries: 10
+
+volumes:
+  postgres-data:
