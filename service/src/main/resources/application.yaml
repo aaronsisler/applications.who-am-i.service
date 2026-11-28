@@ -1,4 +1,6 @@
 application:
+  cors:
+    allowed-origins: [ "http://localhost:3000","http://localhost:4200" ]
   persistence:
     database: auth
     port: 5432
@@ -24,6 +26,9 @@ spring:
     url: jdbc:postgresql://${application.persistence.hostname}:${application.persistence.port}/${application.persistence.database}?currentSchema=${application.persistence.schema}
     username: ${application.persistence.username}
     password: ${application.persistence.password}
+  flyway:
+    # Flyway creates this schema if missing and keeps its history table in it
+    schemas: ${application.persistence.schema}
   main:
     banner-mode: off
   mvc:
@@ -41,3 +46,7 @@ springdoc:
     enabled: true
   swagger-ui:
     enabled: true
+    # The contract is the promise to clients; the generated spec is for comparison
+    urls:
+      - name: "Service (generated from code)"
+        url: "/v3/api-docs"

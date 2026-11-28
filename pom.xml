@@ -1,262 +1,323 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.13</version>
-        <!-- lookup parent from repository -->
-        <relativePath/>
-    </parent>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>4.1.2</version>
+    <!-- lookup parent from repository -->
+    <relativePath/>
+  </parent>
 
-    <groupId>com.ebsolutions.applications.whoami</groupId>
-    <artifactId>who-am-i-parent</artifactId>
-    <version>${revision}</version>
-    <packaging>pom</packaging>
+  <groupId>com.ebsolutions.applications.whoami</groupId>
+  <artifactId>who-am-i-parent</artifactId>
+  <version>${revision}</version>
+  <packaging>pom</packaging>
 
-    <name>Who Am I Service Parent</name>
+  <name>Who Am I Service Parent</name>
 
-    <modules>
-        <module>service</module>
-    </modules>
+  <modules>
+    <module>service</module>
+  </modules>
 
-    <properties>
-        <!-- This is the property that is propagated to all children modules -->
-        <revision>0.5.0</revision>
+  <properties>
+    <!-- The application's version, shared by every module (see ADR 0016).
+         Local builds are snapshots; the release pipeline passes -Drevision=X.Y.Z from the next tag. -->
+    <revision>0.0.0-SNAPSHOT</revision>
 
-        <java.version>21</java.version>
+    <!-- Versions: Project -->
+    <java.version>25</java.version>
 
-        <!-- Sonar Configurations -->
-        <sonar.organization>aaronsisler</sonar.organization>
-        <sonar.projectKey>aaronsisler_applications.who-am-i.service</sonar.projectKey>
+    <!-- Versions: Plugins -->
+    <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
+    <!-- Must match the default of the Spotless release below (see ADR 0013) -->
+    <google-java-format.version>1.36.1</google-java-format.version>
+    <openapi-generator-maven-plugin.version>7.26.0</openapi-generator-maven-plugin.version>
+    <spotless-maven-plugin.version>3.10.4</spotless-maven-plugin.version>
 
-        <!-- Versions: Plugins -->
-        <checkstyle-maven-plugin.version>3.6.0</checkstyle-maven-plugin.version>
-        <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
-        <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
-        <maven-failsafe-plugin.version>3.5.4</maven-failsafe-plugin.version>
-        <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
-        <openapi-generator-maven-plugin.version>7.17.0</openapi-generator-maven-plugin.version>
-        <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
-        <spring-boot-maven-plugin.version>3.5.7</spring-boot-maven-plugin.version>
+    <!-- Versions: Dependencies -->
+    <!-- Must match the version Spring Modulith is built against (see ADR 0013) -->
+    <archunit.version>1.4.2</archunit.version>
+    <cucumber-bom.version>8.0.4</cucumber-bom.version>
+    <spring-modulith-bom.version>2.1.2</spring-modulith-bom.version>
 
-        <!-- Contract Paths -->
-        <!-- These paths are relative to the child modules -->
-        <!--suppress UnresolvedMavenProperty -->
-        <inbound-contracts.path>${project.parent.basedir}/contracts/inbound</inbound-contracts.path>
-        <inbound-common-contract.path>${inbound-contracts.path}/common.yaml</inbound-common-contract.path>
-        <inbound-actuator-contract.path>${inbound-contracts.path}/actuator.yaml</inbound-actuator-contract.path>
-        <inbound-app-user-contract.path>${inbound-contracts.path}/app-user/app-user.yaml
-        </inbound-app-user-contract.path>
+    <!-- Overrides: Spring Parent -->
+    <!-- Boot manages JUnit 6.0.3; Cucumber 8's JUnit Platform engine is built against 6.1 -->
+    <junit-jupiter.version>6.1.3</junit-jupiter.version>
+  </properties>
 
-        <!-- Execution IDs of the OpenAPI Generator plugin -->
-        <common-dto-id.executions>dto-common</common-dto-id.executions>
-        <actuator-dto-id.executions>dto-actuator</actuator-dto-id.executions>
-        <app-user-dto-id.executions>dto-app-user</app-user-dto-id.executions>
+  <dependencyManagement>
+    <dependencies>
+      <!-- Spring Modulith: module model, events, module tests, documentation -->
+      <!-- Version: Explicit -->
+      <dependency>
+        <groupId>org.springframework.modulith</groupId>
+        <artifactId>spring-modulith-bom</artifactId>
+        <version>${spring-modulith-bom.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
 
-    </properties>
+      <!-- Cucumber: every test is a scenario (see ADR 0004) -->
+      <!-- Version: Explicit -->
+      <dependency>
+        <groupId>io.cucumber</groupId>
+        <artifactId>cucumber-bom</artifactId>
+        <version>${cucumber-bom.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
 
-    <build>
-        <plugins>
-            <plugin>
-                <!-- Allows for a single version to be declared in parent pom -->
-                <!-- Version: Plugin Management -->
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>flatten-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
+      <!-- Architecture rules inside each module -->
+      <!-- Version: Explicit -->
+      <dependency>
+        <groupId>com.tngtech.archunit</groupId>
+        <artifactId>archunit</artifactId>
+        <version>${archunit.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
-        <pluginManagement>
-            <plugins>
-                <!-- Maintains strict Code Styles -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>${checkstyle-maven-plugin.version}</version>
-                    <configuration>
-                        <excludeGeneratedSources>true</excludeGeneratedSources>
-                        <consoleOutput>true</consoleOutput>
-                        <violationSeverity>warning</violationSeverity>
-                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                        <includeTestResources>true</includeTestResources>
-                        <failOnViolation>true</failOnViolation>
-                        <failsOnError>true</failsOnError>
-                        <configLocation>google_checks.xml</configLocation>
-                        <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <phase>validate</phase>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <!-- Used to compile the sources of your project -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven-compiler-plugin.version}</version>
-                    <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
-                        <!-- Using to suppress MockBean warnings -->
-                        <showWarnings>false</showWarnings>
-                    </configuration>
-                </plugin>
-                <!-- Used for running the Cucumber tests and finding feature files -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>${maven-failsafe-plugin.version}</version>
-                </plugin>
-                <!-- Used for running JUnit tests that link to Cucumber feature files -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surefire-plugin.version}</version>
-                </plugin>
-                <!-- Allows for a single version to be declared in parent pom -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>flatten-maven-plugin</artifactId>
-                    <version>${flatten-maven-plugin.version}</version>
-                </plugin>
-                <!-- Provides the JaCoCo runtime agent to your tests and allows basic report creation -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${jacoco-maven-plugin.version}</version>
-                </plugin>
-                <!-- Generates Java classes from OpenAPI contracts -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.openapitools</groupId>
-                    <artifactId>openapi-generator-maven-plugin</artifactId>
-                    <version>${openapi-generator-maven-plugin.version}</version>
-                    <configuration>
-                        <modelPackage>com.ebsolutions.applications.whoami.dto</modelPackage>
-                        <generatorName>spring</generatorName>
-                        <generateApis>false</generateApis>
-                        <generateSupportingFiles>false</generateSupportingFiles>
-                        <configOptions>
-                            <requiredPropertiesMustBeNotNull>true</requiredPropertiesMustBeNotNull>
-                            <generateConstructorWithAllArgs>true</generateConstructorWithAllArgs>
-                            <serializableModel>true</serializableModel>
-                            <!-- This also enabled useJakartaEe-->
-                            <useSpringBoot3>true</useSpringBoot3>
-                            <useBeanValidation>true</useBeanValidation>
-                            <additionalModelTypeAnnotations>
-                                @lombok.Builder
-                            </additionalModelTypeAnnotations>
-                        </configOptions>
+  <build>
+    <pluginManagement>
+      <plugins>
 
-                        <!-- typeMappings links the contract (left side) to the right side -->
-                        <typeMappings>
-                            <!-- This Pascal format is the standard for baked in OpenAPI supported types -->
-                            <typeMapping>DateTime=Instant</typeMapping>
-                            <!-- Kebab format is the format for custom mappings  -->
-                            <typeMapping>local-date=LocalDate</typeMapping>
-                        </typeMappings>
-                        <!-- importMappings then links the typeMapping (left side) to a Java import (right side) -->
-                        <importMappings>
-                            <!-- Left side in importMappings maps to the right side in typeMappings -->
-                            <importMapping>Instant=java.time.Instant</importMapping>
-                            <importMapping>LocalDate=java.time.LocalDate</importMapping>
-                        </importMappings>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>${common-dto-id.executions}</id>
-                            <goals>
-                                <goal>generate</goal>
-                            </goals>
-                            <configuration>
-                                <inputSpec>${inbound-common-contract.path}</inputSpec>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>${actuator-dto-id.executions}</id>
-                            <goals>
-                                <goal>generate</goal>
-                            </goals>
-                            <configuration>
-                                <inputSpec>${inbound-actuator-contract.path}</inputSpec>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>${app-user-dto-id.executions}</id>
-                            <goals>
-                                <goal>generate</goal>
-                            </goals>
-                            <configuration>
-                                <inputSpec>${inbound-app-user-contract.path}</inputSpec>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <!-- Used to integrate SonarQube analysis into the Maven build -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.sonarsource.scanner.maven</groupId>
-                    <artifactId>sonar-maven-plugin</artifactId>
-                    <version>${sonar-maven-plugin.version}</version>
-                </plugin>
-                <!-- Gives the actuator/info API build information -->
-                <!-- Version: Explicit -->
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${spring-boot-maven-plugin.version}</version>
-                    <configuration>
-                        <excludes>
-                            <exclude>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok</artifactId>
-                            </exclude>
-                        </excludes>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <!-- This is providing the build info for the actuator/info endpoint -->
-                                <goal>build-info</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
+        <!-- Maintains strict Code Styles; the build is the source of truth (see ADR 0011) -->
+        <!-- Version: Explicit -->
+        <plugin>
+          <groupId>com.diffplug.spotless</groupId>
+          <artifactId>spotless-maven-plugin</artifactId>
+          <version>${spotless-maven-plugin.version}</version>
+          <configuration>
+            <!-- Java: google-java-format, pinned to the version this Spotless release ships with -->
+            <java>
+              <googleJavaFormat>
+                <version>${google-java-format.version}</version>
+                <style>GOOGLE</style>
+                <reorderImports>true</reorderImports>
+              </googleJavaFormat>
+              <removeUnusedImports/>
+            </java>
 
-    <repositories>
-        <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/aaronsisler/applications.who-am-i.database</url>
-        </repository>
-    </repositories>
+            <!-- pom.xml: consistent element order -->
+            <pom>
+              <sortPom>
+                <expandEmptyElements>false</expandEmptyElements>
+              </sortPom>
+            </pom>
 
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
+            <!-- Cucumber feature files: aligned tables, consistent indentation -->
+            <gherkin>
+              <includes>
+                <include>src/test/resources/**/*.feature</include>
+              </includes>
+              <gherkinUtils/>
+            </gherkin>
+
+            <!-- Markdown: CommonMark formatting, so docs look the same whoever edits them -->
+            <markdown>
+              <includes>
+                <include>**/*.md</include>
+              </includes>
+              <excludes>
+                <exclude>target/**</exclude>
+              </excludes>
+              <flexmark>
+                <!-- Parse YAML front matter at the top of Markdown files (e.g. the paths block in
+                     .claude/rules) instead of reformatting it as a horizontal rule and a heading -->
+                <extensions>YamlFrontMatter</extensions>
+              </flexmark>
+            </markdown>
+
+            <!-- YAML (OpenAPI contracts) and properties: whitespace only, so comments survive -->
+            <!-- Structure and spacing come from .editorconfig in the IDE -->
+            <formats>
+              <format>
+                <includes>
+                  <include>src/**/*.yaml</include>
+                  <include>src/**/*.yml</include>
+                  <include>src/**/*.properties</include>
+                </includes>
+                <trimTrailingWhitespace/>
+                <endWithNewline/>
+              </format>
+            </formats>
+
+            <!-- SQL migrations are deliberately not listed: Flyway checksums applied migrations -->
+          </configuration>
+          <executions>
+            <execution>
+              <id>spotless-check</id>
+              <goals>
+                <goal>check</goal>
+              </goals>
+              <phase>validate</phase>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- Runs Lombok during compilation. Since JDK 23, javac no longer discovers annotation
+             processors on the classpath by itself, so they must be listed explicitly. -->
+        <!-- Version: Spring Parent -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <annotationProcessorPaths>
+              <path>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+              </path>
+            </annotationProcessorPaths>
+          </configuration>
+        </plugin>
+
+        <!-- Fails the build early when the Maven or Java version is outside the supported range -->
+        <!-- Version: Spring Parent -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>enforce-build-environment</id>
+              <goals>
+                <goal>enforce</goal>
+              </goals>
+              <configuration>
+                <rules>
+                  <requireMavenVersion>
+                    <!-- Maven 3.9 or newer, but not Maven 4 until we've tested it -->
+                    <version>[3.9,4)</version>
+                  </requireMavenVersion>
+                  <requireJavaVersion>
+                    <version>[25,)</version>
+                  </requireJavaVersion>
+                </rules>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- Writes the real version into installed and deployed poms instead of ${revision} -->
+        <!-- Version: Explicit -->
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>flatten-maven-plugin</artifactId>
+          <version>${flatten-maven-plugin.version}</version>
+          <configuration>
+            <updatePomFile>true</updatePomFile>
+            <flattenMode>resolveCiFriendliesOnly</flattenMode>
+          </configuration>
+          <executions>
+            <execution>
+              <id>flatten</id>
+              <goals>
+                <goal>flatten</goal>
+              </goals>
+              <phase>process-resources</phase>
+            </execution>
+            <execution>
+              <id>flatten-clean</id>
+              <goals>
+                <goal>clean</goal>
+              </goals>
+              <phase>clean</phase>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- Generates Java classes from OpenAPI contracts (see ADR 0006, 0021) -->
+        <!-- Shared options only; each module adds one execution per contract -->
+        <!-- Version: Explicit -->
+        <plugin>
+          <groupId>org.openapitools</groupId>
+          <artifactId>openapi-generator-maven-plugin</artifactId>
+          <version>${openapi-generator-maven-plugin.version}</version>
+          <configuration>
+            <!-- Controllers implement the generated interfaces, so the compiler checks them against the contract -->
+            <generateApis>true</generateApis>
+            <generateSupportingFiles>false</generateSupportingFiles>
+            <generatorName>spring</generatorName>
+            <!-- Suppresses the donation banner printed after every execution -->
+            <quiet>true</quiet>
+            <configOptions>
+              <additionalModelTypeAnnotations>@lombok.Builder</additionalModelTypeAnnotations>
+              <annotationLibrary>none</annotationLibrary>
+              <documentationProvider>none</documentationProvider>
+              <generateConstructorWithAllArgs>true</generateConstructorWithAllArgs>
+              <generateJsonIncludeAnnotations>false</generateJsonIncludeAnnotations>
+              <generateJsonSetterNullsAnnotations>false</generateJsonSetterNullsAnnotations>
+              <generatedConstructorWithRequiredArgs>false</generatedConstructorWithRequiredArgs>
+              <!-- Self implement the controllers -->
+              <interfaceOnly>true</interfaceOnly>
+              <openApiNullable>false</openApiNullable>
+              <requestMappingMode>none</requestMappingMode>
+              <requiredPropertiesMustBeNotNull>true</requiredPropertiesMustBeNotNull>
+              <serializableModel>true</serializableModel>
+              <!-- abstract methods: the compiler forces an implementation -->
+              <skipDefaultInterface>true</skipDefaultInterface>
+              <useBeanValidation>true</useBeanValidation>
+              <useJackson3>true</useJackson3>
+              <!-- JSpecify's @Nullable instead of Spring's, which Spring Framework 7 deprecates -->
+              <useJspecify>true</useJspecify>
+              <useSpringBoot4>true</useSpringBoot4>
+              <!-- Leave @Validated off the generated interfaces, so Spring MVC's built-in validation
+                   applies and invalid parameters return 400, not 500 -->
+              <useSpringBuiltInValidation>true</useSpringBuiltInValidation>
+              <useTags>true</useTags>
+            </configOptions>
+          </configuration>
+        </plugin>
+
+        <!-- Gives the actuator/info API build information -->
+        <!-- Version: Spring Parent -->
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <configuration>
+            <excludes>
+              <exclude>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+              </exclude>
+            </excludes>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <!-- This is providing the build info for the actuator/info endpoint -->
+                <goal>build-info</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <!-- Runs here AND in every module: covers root files (README.md, CONTRIBUTING.md,
+           docs/adr, this pom) as well as each module's sources -->
+      <!-- Version: Plugin Management -->
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+      </plugin>
+
+      <!-- Checks the build environment in the root and every module -->
+      <!-- Version: Plugin Management -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+      </plugin>
+
+      <!-- Runs in every module so each published pom has its real version -->
+      <!-- Version: Plugin Management -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 </project>

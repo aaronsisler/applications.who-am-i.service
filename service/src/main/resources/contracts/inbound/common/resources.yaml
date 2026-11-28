@@ -1,0 +1,48 @@
+openapi: 3.0.3
+info:
+  title: Shared resource schemas
+  version: 1.0.0
+paths: { }
+components:
+  schemas:
+    AuditedResource:
+      type: object
+      required: [ id, createdAt, updatedAt ]
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          example: "2026-01-02T12:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          example: "2026-01-02T12:00:00Z"
+    PageMetadata:
+      type: object
+      description: "Position of this page within the full result."
+      required: [ number, size, totalElements, totalPages ]
+      properties:
+        number:
+          type: integer
+          format: int32
+          description: "Zero-based page number"
+          example: 0
+        size:
+          type: integer
+          format: int32
+          example: 20
+        totalElements:
+          type: integer
+          format: int64
+          example: 42
+        totalPages:
+          type: integer
+          format: int32
+          example: 3

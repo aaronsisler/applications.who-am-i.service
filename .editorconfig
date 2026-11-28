@@ -1,0 +1,38 @@
+# Git reads the file from top to bottom
+# The last matching pattern wins
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+# If indent_size is changed, the yaml/yml/feature needs to be added
+indent_size = 2
+
+[*.{yaml,yml}]
+# IntelliJ-only: spaces inside [ ] and { } in YAML
+ij_yaml_spaces_within_brackets = true
+ij_yaml_spaces_within_braces = true
+
+[*.java]
+max_line_length = 100
+# IntelliJ-only: matches google-java-format's +4 continuation indent while typing
+ij_continuation_indent_size = 4
+# IntelliJ-only: google-java-format's import layout, so IntelliJ never reorders differently:
+# static imports first, a blank line, then every other import in one alphabetical block
+ij_java_imports_layout = $*,|,*
+# IntelliJ-only: never collapse imports into wildcards (google-java-format forbids them)
+ij_java_class_count_to_use_import_on_demand = 999
+ij_java_names_count_to_use_import_on_demand = 999
+
+[*.md]
+# Two trailing spaces are a line break in Markdown
+trim_trailing_whitespace = false
+
+[*.sql]
+# Applied Flyway migrations must never change, not even whitespace
+trim_trailing_whitespace = false
+insert_final_newline = false

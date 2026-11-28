@@ -1,0 +1,94 @@
+openapi: 3.0.3
+info:
+  title: Spring Boot Actuator
+  description: >
+    The subset of Spring Boot Actuator used to check that a deployed service is up
+    and to read its build metadata.
+  version: 1.0.0
+tags:
+  - name: Actuator
+paths:
+  /actuator/health:
+    get:
+      tags: [ Actuator ]
+      operationId: getHealth
+      summary: Overall health of the application
+      responses:
+        '200':
+          description: The application is up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+        '503':
+          description: The application is down or out of service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+  /actuator/info:
+    get:
+      tags: [ Actuator ]
+      operationId: getInfo
+      summary: Build metadata of the running application
+      responses:
+        '200':
+          description: Build metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Info'
+components:
+  schemas:
+    Health:
+      type: object
+      required: [ status ]
+      properties:
+        status:
+          $ref: '#/components/schemas/HealthStatus'
+        details:
+          type: object
+          description: Component-specific details, such as the database product or free disk space.
+          additionalProperties: true
+        components:
+          type: object
+          description: >
+            Health of individual components (db, diskSpace, ...). Present only when
+            management.endpoint.health.show-components allows it.
+          additionalProperties:
+            $ref: '#/components/schemas/Health'
+    HealthStatus:
+      type: string
+      description: Extensible enum. Clients must accept values not listed below.
+      x-extensible-enum:
+        - UP
+        - DOWN
+        - OUT_OF_SERVICE
+        - UNKNOWN
+      example: UP
+    Info:
+      type: object
+      properties:
+        build:
+          $ref: '#/components/schemas/BuildInfo'
+    BuildInfo:
+      type: object
+      description: >
+        Present when the spring-boot-maven-plugin build-info goal runs during the build.
+      properties:
+        group:
+          type: string
+          example: com.ebsolutions.applications.whoami
+        artifact:
+          type: string
+          example: who-am-i-service
+        name:
+          type: string
+          example: Who Am I Service
+        version:
+          type: string
+          example: 0.1.0
+        time:
+          type: string
+          format: date-time
+          example: 2025-02-16T00:57:04.590Z

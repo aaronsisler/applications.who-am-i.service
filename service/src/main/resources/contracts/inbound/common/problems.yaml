@@ -1,0 +1,68 @@
+openapi: 3.0.3
+info:
+  title: Shared problem schemas
+  version: 1.0.0
+paths: { }
+components:
+  schemas:
+    Problem:
+      type: object
+      description: RFC 9457 problem details, as produced by Spring's ProblemDetail.
+      required: [ type, title, status ]
+      properties:
+        type:
+          type: string
+          format: uri
+          default: about:blank
+        title:
+          type: string
+          example: Conflict
+        status:
+          type: integer
+          format: int32
+          example: 409
+        detail:
+          type: string
+          example: A product named 'Widget' already exists
+        instance:
+          type: string
+          format: uri-reference
+        code:
+          type: string
+          description: >
+            Machine-readable reason, for clients that need to react to a specific case.
+            Each API documents the codes its operations can return.
+          example: PRODUCT_NAME_TAKEN
+        violations:
+          type: array
+          description: Present only when the request failed validation (status 400).
+          items:
+            $ref: '#/components/schemas/Violation'
+    Violation:
+      type: object
+      required: [ field, code, message ]
+      properties:
+        field:
+          type: string
+          description: Path of the offending property in the request body.
+          example: price
+        code:
+          type: string
+          description: REQUIRED, TOO_LONG, TOO_SHORT, OUT_OF_RANGE or INVALID_FORMAT.
+          example: OUT_OF_RANGE
+        message:
+          type: string
+          example: Price must be greater than zero
+  responses:
+    InvalidRequest:
+      description: The request breaks one or more rules
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    NotFound:
+      description: The resource does not exist
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
