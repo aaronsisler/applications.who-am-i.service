@@ -82,48 +82,6 @@
   <build>
     <pluginManagement>
       <plugins>
-        <!-- Runs Lombok during compilation. Since JDK 23, javac no longer discovers annotation
-             processors on the classpath by itself, so they must be listed explicitly. -->
-        <!-- Version: Spring Parent -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <annotationProcessorPaths>
-              <path>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
-              </path>
-            </annotationProcessorPaths>
-          </configuration>
-        </plugin>
-
-        <!-- Fails the build early when the Maven or Java version is outside the supported range -->
-        <!-- Version: Spring Parent -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-enforcer-plugin</artifactId>
-          <executions>
-            <execution>
-              <id>enforce-build-environment</id>
-              <goals>
-                <goal>enforce</goal>
-              </goals>
-              <configuration>
-                <rules>
-                  <requireMavenVersion>
-                    <!-- Maven 3.9 or newer, but not Maven 4 until we've tested it -->
-                    <version>[3.9,4)</version>
-                  </requireMavenVersion>
-                  <requireJavaVersion>
-                    <version>[25,)</version>
-                  </requireJavaVersion>
-                </rules>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
 
         <!-- Maintains strict Code Styles; the build is the source of truth (see ADR 0011) -->
         <!-- Version: Explicit -->
@@ -195,6 +153,49 @@
                 <goal>check</goal>
               </goals>
               <phase>validate</phase>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- Runs Lombok during compilation. Since JDK 23, javac no longer discovers annotation
+             processors on the classpath by itself, so they must be listed explicitly. -->
+        <!-- Version: Spring Parent -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <annotationProcessorPaths>
+              <path>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+              </path>
+            </annotationProcessorPaths>
+          </configuration>
+        </plugin>
+
+        <!-- Fails the build early when the Maven or Java version is outside the supported range -->
+        <!-- Version: Spring Parent -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>enforce-build-environment</id>
+              <goals>
+                <goal>enforce</goal>
+              </goals>
+              <configuration>
+                <rules>
+                  <requireMavenVersion>
+                    <!-- Maven 3.9 or newer, but not Maven 4 until we've tested it -->
+                    <version>[3.9,4)</version>
+                  </requireMavenVersion>
+                  <requireJavaVersion>
+                    <version>[25,)</version>
+                  </requireJavaVersion>
+                </rules>
+              </configuration>
             </execution>
           </executions>
         </plugin>
@@ -296,6 +297,14 @@
     </pluginManagement>
 
     <plugins>
+      <!-- Runs here AND in every module: covers root files (README.md, CONTRIBUTING.md,
+           docs/adr, this pom) as well as each module's sources -->
+      <!-- Version: Plugin Management -->
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+      </plugin>
+
       <!-- Checks the build environment in the root and every module -->
       <!-- Version: Plugin Management -->
       <plugin>
@@ -308,14 +317,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
-      </plugin>
-
-      <!-- Runs here AND in every module: covers root files (README.md, CONTRIBUTING.md,
-           docs/adr, this pom) as well as each module's sources -->
-      <!-- Version: Plugin Management -->
-      <plugin>
-        <groupId>com.diffplug.spotless</groupId>
-        <artifactId>spotless-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
