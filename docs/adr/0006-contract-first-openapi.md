@@ -3,6 +3,7 @@
 - **Status:** Accepted
 - **Date:** 2026-11-03
 - **Amended:** 2026-11-10 (contract location, generation details, validation, Swagger UI)
+- **Amended:** 2026-11-21 (API interfaces are generated, see 0021)
 
 ## Context
 
@@ -33,7 +34,8 @@ in code silently breaks clients. Other modules and test suites also need the sam
   .generated.model`).
 - Schemas from `common/` are generated **into each module's own package** as part of that module's
   execution. The YAML is shared, not the Java, so no module depends on another's generated classes.
-- **Only models are generated** (`generateApis=false`). Controllers are written by hand.
+- **Models and API interfaces are generated.** Controllers implement the generated interfaces
+  (see 0021).
 - Generated models carry **Bean Validation** annotations from the contract (`useBeanValidation`)
   and a Lombok `@Builder`.
 - The **Actuator contract** is generated into *test* sources only: Spring implements those
@@ -64,9 +66,8 @@ The contract's constraints and the domain's rules must be kept consistent.
   shape, the use case input and the business rules change for different reasons.
 - Generated models use `OffsetDateTime` for `date-time` fields; adapters convert to `Instant`
   (see 0010).
-- Because controllers are hand-written, nothing at compile time checks that their paths, methods
-  and parameters match the contract. API scenarios cover this, and the second Swagger UI entry
-  makes differences visible.
+- Controllers implement the generated interfaces, so the compiler checks their paths, methods and
+  parameters against the contract (see 0021).
 - Each module gets its own copies of the common models (`PageMetadata`, `Problem`, `Violation`).
   `Problem` and `Violation` are not used at runtime: error responses are built with Spring's
   `ProblemDetail` (see 0007).
@@ -75,9 +76,6 @@ The contract's constraints and the domain's rules must be kept consistent.
 
 - **Code-first (springdoc):** less ceremony, but the contract follows the code, including
   accidental changes.
-- **Generating API interfaces (`generateApis=true`, `interfaceOnly`):** controllers implement
-  them, so the compiler catches drift in paths, methods and parameters. A stronger guarantee; a
-  one-line change in the parent pom if drift becomes a problem.
 - **Validation only in the domain:** a single place for rules, but malformed requests reach the
   core and clients get less precise errors.
 - **JSON contracts:** no indentation issues, but no comments and noisier diffs.

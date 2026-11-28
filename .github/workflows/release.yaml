@@ -43,7 +43,7 @@ jobs:
           echo "version=$MAJOR.$MINOR.$PATCH" >> "$GITHUB_OUTPUT"
 
       - name: "Build and test"
-        run: mvn -B verify -Drevision=${{ steps.version.outputs.version }}
+        run: mvn --batch-mode --no-transfer-progress verify -Drevision=${{ steps.version.outputs.version }}
 
       - name: "Tag and create the GitHub release"
         env:

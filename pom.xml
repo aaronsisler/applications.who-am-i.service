@@ -165,7 +165,11 @@
               <excludes>
                 <exclude>target/**</exclude>
               </excludes>
-              <flexmark/>
+              <flexmark>
+                <!-- Parse YAML front matter at the top of Markdown files (e.g. the paths block in
+                     .claude/rules) instead of reformatting it as a horizontal rule and a heading -->
+                <extensions>YamlFrontMatter</extensions>
+              </flexmark>
             </markdown>
 
             <!-- YAML (OpenAPI contracts) and properties: whitespace only, so comments survive -->
@@ -223,7 +227,7 @@
           </executions>
         </plugin>
 
-        <!-- Generates Java classes from OpenAPI contracts (see ADR 0006) -->
+        <!-- Generates Java classes from OpenAPI contracts (see ADR 0006, 0021) -->
         <!-- Shared options only; each module adds one execution per contract -->
         <!-- Version: Explicit -->
         <plugin>
@@ -231,9 +235,12 @@
           <artifactId>openapi-generator-maven-plugin</artifactId>
           <version>${openapi-generator-maven-plugin.version}</version>
           <configuration>
-            <generatorName>spring</generatorName>
-            <generateApis>false</generateApis>
+            <!-- Controllers implement the generated interfaces, so the compiler checks them against the contract -->
+            <generateApis>true</generateApis>
             <generateSupportingFiles>false</generateSupportingFiles>
+            <generatorName>spring</generatorName>
+            <!-- Suppresses the donation banner printed after every execution -->
+            <quiet>true</quiet>
             <configOptions>
               <additionalModelTypeAnnotations>@lombok.Builder</additionalModelTypeAnnotations>
               <annotationLibrary>none</annotationLibrary>
@@ -252,7 +259,12 @@
               <skipDefaultInterface>true</skipDefaultInterface>
               <useBeanValidation>true</useBeanValidation>
               <useJackson3>true</useJackson3>
+              <!-- JSpecify's @Nullable instead of Spring's, which Spring Framework 7 deprecates -->
+              <useJspecify>true</useJspecify>
               <useSpringBoot4>true</useSpringBoot4>
+              <!-- Leave @Validated off the generated interfaces, so Spring MVC's built-in validation
+                   applies and invalid parameters return 400, not 500 -->
+              <useSpringBuiltInValidation>true</useSpringBuiltInValidation>
               <useTags>true</useTags>
             </configOptions>
           </configuration>

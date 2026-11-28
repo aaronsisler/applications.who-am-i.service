@@ -1,5 +1,4 @@
 ---
-
 paths:
 - "**/*.feature"
 - "**/src/test/**/*.java"

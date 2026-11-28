@@ -3,6 +3,7 @@
 - **Status:** Accepted
 - **Date:** 2026-11-03
 - **Amended:** 2026-11-04 (where errors are handled, ordering, logging)
+- **Amended:** 2026-11-21 (parameters that can't be converted return violations, see 0021)
 
 ## Context
 
@@ -35,6 +36,8 @@ rules, which only that module understands.
 | `@Min`, `@Max`, `@DecimalMin`, `@DecimalMax`, `@Positive`, `@PositiveOrZero` | `OUT_OF_RANGE`           |
 | Anything else                                                                | `INVALID`                |
 
+- Query parameters and path variables that can't be converted to their type (an unknown enum
+  value, a malformed UUID, a non-number) use `INVALID_FORMAT` (see 0021).
 - `code` is a string, not a shared enum (see 0008).
 - Reusable responses (`InvalidRequest`, `NotFound`) are referenced from every contract.
 
@@ -46,6 +49,7 @@ rules, which only that module understands.
   missing parameter) into a Problem Details response with the right status. We only override:
   - request body validation (`MethodArgumentNotValidException`) and parameter validation
     (`HandlerMethodValidationException`), to add `violations`;
+  - type mismatches (`TypeMismatchException`), to add `violations` like any other invalid input;
   - unreadable bodies (`HttpMessageNotReadableException`), to give a clear, fixed message;
   - a catch-all for `Exception`, returning 500.
 - **Business errors are handled per module,** by a handler in the module's web adapter (for example

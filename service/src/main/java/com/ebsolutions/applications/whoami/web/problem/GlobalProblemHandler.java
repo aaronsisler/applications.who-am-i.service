@@ -1,7 +1,9 @@
 package com.ebsolutions.applications.whoami.web.problem;
 
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
@@ -53,6 +56,25 @@ class GlobalProblemHandler extends ResponseEntityExceptionHandler {
                     result.getResolvableErrors().stream()
                         .map(error -> Violation.of(result.getMethodParameter(), error)))
             .toList());
+    return handleExceptionInternal(ex, problem, headers, status, request);
+  }
+
+  /**
+   * Query parameters and path variables that can't be converted: unknown enum values, bad UUIDs.
+   */
+  @Override
+  protected ResponseEntity<Object> handleTypeMismatch(
+      @NonNull TypeMismatchException ex,
+      @NonNull HttpHeaders headers,
+      @NonNull HttpStatusCode status,
+      @NonNull WebRequest request) {
+    String field =
+        ex instanceof MethodArgumentTypeMismatchException mismatch
+            ? mismatch.getName()
+            : String.valueOf(ex.getPropertyName());
+    ProblemDetail problem =
+        ProblemDetail.forStatusAndDetail(status, "The request breaks one or more rules");
+    problem.setProperty("violations", List.of(Violation.invalidValue(field, ex.getRequiredType())));
     return handleExceptionInternal(ex, problem, headers, status, request);
   }
 

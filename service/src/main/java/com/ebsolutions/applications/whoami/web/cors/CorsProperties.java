@@ -5,5 +5,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 /** Origins of the web frontends allowed to call this API from a browser. */
-@ConfigurationProperties("app.cors")
+@ConfigurationProperties("application.cors")
 record CorsProperties(@DefaultValue List<String> allowedOrigins) {}

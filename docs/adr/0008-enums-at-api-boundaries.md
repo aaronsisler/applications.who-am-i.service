@@ -2,6 +2,7 @@
 
 - **Status:** Accepted
 - **Date:** 2026-11-03
+- **Amended:** 2026-11-21 (enum parameters are named schemas, see 0021)
 
 ## Context
 
@@ -12,6 +13,9 @@ Clients that deserialize into a closed enum fail on a value they don't know.
 
 - **Values clients send** (request bodies, query parameters): use a real `enum`. Adding values later
   is backward compatible; unknown values are rejected with 400 during deserialization.
+- **Enums in query or path parameters** are named schemas in `components/schemas`, never inline:
+  the generator only creates a Java enum for named schemas, and an inline enum becomes an unchecked
+  `String` (see 0021).
 - **Values the service returns**, including fields used in both directions: use `type: string` with
   the current values listed in `x-extensible-enum` and a description stating that clients must
   accept unknown values. Generated code then uses `String`.

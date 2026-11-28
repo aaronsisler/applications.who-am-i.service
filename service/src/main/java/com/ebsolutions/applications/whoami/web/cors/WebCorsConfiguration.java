@@ -8,12 +8,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Lets browser-based frontends call the API. CORS only governs browsers; it does not restrict which
- * networks or clients can reach the service.
+ * networks or clients can reach the service. Not named CorsConfiguration, to avoid confusion with
+ * Spring's org.springframework.web.cors.CorsConfiguration.
  */
 @Configuration
-@EnableConfigurationProperties(CorsProperties.class)
 @RequiredArgsConstructor
-class CorsConfig implements WebMvcConfigurer {
+@EnableConfigurationProperties(CorsProperties.class)
+class WebCorsConfiguration implements WebMvcConfigurer {
 
   private final CorsProperties corsProperties;
 

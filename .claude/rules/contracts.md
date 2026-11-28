@@ -1,8 +1,7 @@
 ---
-
 paths:
-- "**/contracts/**/*.yaml"
---------------------------
+  - "**/contracts/**/*.yaml"
+---
 
 # OpenAPI contracts
 
@@ -12,6 +11,8 @@ paths:
 - Shared schemas live in `common/` and are referenced with relative `$ref` (ADR 0006).
 - Errors use the shared Problem responses; module-specific reasons go in `code` (ADR 0007).
 - Response enums are `type: string` with `x-extensible-enum`; request enums use `enum` (ADR 0008).
+- Enums used as query or path parameters are named schemas in `components/schemas` with
+  `x-enum-varnames`; never inline (ADR 0008, 0021).
 - Lists return `{ items, page }`; empty searches return 200 (ADR 0009).
 - Resource ids are `id`, UUID, read-only; stored resources use `AuditedResource` (ADR 0009, 0014).
 

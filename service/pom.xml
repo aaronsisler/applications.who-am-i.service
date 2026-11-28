@@ -22,11 +22,9 @@
          so they need no execution of their own -->
     <inbound-contracts.path>${project.basedir}/src/main/resources/contracts/inbound</inbound-contracts.path>
     <inbound-actuator-contract.path>${inbound-contracts.path}/actuator.yaml</inbound-actuator-contract.path>
-    <inbound-app-user-contract.path>${inbound-contracts.path}/app-user.yaml</inbound-app-user-contract.path>
 
     <!-- Execution IDs of the OpenAPI Generator plugin -->
     <actuator-interface.execution-id>actuator-interface-id</actuator-interface.execution-id>
-    <app-user-interface.execution-id>app-user-interface-id</app-user-interface.execution-id>
 
     <!-- Versions: Dependencies: Service -->
     <java-uuid-generator.version>5.2.0</java-uuid-generator.version>
@@ -248,10 +246,8 @@
 
   <build>
     <plugins>
-      <!-- Spotless and flatten need no entries here: the parent's <plugins> runs them in every module -->
-
       <!-- Adds MapStruct to the annotation processors the parent declares (Lombok).
-           The binding lets MapStruct see what Lombok generates. -->
+     The binding lets MapStruct see what Lombok generates. -->
       <!-- Version: Spring Parent -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -269,49 +265,19 @@
               <version>${lombok-mapstruct-binding.version}</version>
             </path>
           </annotationProcessorPaths>
-          <!-- MapStruct defaults for every mapper: plain @Mapper is enough (see ADR 0015) -->
-          <compilerArgs combine.children="append">
-            <arg>-Amapstruct.defaultComponentModel=spring</arg>
-            <arg>-Amapstruct.defaultInjectionStrategy=constructor</arg>
-            <arg>-Amapstruct.unmappedTargetPolicy=ERROR</arg>
-            <arg>-Amapstruct.unmappedSourcePolicy=ERROR</arg>
-          </compilerArgs>
         </configuration>
-      </plugin>
-
-      <!-- Generates Java classes from OpenAPI contracts -->
-      <!-- Shared settings come from the parent; each execution only names its contract and packages -->
-      <!-- Version: Parent POM - Plugin Management -->
-      <plugin>
-        <groupId>org.openapitools</groupId>
-        <artifactId>openapi-generator-maven-plugin</artifactId>
         <executions>
-          <!-- App user API: also generates PageMetadata, Problem and Violation,
-               because app-user.yaml references them in common/ -->
+          <!-- MapStruct defaults for every mapper: plain @Mapper is enough (see ADR 0015).
+               Main code only: test code has no mappers, and javac warns about unused processor options. -->
           <execution>
-            <id>${app-user-interface.execution-id}</id>
-            <goals>
-              <goal>generate</goal>
-            </goals>
+            <id>default-compile</id>
             <configuration>
-              <inputSpec>${inbound-app-user-contract.path}</inputSpec>
-              <apiPackage>${generated-base.package}.appuser.adapter.in.web.generated</apiPackage>
-              <modelPackage>${generated-base.package}.appuser.adapter.in.web.generated.model</modelPackage>
-            </configuration>
-          </execution>
-
-          <!-- Test-only: Actuator is implemented by Spring, so its models never go into the jar -->
-          <execution>
-            <id>${actuator-interface.execution-id}</id>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
-              <inputSpec>${inbound-actuator-contract.path}</inputSpec>
-              <output>${project.build.directory}/generated-test-sources/openapi-actuator</output>
-              <addCompileSourceRoot>false</addCompileSourceRoot>
-              <addTestCompileSourceRoot>true</addTestCompileSourceRoot>
-              <modelPackage>${generated-base.package}.actuator.model</modelPackage>
+              <compilerArgs combine.children="append">
+                <arg>-Amapstruct.defaultComponentModel=spring</arg>
+                <arg>-Amapstruct.defaultInjectionStrategy=constructor</arg>
+                <arg>-Amapstruct.unmappedTargetPolicy=ERROR</arg>
+                <arg>-Amapstruct.unmappedSourcePolicy=ERROR</arg>
+              </compilerArgs>
             </configuration>
           </execution>
         </executions>
@@ -333,14 +299,42 @@
       </plugin>
 
       <!-- Loads Mockito as a Java agent instead of letting it self-attach,
-           which recent JDKs warn about and will eventually block -->
+          which recent JDKs warn about and will eventually block.
+          -Xshare:off: class-data sharing can't be used once an agent extends the boot classpath,
+          and the JVM warns about it on every run. -->
       <!-- Version: Spring Parent -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <argLine>-javaagent:${org.mockito:mockito-core:jar}</argLine>
+          <argLine>-javaagent:${org.mockito:mockito-core:jar} -Xshare:off</argLine>
         </configuration>
+      </plugin>
+
+      <!-- Generates Java classes from OpenAPI contracts -->
+      <!-- Shared settings come from the parent; each execution only names its contract and packages -->
+      <!-- Version: Parent POM - Plugin Management -->
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <executions>
+          <!-- Test-only: Actuator is implemented by Spring, so its models never go into the jar -->
+          <execution>
+            <id>${actuator-interface.execution-id}</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${inbound-actuator-contract.path}</inputSpec>
+              <output>${project.build.directory}/generated-test-sources/openapi-actuator</output>
+              <addCompileSourceRoot>false</addCompileSourceRoot>
+              <addTestCompileSourceRoot>true</addTestCompileSourceRoot>
+              <!-- Spring implements these endpoints; tests only need the models -->
+              <generateApis>false</generateApis>
+              <modelPackage>${generated-base.package}.actuator.model</modelPackage>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <!-- Gives the actuator/info API build information -->

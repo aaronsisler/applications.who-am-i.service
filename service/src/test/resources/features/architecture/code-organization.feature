@@ -19,3 +19,6 @@ Feature: How the code is organised
 # Then only persistence adapters use SQL
 # Scenario: The API contract stays at the edge
 # Then code generated from the API specs is only used by the web adapter of its module
+
+  Scenario: Request validation stays with Spring MVC
+    Then no web adapter class turns off Spring MVC's built-in validation
